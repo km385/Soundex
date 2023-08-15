@@ -42,7 +42,7 @@ watch(uploadedFile, (value) => {
 <template>
     <div id="drop_zone" class="flex items-center justify-center" @drop="onDrop" @dragover="onDragOver" @click="onClick">
         <div class="flex flex-col items-center">
-<!--            <img class="w-1/2 h-1/2 mb-3" src="../../images/file_icon.webp" alt="file image">-->
+            <img class="w-1/2 h-1/2 mb-3" src="../../../images/file_icon.webp" alt="file image">
             <p class="text-blue-700 font-bold">Upload new file</p>
         </div>
     </div>

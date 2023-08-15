@@ -36,7 +36,11 @@ watch(regionCheckboxValue, (value) => {
 })
 
 onMounted(() => {
-    subToPrivate()
+    if(page.props.auth.user){
+        subToPrivate()
+    } else {
+        subToChannel()
+    }
 })
 
 function subToChannel() {

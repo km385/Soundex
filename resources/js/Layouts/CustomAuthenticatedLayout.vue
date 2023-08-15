@@ -15,14 +15,9 @@
                 </p>
             </div>
 
-            <div>
-                <NavLink :href="route('cutter')" :active="route().current('cutter')">cutter</NavLink>
-            </div>
 
-            <div>
-                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" >dashboard</NavLink>
-            </div>
-<!--            <Nav/>-->
+            <Nav />
+
         </header>
     </section>
     <section class="p-6">
@@ -38,10 +33,11 @@
 import {Head} from "@inertiajs/vue3";
 import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
+import Nav from "@/Layouts/Nav.vue";
 
 export default {
     name: "Layout",
-    components: {NavLink, DropdownLink, Head},
+    components: {Nav, NavLink, DropdownLink, Head},
 }
 </script>
 
