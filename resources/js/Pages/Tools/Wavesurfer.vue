@@ -75,6 +75,14 @@ onMounted( () => {
                 start: duration * 0.1,
                 end: duration * 0.2
             })
+            // emit first coords
+            const region = regions.getRegions()[0]
+            const regionData = {
+                id: 0,
+                start: region.start,
+                end: region.end
+            }
+            emit('regionCoords', regionData)
 
             if(props.secondRegion){
                 regions.getRegions()[1].setOptions({

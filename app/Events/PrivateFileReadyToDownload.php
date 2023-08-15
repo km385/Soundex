@@ -10,9 +10,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class FileReadyToDownload implements ShouldBroadcast
+class PrivateFileReadyToDownload implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $fileName;
     public $user;
 
@@ -32,11 +33,8 @@ class FileReadyToDownload implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-//        return [
-//            new PrivateChannel('user.'.$this->user),
-//        ];
         return [
-            new Channel('fileUpload.'.$this->user),
+            new PrivateChannel('user.' . $this->user),
         ];
     }
 }

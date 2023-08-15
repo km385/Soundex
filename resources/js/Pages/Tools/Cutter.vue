@@ -8,7 +8,7 @@ import {usePage} from "@inertiajs/vue3";
 
 const page = usePage()
 // todo generate guest id
-const guestId = 123
+let guestId = 123
 
 
 const uploadedFile = ref({})
@@ -37,6 +37,7 @@ watch(regionCheckboxValue, (value) => {
 
 onMounted(() => {
     if(page.props.auth.user){
+        guestId = page.props.auth.user.id
         subToPrivate()
     } else {
         subToChannel()
@@ -64,10 +65,10 @@ function subToPrivate() {
     const channelName = `user.${userId}`
     console.log(channelName)
     const channel = Echo.private(channelName)
-    channel.listen('FileReadyToDownload', e => {
+    channel.listen('PrivateFileReadyToDownload', e => {
         console.log("the event has been successfully captured")
-
         console.log(e)
+        fileToDownloadName.value = e.fileName
     })
     console.log('subbed to private channel')
 }
