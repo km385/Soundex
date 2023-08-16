@@ -9,10 +9,16 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use function Laravel\Prompts\error;
 
 class EditController extends Controller
 {
+    public function downloadFile ($fileName): StreamedResponse
+    {
+        return Storage::disk('')->download($fileName);
+    }
+
     public function cut(): JsonResponse
     {
         $user = Request::user();

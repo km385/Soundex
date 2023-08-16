@@ -26,6 +26,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/files/{fileName}', [EditController::class, 'downloadFile']);
+
 Route::get('/cutter', function () {
     return Inertia::render('Tools/Cutter');
 })->name('cutter');

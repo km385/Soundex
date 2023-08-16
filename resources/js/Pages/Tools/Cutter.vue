@@ -6,14 +6,15 @@ import UploadFile from "@/Pages/Tools/UploadFile.vue";
 import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import {usePage} from "@inertiajs/vue3";
 import { v4 as uuidv4 } from 'uuid';
+import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 
 const page = usePage()
-
 let guestId = 123
-const uploadedFile = ref({})
 
+const uploadedFile = ref({})
 let isFileUploaded = ref(false)
 let fileToDownloadName = ref("")
+
 const mainRegionData = reactive({
     start: 0,
     end: 0
@@ -23,7 +24,6 @@ const secondaryRegionData = reactive({
     start: null,
     end: null
 })
-
 const volumeValue = ref(0.1)
 // watch(volumeValue, (value, prevValue) => {
 //     ws.value.setVolume(value)
@@ -36,35 +36,24 @@ watch(regionCheckboxValue, (value) => {
 
 onMounted(() => {
     if(page.props.auth.user){
-        subToPrivate()
+        guestId = page.props.auth.user.id
+        subToPrivate(guestId, handleSubToPrivate)
     } else {
-        subToChannel()
+        guestId = uuidv4()
+        subToChannel(guestId, handleSubToPublic)
     }
 })
 
-function subToChannel() {
-    guestId = uuidv4()
-    const channel = Echo.channel(`fileUpload.${guestId}`)
-    console.log(channel)
-    channel.listen('FileReadyToDownload', (event) => {
-            console.log("the event has been successfully captured")
-            console.log(event)
-            fileToDownloadName.value = event.fileName
-        });
-    console.log('subbed to guest channel')
+function handleSubToPublic(event) {
+    console.log("the event has been successfully captured")
+    console.log(event)
+    fileToDownloadName.value = event.fileName
 }
 
-function subToPrivate() {
-    guestId = page.props.auth.user.id
-    const channelName = `user.${guestId}`
-    console.log(channelName)
-    const channel = Echo.private(channelName)
-    channel.listen('PrivateFileReadyToDownload', e => {
-        console.log("the event has been successfully captured")
-        console.log(e)
-        fileToDownloadName.value = e.fileName
-    })
-    console.log('subbed to private channel')
+function handleSubToPrivate(event) {
+    console.log("the event has been successfully captured")
+    console.log(event)
+    fileToDownloadName.value = event.fileName
 }
 
 function onCutClicked(){
