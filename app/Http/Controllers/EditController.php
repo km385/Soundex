@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Events\FileReadyToDownload;
 use App\Jobs\CutFile;
+use App\Jobs\MergeFiles;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use function Laravel\Prompts\error;
@@ -58,5 +60,32 @@ class EditController extends Controller
 
         CutFile::dispatch($af, $path, $guestId, $isPrivate);
         return response()->json(['message' => 'success']);
+    }
+
+    public function merge(): JsonResponse
+    {
+        if(Auth::check()){
+            $isPrivate = true;
+        } else {
+            $isPrivate = false;
+        }
+
+        $fileKeys = array_keys(Request::all());
+        error_log(count($fileKeys));
+        $guestId = Request::input('guestId');
+        $paths = [];
+        foreach ($fileKeys as $key){
+            if($key == "guestId") {
+                error_log('guest lol');
+                continue;
+            }
+            $file = Request::file($key);
+            $path = Storage::putFile($file);
+            error_log('key: '.$key);
+            $paths[] = $path;
+        }
+        MergeFiles::dispatch($paths, $guestId, $isPrivate);
+
+        return \response()->json(['message' => 'processing started']);
     }
 }

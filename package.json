@@ -21,6 +21,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "uuid": "^9.0.0",
         "wavesurfer.js": "^7.1.4"
     }
 }

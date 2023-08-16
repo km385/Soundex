@@ -29,8 +29,13 @@ Route::get('/', function () {
 Route::get('/cutter', function () {
     return Inertia::render('Tools/Cutter');
 })->name('cutter');
-
 Route::post('/cutFile', [EditController::class, 'cut']);
+
+Route::get('/merge', function () {
+    return Inertia::render('Tools/Merge');
+})->name('merge');
+Route::post('/merge', [EditController::class, 'merge']);
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

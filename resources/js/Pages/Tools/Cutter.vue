@@ -5,12 +5,11 @@ import axios from "axios";
 import UploadFile from "@/Pages/Tools/UploadFile.vue";
 import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import {usePage} from "@inertiajs/vue3";
+import { v4 as uuidv4 } from 'uuid';
 
 const page = usePage()
-// todo generate guest id
+
 let guestId = 123
-
-
 const uploadedFile = ref({})
 
 let isFileUploaded = ref(false)
@@ -37,7 +36,6 @@ watch(regionCheckboxValue, (value) => {
 
 onMounted(() => {
     if(page.props.auth.user){
-        guestId = page.props.auth.user.id
         subToPrivate()
     } else {
         subToChannel()
@@ -45,13 +43,10 @@ onMounted(() => {
 })
 
 function subToChannel() {
-
+    guestId = uuidv4()
     const channel = Echo.channel(`fileUpload.${guestId}`)
-
+    console.log(channel)
     channel.listen('FileReadyToDownload', (event) => {
-            // TODO here should be what happens after the file has came back from the server
-            // this.fileUploaded = true
-            // this.fileName = event.fileName
             console.log("the event has been successfully captured")
             console.log(event)
             fileToDownloadName.value = event.fileName
@@ -60,9 +55,8 @@ function subToChannel() {
 }
 
 function subToPrivate() {
-    // const channel = Echo.private(`user.${{p}}}`)
-    const userId = page.props.auth.user.id
-    const channelName = `user.${userId}`
+    guestId = page.props.auth.user.id
+    const channelName = `user.${guestId}`
     console.log(channelName)
     const channel = Echo.private(channelName)
     channel.listen('PrivateFileReadyToDownload', e => {
@@ -172,16 +166,16 @@ function getRegionData(data) {
         </form>
 
         <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true" :second-region="regionCheckboxValue" @region-coords="getRegionData" />
-        <!--        <input type="range"-->
-        <!--               style="appearance: slider-vertical"-->
-        <!--               class=""-->
-        <!--               id="volume"-->
-        <!--               name="volume"-->
-        <!--               min="0"-->
-        <!--               max="1"-->
-        <!--               step="0.1"-->
-        <!--               v-model="volumeValue"-->
-        <!--               v-if="fileUploaded">-->
+<!--                <input type="range"-->
+<!--                       style="appearance: slider-vertical"-->
+<!--                       class=""-->
+<!--                       id="volume"-->
+<!--                       name="volume"-->
+<!--                       min="0"-->
+<!--                       max="1"-->
+<!--                       step="0.1"-->
+<!--                       v-model="volumeValue"-->
+<!--                       v-if="isFileUploaded">-->
 
 
         <div v-if="fileToDownloadName" class="mt-6 flex items-center">
