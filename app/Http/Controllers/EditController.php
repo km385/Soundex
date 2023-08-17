@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Events\FileReadyToDownload;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
+use App\Models\Song;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -24,12 +26,9 @@ class EditController extends Controller
         $user = Request::user();
 
         if(!$user){
-            $userId = 123;
             $isPrivate = false;
         } else {
-            $userId = $user->id;
             $isPrivate = true;
-
         }
 
         $start = Request::input('start');
