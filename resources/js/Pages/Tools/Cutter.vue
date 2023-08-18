@@ -7,6 +7,7 @@ import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import {usePage} from "@inertiajs/vue3";
 import { v4 as uuidv4 } from 'uuid';
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
+import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 
 const page = usePage()
 let guestId = 123
@@ -140,7 +141,6 @@ function getRegionData(data) {
 
 <template>
     <CustomAuthenticatedLayout>
-
         <form>
             <div class="mb-6">
                 <!--             todo add change file button -->
@@ -155,23 +155,24 @@ function getRegionData(data) {
         </form>
 
         <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true" :second-region="regionCheckboxValue" @region-coords="getRegionData" />
-<!--                <input type="range"-->
-<!--                       style="appearance: slider-vertical"-->
-<!--                       class=""-->
-<!--                       id="volume"-->
-<!--                       name="volume"-->
-<!--                       min="0"-->
-<!--                       max="1"-->
-<!--                       step="0.1"-->
-<!--                       v-model="volumeValue"-->
-<!--                       v-if="isFileUploaded">-->
+        <!--                <input type="range"-->
+        <!--                       style="appearance: slider-vertical"-->
+        <!--                       class=""-->
+        <!--                       id="volume"-->
+        <!--                       name="volume"-->
+        <!--                       min="0"-->
+        <!--                       max="1"-->
+        <!--                       step="0.1"-->
+        <!--                       v-model="volumeValue"-->
+        <!--                       v-if="isFileUploaded">-->
 
 
         <div v-if="fileToDownloadName" class="mt-6 flex items-center">
             <a class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 whitespace-nowrap" href="#"
-               @click="downloadFile">Download file</a>
-            <p class="w-full ml-3">{{ fileToDownloadName }}</p>
+            @click="downloadFile">Download file</a>
+            <p class="w-full ml-3">localhost:8000/files/{{ fileToDownloadName }}</p>
         </div>
+        <SaveToLibraryButton v-if="fileToDownloadName && page.props.auth.user" :file-link="fileToDownloadName"/>
 
     </CustomAuthenticatedLayout>
 

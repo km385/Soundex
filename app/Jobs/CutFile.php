@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
+use App\Models\TemporaryFile;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -51,19 +52,19 @@ class CutFile implements ShouldQueue
 
         Storage::delete($this->path);
         Storage::move($name.'temp.'.$ext, $this->path);
-
+        $tempFile = TemporaryFile::create(['filePath' => $this->path]);
+        error_log($tempFile->token);
         if (!empty($coverPath)){
             $this->addCover($name, $ext, $coverPath);
-
         }
         error_log('cover added');
 
         if($this->isPrivate){
             error_log('creating private event');
-            event(new PrivateFileReadyToDownload($this->path, $this->guestId));
+            event(new PrivateFileReadyToDownload($tempFile->token, $this->guestId));
         } else {
             error_log('creating public event');
-            event(new FileReadyToDownload($this->path, $this->guestId));
+            event(new FileReadyToDownload($tempFile->token, $this->guestId));
         }
     }
 

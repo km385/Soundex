@@ -6,6 +6,7 @@ use App\Events\FileReadyToDownload;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
 use App\Models\Song;
+use App\Models\TemporaryFile;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +17,34 @@ use function Laravel\Prompts\error;
 
 class EditController extends Controller
 {
-    public function downloadFile ($fileName): StreamedResponse
+    public function downloadFile ($token): StreamedResponse|JsonResponse
     {
-        return Storage::disk('')->download($fileName);
+        $file = TemporaryFile::where('token', $token)->first();
+        if($file) {
+            $filePath = $file->filePath;
+            error_log($filePath);
+            return Storage::disk('')->download($filePath);
+        }
+        error_log('no file');
+
+        return response()->json(['message' => 'no file']);
+
+    }
+
+    public function saveToLibrary() {
+        $user = Auth::user();
+        if(!$user){
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        $token = Request::input('token');
+        $file = TemporaryFile::where('token', $token)->first();
+        $song = new Song();
+        $song->name = 'tytul';
+        $song->songPath = $file->filePath;
+        $user->songs()->save($song);
+        return response()->json(['message' => 'success']);
+
+
     }
 
     public function cut(): JsonResponse

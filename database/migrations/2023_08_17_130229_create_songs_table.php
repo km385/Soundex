@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('name');
-            $table->integer('durationSec');
+            $table->integer('durationSec')->nullable();
             $table->string('songPath');
-            $table->enum('statusSong', ['deleted', 'uploaded']);
-            $table->string('coverPath');
-            $table->string('album');
-            $table->string('artist');
-            $table->string('disk');
+            $table->enum('statusSong', ['deleted', 'uploaded'])->nullable();
+            $table->string('coverPath')->nullable();
+            $table->string('album')->nullable();
+            $table->string('artist')->nullable();
+            $table->string('disk')->nullable();
             $table->timestamps();
         });
 

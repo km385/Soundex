@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Song extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'songPath'
+    ];
 
     public function user(): BelongsTo
     {

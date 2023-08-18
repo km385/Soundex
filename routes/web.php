@@ -27,6 +27,7 @@ Route::get('/', function () {
 });
 
 Route::get('/files/{fileName}', [EditController::class, 'downloadFile']);
+Route::post('/savetolibrary', [EditController::class, 'saveToLibrary']);
 
 Route::get('/cutter', function () {
     return Inertia::render('Tools/Cutter');
