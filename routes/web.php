@@ -39,6 +39,11 @@ Route::get('/merge', function () {
 })->name('merge');
 Route::post('/merge', [EditController::class, 'merge']);
 
+Route::get('/speedup', function () {
+    return Inertia::render('Tools/SpeedUp');
+})->name('speedup');
+Route::post('/speedup', [EditController::class, 'speedup']);
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\FileReadyToDownload;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
+use App\Jobs\SpeedUpFile;
 use App\Models\Song;
 use App\Models\TemporaryFile;
 use App\Models\User;
@@ -12,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use function Laravel\Prompts\error;
 
@@ -40,7 +42,17 @@ class EditController extends Controller
         if(!$user){
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-        $token = Request::input('token');
+        $link = Request::input('token');
+
+        $fullLink = "http://localhost/files/".$link;
+        if(!URL::isValidUrl($fullLink)){
+            error_log('not valid');
+            return response()->json(['message' => 'not valid'], 401);
+        }
+
+        error_log('valid');
+        $parts = explode("?", $link);
+        $token = $parts[0];
         $file = TemporaryFile::where('token', $token)->first();
         $song = new Song();
         $song->name = 'tytul';
@@ -48,7 +60,32 @@ class EditController extends Controller
         $user->songs()->save($song);
         return response()->json(['message' => 'success']);
 
+    }
 
+    public function speedup(): JsonResponse
+    {
+        $user = Request::user();
+
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
+        }
+
+        // todo move to jobs
+        if(!Request::hasFile('file')){
+            return \response()->json(['message' => 'no file']);
+        }
+        $file = Request::file('file');
+        $path = Storage::putFile($file);
+        $tempo = Request::input('tempoValue');
+        $speed = Request::input('speedValue');
+        $guestId = Request::input('guestId');
+        error_log($isPrivate);
+        error_log($guestId);
+        SpeedUpFile::dispatch($path, $tempo, $speed, $isPrivate, $guestId);
+
+        return \response()->json(['message' => 'success']);
     }
 
     public function cut(): JsonResponse
