@@ -44,6 +44,11 @@ Route::get('/speedup', function () {
 })->name('speedup');
 Route::post('/speedup', [EditController::class, 'speedup']);
 
+Route::get('/recorder', function () {
+    return Inertia::render('Tools/Recorder');
+})->name('recorder');
+Route::post('/recorder', [EditController::class, 'recorder']);
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
