@@ -13,6 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use function Laravel\Prompts\error;
 
@@ -59,12 +60,21 @@ class CutFile implements ShouldQueue
         }
         error_log('cover added');
 
+        $temporaryUrl = URL::temporarySignedRoute(
+            'downloadFile', // Route name
+            now()->addHours(1), // Expiration time
+            ['fileName' => $tempFile->token] ,
+        false
+        );
+        $parts = explode('/files/', $temporaryUrl);
+        $extractedUrl = end($parts);
+        error_log($extractedUrl);
         if($this->isPrivate){
             error_log('creating private event');
-            event(new PrivateFileReadyToDownload($tempFile->token, $this->guestId));
+            event(new PrivateFileReadyToDownload($extractedUrl, $this->guestId));
         } else {
             error_log('creating public event');
-            event(new FileReadyToDownload($tempFile->token, $this->guestId));
+            event(new FileReadyToDownload($extractedUrl, $this->guestId));
         }
     }
 

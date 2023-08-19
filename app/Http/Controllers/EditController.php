@@ -19,6 +19,10 @@ class EditController extends Controller
 {
     public function downloadFile ($token): StreamedResponse|JsonResponse
     {
+        if(!Request::hasValidSignature(false)){
+            error_log('expired url');
+            return response()->json(['message' => 'expired url'], 500);
+        }
         $file = TemporaryFile::where('token', $token)->first();
         if($file) {
             $filePath = $file->filePath;

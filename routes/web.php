@@ -26,7 +26,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/files/{fileName}', [EditController::class, 'downloadFile']);
+Route::get('/files/{fileName}', [EditController::class, 'downloadFile'])->name('downloadFile');
 Route::post('/savetolibrary', [EditController::class, 'saveToLibrary']);
 
 Route::get('/cutter', function () {
