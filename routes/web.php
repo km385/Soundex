@@ -49,6 +49,11 @@ Route::get('/recorder', function () {
 })->name('recorder');
 Route::post('/recorder', [EditController::class, 'recorder']);
 
+Route::get('/metachange', function () {
+    return Inertia::render('Tools/MetaChange');
+})->name('metaChange');
+Route::post('/metachange', [EditController::class, 'metachange']);
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -11,7 +11,7 @@ import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
 
 const page = usePage()
-let guestId = 123
+const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 
 const uploadedFile = ref({})
 let isFileUploaded = ref(false)
@@ -38,10 +38,8 @@ watch(regionCheckboxValue, (value) => {
 
 onMounted(() => {
     if(page.props.auth.user){
-        guestId = page.props.auth.user.id
         subToPrivate(guestId, handleSubToPrivate)
     } else {
-        guestId = uuidv4()
         subToChannel(guestId, handleSubToPublic)
     }
 })

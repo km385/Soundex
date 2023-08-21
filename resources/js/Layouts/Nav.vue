@@ -14,7 +14,7 @@
             </li>
 
             <li>
-                <NavLink href="/upload" :active="$page.component === 'Upload'" >Upload</NavLink>
+                <NavLink href="/metachange" :active="$page.component === 'MetaChange'" >Change Metadata</NavLink>
             </li>
 
             <li>

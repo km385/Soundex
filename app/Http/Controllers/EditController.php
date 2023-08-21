@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\FileReadyToDownload;
+use App\Jobs\ChangeMetadata;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
 use App\Jobs\Recorder;
@@ -39,7 +40,8 @@ class EditController extends Controller
 
     }
 
-    public function saveToLibrary() {
+    public function saveToLibrary(): JsonResponse
+    {
         $user = Auth::user();
         if(!$user){
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -62,6 +64,58 @@ class EditController extends Controller
         $user->songs()->save($song);
         return response()->json(['message' => 'success']);
 
+    }
+
+    public function metachange() {
+        $user = Request::user();
+
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
+        }
+
+        $guestId = Request::input('guestId');
+        $author = Request::input('author');
+        $genre = Request::input('genre');
+        $title = Request::input('title');
+        $year = Request::input('year');
+
+        $audioFile = Request::file('fileRef');
+
+        if (Request::hasFile('coverRef')) {
+            $coverFile = Request::file('coverRef');
+            $coverPath = Storage::putFile($coverFile);
+        } else {
+            $coverPath = null;
+        }
+
+
+        $audioPath = Storage::putFile($audioFile);
+
+        $metadata = [];
+
+        if (!empty($title)) {
+            $metadata['title'] = $title;
+        }
+
+        if (!empty($author)) {
+            $metadata['artist'] = $author;
+        }
+
+        // TODO windows context menu używa 'date' jako year
+        if (!empty($year)) {
+            $metadata['year'] = $year;
+        }
+
+        if (!empty($genre)) {
+            $metadata['genre'] = $genre;
+        }
+        error_log("prepering");
+
+        ChangeMetadata::dispatch($audioPath, $coverPath, $metadata, $guestId, $isPrivate);
+
+        return response()->json(['message' => 'success']);
     }
 
     public function recorder(): JsonResponse
