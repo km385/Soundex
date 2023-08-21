@@ -54,6 +54,11 @@ Route::get('/metachange', function () {
 })->name('metaChange');
 Route::post('/metachange', [EditController::class, 'metachange']);
 
+Route::get('/layermixer', function () {
+    return Inertia::render('Tools/LayerMixer');
+})->name('layerMixer');
+Route::post('/layermixer', [EditController::class, 'layerMixer']);
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -6,6 +6,7 @@ use App\Events\FileReadyToDownload;
 use App\Jobs\ChangeMetadata;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
+use App\Jobs\MixFile;
 use App\Jobs\Recorder;
 use App\Jobs\SpeedUpFile;
 use App\Models\Song;
@@ -64,6 +65,29 @@ class EditController extends Controller
         $user->songs()->save($song);
         return response()->json(['message' => 'success']);
 
+    }
+
+    public function layerMixer(): JsonResponse
+    {
+        $user = Request::user();
+
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
+        }
+
+        $file = Request::file('background');
+        $file2 = Request::file('foreground');
+        $guestId = Request::input('guestId');
+        $pathBg = Storage::putFile($file);
+        $pathFg = Storage::putFile($file2);
+
+        MixFile::dispatch($pathBg, $pathFg, $guestId, $isPrivate);
+
+
+
+        return \response()->json(['message' => 'success']);
     }
 
     public function metachange() {

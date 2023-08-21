@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Jobs;
+
+use App\CustomUtilityClasses\FileService;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+
+class MixFile implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Create a new job instance.
+     */
+    public function __construct(private $pathBg, private $pathFg, private $guestId, private $isPrivate)
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        try{
+            FFMpeg::fromDisk('')
+                ->open($this->pathBg)
+                ->export()
+                ->addFilter('-i', Storage::path($this->pathFg))
+                ->addFilter('-filter_complex', 'amix=inputs=2:duration=first')
+                ->save(pathinfo($this->pathBg, PATHINFO_FILENAME).'temp.mp3');
+
+        }catch (\Exception $e){
+            error_log($e);
+        } finally {
+            Storage::delete($this->pathBg);
+            Storage::delete($this->pathFg);
+        }
+
+
+        Storage::move(pathinfo($this->pathBg, PATHINFO_FILENAME).'temp.mp3', pathinfo($this->pathBg, PATHINFO_FILENAME).'.mp3');
+
+        FileService::createAndNotify(pathinfo($this->pathBg, PATHINFO_FILENAME).'.mp3', $this->isPrivate, $this->guestId);
+    }
+}
