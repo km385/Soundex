@@ -12,7 +12,10 @@ const ws = reactive({
 let regions = reactive({})
 
 const props = defineProps({
-    file: File,
+    file: {
+        type: File,
+        required: true
+    },
     id: {
         type: String,
         default: "waveform"

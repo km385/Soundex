@@ -90,7 +90,8 @@ class EditController extends Controller
         return \response()->json(['message' => 'success']);
     }
 
-    public function metachange() {
+    public function metachange(): JsonResponse
+    {
         $user = Request::user();
 
         if(!$user){
@@ -100,12 +101,14 @@ class EditController extends Controller
         }
 
         $guestId = Request::input('guestId');
-        $author = Request::input('author');
-        $genre = Request::input('genre');
-        $title = Request::input('title');
-        $year = Request::input('year');
 
-        $audioFile = Request::file('fileRef');
+        if(Request::hasFile('fileRef')) {
+            $audioFile = Request::file('fileRef');
+            $audioPath = Storage::putFile($audioFile);
+            error_log($audioPath);
+        } else {
+            return response()->json(['error' => 'file is required'], 400);
+        }
 
         if (Request::hasFile('coverRef')) {
             $coverFile = Request::file('coverRef');
@@ -113,28 +116,18 @@ class EditController extends Controller
         } else {
             $coverPath = null;
         }
-
-
-        $audioPath = Storage::putFile($audioFile);
-
         $metadata = [];
-
-        if (!empty($title)) {
-            $metadata['title'] = $title;
+        $fieldsToCheck = ['title', 'artist', 'year', 'genre', 'date'];
+        foreach ($fieldsToCheck as $field) {
+            $value = Request::input($field);
+            if(!empty($value)) {
+                $metadata[$field] = $value;
+            }
         }
 
-        if (!empty($author)) {
-            $metadata['artist'] = $author;
-        }
 
-        // TODO windows context menu używa 'date' jako year
-        if (!empty($year)) {
-            $metadata['year'] = $year;
-        }
 
-        if (!empty($genre)) {
-            $metadata['genre'] = $genre;
-        }
+
         error_log("prepering");
 
         ChangeMetadata::dispatch($audioPath, $coverPath, $metadata, $guestId, $isPrivate);

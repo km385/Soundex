@@ -36,24 +36,30 @@ class ChangeMetadata implements ShouldQueue
         $ext = pathinfo($this->path, PATHINFO_EXTENSION);
 
         $currentCoverPath = $this->extractCover($name, $ext);
-
         // vn dodane po m4a, nie testowane w innych, uzywa tylko sound stream
-        FFMpeg::fromDisk('')
-            ->open($this->path)
-            ->export()
+        try {
+            FFMpeg::fromDisk('')
+                ->open($this->path)
+                ->export()
 //            ->addFilter('-vn')
-            ->addFilter(function (AudioFilters $filters) use ($meta){
-                $filters->addMetadata($meta);
-            })
-            ->save($name.'temp.'.$ext);
+                ->addFilter(function (AudioFilters $filters) use ($meta){
+                    $filters->addMetadata($meta);
+                })
+                ->save($name.'temp.'.$ext);
+        }catch (\Exception $e) {
+            error_log($e);
+            return;
+        }
         Storage::delete($this->path);
         Storage::move($name.'temp.'.$ext, $name.'.'.$ext);
         error_log("metadata added");
 
         if(is_null($this->newCoverPath)) {
-            error_log('keeping the same cover');
-            $this->addCover($name, $ext, $currentCoverPath);
-            Storage::delete($currentCoverPath);
+            if($currentCoverPath !== ""){
+                error_log('keeping the same cover');
+                $this->addCover($name, $ext, $currentCoverPath);
+                Storage::delete($currentCoverPath);
+            }
         } else {
             error_log('adding new cover');
             $this->addCover($name, $ext, $this->newCoverPath);
@@ -109,7 +115,7 @@ class ChangeMetadata implements ShouldQueue
                 ->addFilter('-vcodec', 'copy')
                 ->save($filename . '.png');
         } catch (\Exception $e) {
-            error_log('error during extracting a cover');
+            error_log('no cover | error during extracting a cover');
             return "";
         }
 

@@ -9,6 +9,9 @@ import axios from "axios";
 
 import UploadFile from "@/Pages/Tools/UploadFile.vue";
 import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
+import InputFieldWithLabel from "@/Components/InputFieldWithLabel.vue";
 const page = usePage()
 
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -43,10 +46,12 @@ function handleSubToPrivate(event) {
 
 
 const form = ref({
-    author: '',
+    artist: '',
     title: '',
     genre: '',
     year: '',
+    date: '',
+    album: '',
     coverRef: File,
     fileRef: File,
 })
@@ -56,6 +61,7 @@ async function onSubmit() {
     Object.keys(form.value).forEach(key => {
         const value = form.value[key]
         formData.append(key, value)
+        console.log(key, value)
     })
     formData.append('guestId', guestId)
 
@@ -63,7 +69,11 @@ async function onSubmit() {
         const res = await axios.post('/metachange', formData)
         console.log(res.data.message)
     } catch (err) {
-        console.log(err)
+        if(err.response.data.error){
+            console.log('no file')
+        } else {
+            console.log(err)
+        }
     }
 
 }
@@ -81,63 +91,23 @@ function onCoverUpload(event) {
     coverUrl.value = URL.createObjectURL(event.target.files[0])
     form.value.coverRef = event.target.files[0]
 }
+
+function updateTitle(e) {
+    form.value.title = e
+}
+
 </script>
 <template>
     <CustomAuthenticatedLayout>
 
         <!--    usunieto form.submit i dziala-->
         <form>
-            <div class="mb-6">
-                <label for="title" class="block mb-2 uppercase font-bold text-xs text-gray-700">
-                    Title
-                </label>
-                <input id="title"
-                       v-model="form.title"
-                       class="border border-gray-400 p-2 w-full"
-                       name="title"
-                       type="text"
-                >
-
-            </div>
-
-            <div class="mb-6">
-                <label for="author" class="block mb-2 uppercase font-bold text-xs text-gray-700">
-                    Author
-                </label>
-                <input id="author"
-                       v-model="form.author"
-                       class="border border-gray-400 p-2 w-full"
-                       name="author"
-                       type="text"
-                >
-
-            </div>
-
-            <div class="mb-6">
-                <label for="genre" class="block mb-2 uppercase font-bold text-xs text-gray-700">
-                    Genre
-                </label>
-                <input id="genre"
-                       v-model="form.genre"
-                       class="border border-gray-400 p-2 w-full"
-                       name="genre"
-                       type="text"
-                >
-
-            </div>
-
-            <div class="mb-6">
-                <label for="year" class="block mb-2 uppercase font-bold text-xs text-gray-700">
-                    Year
-                </label>
-                <input id="year"
-                       v-model="form.year"
-                       class="border border-gray-400 p-2 w-full"
-                       name="year"
-                       type="text"
-                >
-
-            </div>
+            <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
+            <InputFieldWithLabel label="Artist" @update:model-value="form.artist = $event"/>
+            <InputFieldWithLabel label="Genre" @update:model-value="form.genre = $event"/>
+            <InputFieldWithLabel label="Year" @update:model-value="form.year = $event"/>
+            <InputFieldWithLabel label="Date" @update:model-value="form.date = $event"/>
+            <InputFieldWithLabel label="Album" @update:model-value="form.album = $event"/>
 
             <div class="mb-6">
                 <label for="cover" class="block mb-2 uppercase font-bold text-xs text-gray-700">
