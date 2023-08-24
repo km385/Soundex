@@ -61,8 +61,10 @@ class FileService
         // adding cover to opus is not supported yet by ffmpeg
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
-
-        if($ext == "opus") return;
+        if($ext == "ogg") {
+            error_log('opus/ogg file not compatible');
+            return;
+        }
         if(File::extension($coverPath) == "webp"){
             FFMpeg::fromDisk('')
                 ->open($coverPath)
@@ -72,7 +74,6 @@ class FileService
             $coverPath = pathinfo($coverPath, PATHINFO_FILENAME).'.jpg';
         }
         // napewno dla mp3 i jpg dziala
-        error_log(Storage::path($coverPath));
         FFMpeg::fromDisk('')
             ->open($filename.'.'.$ext)
             ->export()
