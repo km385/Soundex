@@ -14,8 +14,8 @@ const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 
 const uploadedFile = ref({})
-let isFileUploaded = ref(false)
-let fileToDownloadName = ref("")
+const isFileUploaded = ref(false)
+const fileToDownloadLink = ref("")
 
 const mainRegionData = reactive({
     start: 0,
@@ -47,16 +47,16 @@ onMounted(() => {
 function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownloadName.value = event.fileName
+    fileToDownloadLink.value = event.fileName
 }
 
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownloadName.value = event.fileName
+    fileToDownloadLink.value = event.fileName
 }
 
-function onCutClicked(){
+async function onCutClicked(){
     const start = mainRegionData.start
     const end = mainRegionData.end
     console.log(start)
@@ -76,24 +76,12 @@ function onCutClicked(){
     formData.append('file', uploadedFile.value)
     formData.append('guestId', guestId)
 
-    axios.post('/cutFile', formData)
-        .then(res => {
-            if(res.data.error === "lol"){
-                // TODO return error?
-                console.log('error while uploading')
-            }
-            //
-            if(res.data.message){
-                console.log(res.data.message)
-            }
-
-            if(res.data.fileToDownload){
-                fileToDownloadName.value = res.data.fileToDownload
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    try {
+        const res = await axios.post('/cutFile', formData)
+        console.log(res.data.message)
+    }catch (e) {
+        console.log(e)
+    }
 }
 
 async function getFile(file) {
@@ -149,8 +137,8 @@ function getRegionData(data) {
 
 
 
-        <DownloadTempFile v-if="fileToDownloadName" :filename="uploadedFile.name" :token="fileToDownloadName"/>
-        <SaveToLibraryButton v-if="fileToDownloadName && page.props.auth.user" :file-link="fileToDownloadName"/>
+        <DownloadTempFile v-if="fileToDownloadLink" :filename="uploadedFile.name" :token="fileToDownloadLink"/>
+        <SaveToLibraryButton v-if="fileToDownloadLink && page.props.auth.user" :file-link="fileToDownloadLink"/>
 
     </CustomAuthenticatedLayout>
 

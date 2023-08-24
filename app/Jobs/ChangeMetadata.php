@@ -35,7 +35,7 @@ class ChangeMetadata implements ShouldQueue
         $name = pathinfo($this->path, PATHINFO_FILENAME);
         $ext = pathinfo($this->path, PATHINFO_EXTENSION);
 
-        $currentCoverPath = $this->extractCover($name, $ext);
+        $currentCoverPath = FileService::extractCover($this->path);
         // vn dodane po m4a, nie testowane w innych, uzywa tylko sound stream
         try {
             FFMpeg::fromDisk('')
@@ -57,12 +57,12 @@ class ChangeMetadata implements ShouldQueue
         if(is_null($this->newCoverPath)) {
             if($currentCoverPath !== ""){
                 error_log('keeping the same cover');
-                $this->addCover($name, $ext, $currentCoverPath);
+                FileService::addCover($this->path, $currentCoverPath);
                 Storage::delete($currentCoverPath);
             }
         } else {
             error_log('adding new cover');
-            $this->addCover($name, $ext, $this->newCoverPath);
+            FileService::addCover($this->path, $this->newCoverPath);
             Storage::delete($this->newCoverPath);
         }
         error_log("cover added");
@@ -70,55 +70,4 @@ class ChangeMetadata implements ShouldQueue
         FileService::createAndNotify($this->path, $this->isPrivate, $this->guestId);
     }
 
-    private function addCover($filename, $ext, $cover_path): void
-    {
-        // convert cover to jpg
-        // TODO possibly convert any to jpg
-        // TODO check if file and cover have both appropriate extensions
-        // adding cover to opus is not supported yet by ffmpeg
-        if($ext == "opus") return;
-        if(File::extension($cover_path) == "webp"){
-            FFMpeg::fromDisk('')
-                ->open($cover_path)
-                ->export()
-                ->toDisk('')
-                ->save(pathinfo($cover_path, PATHINFO_FILENAME).'.jpg');
-            $cover_path = pathinfo($cover_path, PATHINFO_FILENAME).'.jpg';
-        }
-        // napewno dla mp3 i jpg dziala
-        error_log(Storage::path($cover_path));
-        FFMpeg::fromDisk('')
-            ->open($filename.'.'.$ext)
-            ->export()
-            ->toDisk('')
-            ->addFilter('-i', Storage::path($cover_path))
-            ->addFilter('-map', "0:0")
-            ->addFilter('-map', "1:0")
-            ->addFilter('-c', "copy")
-            ->addFilter('-id3v2_version', '3')
-            ->addFilter('-metadata:s:v', "title='Album cover'")
-            ->addFilter('-metadata:s:v', "comment='Cover (front)'")
-            ->save('output.mp3');
-        Storage::delete($filename.'.'.$ext);
-        Storage::delete($cover_path);
-
-        Storage::move('output.mp3', $filename.'.'.$ext);
-    }
-
-    private function extractCover($filename, $ext): string
-    {
-        try {
-            FFMpeg::open($filename . '.' . $ext)
-                ->export()
-                ->toDisk('')
-                ->addFilter('-an')
-                ->addFilter('-vcodec', 'copy')
-                ->save($filename . '.png');
-        } catch (\Exception $e) {
-            error_log('no cover | error during extracting a cover');
-            return "";
-        }
-
-        return $filename . '.png';
-    }
 }

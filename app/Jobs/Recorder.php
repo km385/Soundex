@@ -45,8 +45,9 @@ class Recorder implements ShouldQueue
 
         Storage::delete($this->path);
         Storage::delete($this->path2);
-        Storage::move(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', pathinfo($this->path, PATHINFO_FILENAME).'.mp3');
+        $finalPath = pathinfo($this->path, PATHINFO_FILENAME).'.mp3';
+        Storage::move(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', $finalPath);
 
-        FileService::createAndNotify(pathinfo($this->path, PATHINFO_FILENAME).'.mp3', $this->isPrivate, $this->guestId);
+        FileService::createAndNotify($finalPath, $this->isPrivate, $this->guestId);
     }
 }

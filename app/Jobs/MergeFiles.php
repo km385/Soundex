@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\CustomUtilityClasses\FileService;
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
 use Illuminate\Bus\Queueable;
@@ -65,15 +66,10 @@ class MergeFiles implements ShouldQueue
         foreach ($this->paths as $path){
             Storage::delete($path);
         }
-        Storage::move(pathinfo($this->paths[0], PATHINFO_FILENAME).'temp.mp3', pathinfo($this->paths[0], PATHINFO_FILENAME).'.mp3');
-        error_log('final file created: '.pathinfo($this->paths[0], PATHINFO_FILENAME).'.mp3');
+        $finalPath = pathinfo($this->paths[0], PATHINFO_FILENAME).'.mp3';
+        Storage::move(pathinfo($this->paths[0], PATHINFO_FILENAME).'temp.mp3', $finalPath);
+        error_log('final file created: '.$finalPath);
 
-        if($this->isPrivate){
-            error_log('creating private event');
-            event(new PrivateFileReadyToDownload(pathinfo($this->paths[0], PATHINFO_FILENAME).'.mp3', $this->guestId));
-        } else {
-            error_log('creating public event');
-            event(new FileReadyToDownload(pathinfo($this->paths[0], PATHINFO_FILENAME).'.mp3', $this->guestId));
-        }
+        FileService::createAndNotify($finalPath, $this->isPrivate, $this->guestId);
     }
 }

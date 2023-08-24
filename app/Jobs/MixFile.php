@@ -44,9 +44,10 @@ class MixFile implements ShouldQueue
             Storage::delete($this->pathFg);
         }
 
+        $finalPath = pathinfo($this->pathBg, PATHINFO_FILENAME).'.mp3';
 
-        Storage::move(pathinfo($this->pathBg, PATHINFO_FILENAME).'temp.mp3', pathinfo($this->pathBg, PATHINFO_FILENAME).'.mp3');
+        Storage::move(pathinfo($this->pathBg, PATHINFO_FILENAME).'temp.mp3', $finalPath);
 
-        FileService::createAndNotify(pathinfo($this->pathBg, PATHINFO_FILENAME).'.mp3', $this->isPrivate, $this->guestId);
+        FileService::createAndNotify($finalPath, $this->isPrivate, $this->guestId);
     }
 }

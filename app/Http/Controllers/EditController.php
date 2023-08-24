@@ -63,6 +63,11 @@ class EditController extends Controller
         $song->name = 'tytul';
         $song->songPath = $file->filePath;
         $user->songs()->save($song);
+        error_log($user->id);
+
+        $directory = "user_files" . DIRECTORY_SEPARATOR . $user->id. DIRECTORY_SEPARATOR;
+        Storage::copy($file->filePath, $directory . $file->filePath);
+
         return response()->json(['message' => 'success']);
 
     }

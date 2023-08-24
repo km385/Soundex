@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\CustomUtilityClasses\FileService;
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
 use App\Models\TemporaryFile;
@@ -37,7 +38,7 @@ class CutFile implements ShouldQueue
         $name = pathinfo($this->path, PATHINFO_FILENAME);
         $ext = pathinfo($this->path, PATHINFO_EXTENSION);
 
-        $coverPath = $this->extractCover($name, $ext);
+        $coverPath = FileService::extractCover($this->path);
         error_log('cover extracted');
         try{
             FFMpeg::fromDisk('')
@@ -50,82 +51,17 @@ class CutFile implements ShouldQueue
             error_log($e);
         }
 
-
         Storage::delete($this->path);
         Storage::move($name.'temp.'.$ext, $this->path);
-        $tempFile = TemporaryFile::create(['filePath' => $this->path]);
-        error_log($tempFile->token);
         if (!empty($coverPath)){
-            $this->addCover($name, $ext, $coverPath);
+            FileService::addCover($this->path, $coverPath);
         }
+
         error_log('cover added');
 
-        $temporaryUrl = URL::temporarySignedRoute(
-            'downloadFile', // Route name
-            now()->addHours(1), // Expiration time
-            ['fileName' => $tempFile->token] ,
-        false
-        );
-        $parts = explode('/files/', $temporaryUrl);
-        $extractedUrl = end($parts);
-        error_log($extractedUrl);
-        if($this->isPrivate){
-            error_log('creating private event');
-            event(new PrivateFileReadyToDownload($extractedUrl, $this->guestId));
-        } else {
-            error_log('creating public event');
-            event(new FileReadyToDownload($extractedUrl, $this->guestId));
-        }
+        FileService::createAndNotify($this->path, $this->isPrivate, $this->guestId);
+
     }
 
-    private function addCover($filename, $ext, $cover_path){
-        // convert cover to jpg
-        // TODO possibly convert any to jpg
-        // TODO check if file and cover have both appropriate extensions
-        // adding cover to opus is not supported yet by ffmpeg
-        if($ext == "opus") return;
-        if(File::extension($cover_path) == "webp"){
-            FFMpeg::fromDisk('')
-                ->open($cover_path)
-                ->export()
-                ->toDisk('')
-                ->save(pathinfo($cover_path, PATHINFO_FILENAME).'.jpg');
-            $cover_path = pathinfo($cover_path, PATHINFO_FILENAME).'.jpg';
-        }
-        // napewno dla mp3 i jpg dziala
-        error_log(Storage::path($cover_path));
-        FFMpeg::fromDisk('')
-            ->open($filename.'.'.$ext)
-            ->export()
-            ->toDisk('')
-            ->addFilter('-i', Storage::path($cover_path))
-            ->addFilter('-map', "0")
-            ->addFilter('-map', "1")
-            ->addFilter('-c', "copy")
-            ->addFilter('-id3v2_version', '3')
-            ->addFilter('-metadata:s:v', "title='Album cover'")
-            ->addFilter('-metadata:s:v', "comment='Cover (front)'")
-            ->save('output.mp3');
-        Storage::delete($filename.'.'.$ext);
-        Storage::delete($cover_path);
 
-        Storage::move('output.mp3', $filename.'.'.$ext);
-    }
-
-    private function extractCover($filename, $ext): string
-    {
-        // TODO ta  sciezke jakos inaczej przesylac, albo tworzyc potem
-        try {
-            FFMpeg::open($filename . '.' . $ext)
-                ->export()
-                ->toDisk('')
-                ->addFilter('-an')
-                ->addFilter('-vcodec', 'copy')
-                ->save($filename . '.png');
-        } catch (\Exception $e) {
-            error_log('error during extracting a cover');
-            return "";
-        }
-        return $filename . '.png';
-    }
 }
