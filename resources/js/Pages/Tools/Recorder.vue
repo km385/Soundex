@@ -110,10 +110,11 @@ import {v4 as uuidv4} from "uuid";
 import {usePage} from "@inertiajs/vue3";
 import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 </script>
 
 <template>
-    <CustomAuthenticatedLayout>
+    <SidebarLayout>
         <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
         <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
         <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
@@ -123,7 +124,7 @@ import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 
         <DownloadTempFile v-if="downloadLink" :filename="'recording.mp3'" :token="downloadLink"/>
         <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink"/>
-    </CustomAuthenticatedLayout>
+    </SidebarLayout>
 </template>
 
 <style scoped>

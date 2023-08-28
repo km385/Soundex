@@ -93,10 +93,11 @@ function onDeleteClicked(name, array) {
 import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import DownloadTempFileButton from "@/Pages/Tools/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 </script>
 
 <template>
-    <CustomAuthenticatedLayout>
+    <SidebarLayout>
         <UploadFile @file="getFile" />
         <div v-for="(file, index) in uploadedFiles" :key="file.name">
             <div class="flex group">
@@ -123,7 +124,7 @@ import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 
         <DownloadTempFileButton v-if="downloadLink" :token="downloadLink" :filename="'mixed_file.mp3'"/>
         <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink" />
-    </CustomAuthenticatedLayout>
+    </SidebarLayout>
 </template>
 
 <style scoped>

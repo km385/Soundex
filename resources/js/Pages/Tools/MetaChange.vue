@@ -12,6 +12,7 @@ import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
 import InputFieldWithLabel from "@/Components/InputFieldWithLabel.vue";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 const page = usePage()
 
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -98,7 +99,7 @@ function updateTitle(e) {
 
 </script>
 <template>
-    <CustomAuthenticatedLayout>
+    <SidebarLayout>
 
         <!--    usunieto form.submit i dziala-->
         <form>
@@ -134,7 +135,7 @@ function updateTitle(e) {
             <DownloadTempFileButton v-if="downloadLink" :filename="fileUploaded.name" :token="downloadLink"/>
             <SaveToLibraryButton v-if="downloadLink" :file-link="downloadLink"/>
         </form>
-    </CustomAuthenticatedLayout>
+    </SidebarLayout>
 </template>
 
 

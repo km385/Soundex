@@ -9,6 +9,7 @@ import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
 const uploadedFile = ref({})
 const speedValue = ref(null)
@@ -84,7 +85,7 @@ function changeHandleStyles(region){
 </script>
 
 <template>
-    <CustomAuthenticatedLayout>
+    <SidebarLayout>
         <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
         <div class="flex flex-col items-start ">
             <UploadFile v-if="!isUploaded" @file="getFile" />
@@ -101,7 +102,7 @@ function changeHandleStyles(region){
         <DownloadTempFile v-if="fileToDownloadName" :filename="uploadedFile.name" :token="fileToDownloadName"/>
         <SaveToLibraryButton v-if="fileToDownloadName && page.props.auth.user" :file-link="fileToDownloadName"/>
 
-    </CustomAuthenticatedLayout>
+    </SidebarLayout>
 </template>
 
 <style scoped>

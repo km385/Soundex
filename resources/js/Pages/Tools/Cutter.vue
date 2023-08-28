@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -109,7 +110,7 @@ function getRegionData(data) {
 </script>
 
 <template>
-    <CustomAuthenticatedLayout>
+    <SidebarLayout>
         <form>
             <div class="mb-6">
                 <!--             todo add change file button -->
@@ -140,7 +141,7 @@ function getRegionData(data) {
         <DownloadTempFile v-if="fileToDownloadLink" :filename="uploadedFile.name" :token="fileToDownloadLink"/>
         <SaveToLibraryButton v-if="fileToDownloadLink && page.props.auth.user" :file-link="fileToDownloadLink"/>
 
-    </CustomAuthenticatedLayout>
+    </SidebarLayout>
 
 </template>
 

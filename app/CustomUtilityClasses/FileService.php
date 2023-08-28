@@ -36,7 +36,7 @@ class FileService
 
     public static function extractCover($filePath): string
     {
-        // TODO ta  sciezke jakos inaczej przesylac, albo tworzyc potem
+        // TODO continuing after catch might cause bugs
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
         try {
@@ -72,6 +72,7 @@ class FileService
                 ->toDisk('')
                 ->save(pathinfo($coverPath, PATHINFO_FILENAME).'.jpg');
             $coverPath = pathinfo($coverPath, PATHINFO_FILENAME).'.jpg';
+            error_log('converted webp to jpg');
         }
         // napewno dla mp3 i jpg dziala
         FFMpeg::fromDisk('')
@@ -79,8 +80,8 @@ class FileService
             ->export()
             ->toDisk('')
             ->addFilter('-i', Storage::path($coverPath))
-            ->addFilter('-map', "0")
-            ->addFilter('-map', "1")
+            ->addFilter('-map', "0:0")
+            ->addFilter('-map', "1:0")
             ->addFilter('-c', "copy")
             ->addFilter('-id3v2_version', '3')
             ->addFilter('-metadata:s:v', "title='Album cover'")

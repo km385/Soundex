@@ -1,6 +1,18 @@
+<template>
+
+    <Head title="Welcome" />
+    <SidebarLayout>
+        home
+
+    </SidebarLayout>
+
+
+</template>
+
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
 defineProps({
     canLogin: {
@@ -19,16 +31,6 @@ defineProps({
     },
 });
 </script>
-
-<template>
-
-    <Head title="Welcome" />
-    <CustomAuthenticatedLayout>
-        home page
-    </CustomAuthenticatedLayout>
-
-
-</template>
 
 <style>
 

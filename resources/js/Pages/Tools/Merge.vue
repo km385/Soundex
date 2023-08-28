@@ -7,6 +7,7 @@ import UploadFile from "@/Pages/Tools/UploadFile.vue";
 import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
 const fileUploaded = ref(false)
 const fileToDownload = ref(null)
@@ -139,7 +140,7 @@ function downloadFile() {
 </script>
 
 <template>
-    <CustomAuthenticatedLayout>
+    <SidebarLayout>
 
         <div v-for="file in form.files" :key="file.name">
             <p>{{ file.name }}</p>
@@ -174,7 +175,7 @@ function downloadFile() {
                @click="downloadFile">Download file</a>
             <p class="w-full ml-3">{{ fileToDownload }}</p>
         </div>
-    </CustomAuthenticatedLayout>
+    </SidebarLayout>
 </template>
 
 <style scoped>
