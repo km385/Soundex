@@ -140,7 +140,6 @@ function downloadFile() {
 </script>
 
 <template>
-    <SidebarLayout>
 
         <div v-for="file in form.files" :key="file.name">
             <p>{{ file.name }}</p>
@@ -175,7 +174,6 @@ function downloadFile() {
                @click="downloadFile">Download file</a>
             <p class="w-full ml-3">{{ fileToDownload }}</p>
         </div>
-    </SidebarLayout>
 </template>
 
 <style scoped>

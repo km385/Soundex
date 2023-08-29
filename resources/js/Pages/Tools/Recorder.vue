@@ -114,7 +114,6 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 </script>
 
 <template>
-    <SidebarLayout>
         <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
         <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
         <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
@@ -124,7 +123,6 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
         <DownloadTempFile v-if="downloadLink" :filename="'recording.mp3'" :token="downloadLink"/>
         <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink"/>
-    </SidebarLayout>
 </template>
 
 <style scoped>

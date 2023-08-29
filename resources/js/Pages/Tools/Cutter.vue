@@ -110,7 +110,6 @@ function getRegionData(data) {
 </script>
 
 <template>
-    <SidebarLayout>
         <form>
             <div class="mb-6">
                 <!--             todo add change file button -->
@@ -141,7 +140,6 @@ function getRegionData(data) {
         <DownloadTempFile v-if="fileToDownloadLink" :filename="uploadedFile.name" :token="fileToDownloadLink"/>
         <SaveToLibraryButton v-if="fileToDownloadLink && page.props.auth.user" :file-link="fileToDownloadLink"/>
 
-    </SidebarLayout>
 
 </template>
 

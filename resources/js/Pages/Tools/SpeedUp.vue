@@ -85,7 +85,7 @@ function changeHandleStyles(region){
 </script>
 
 <template>
-    <SidebarLayout>
+
         <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
         <div class="flex flex-col items-start ">
             <UploadFile v-if="!isUploaded" @file="getFile" />
@@ -102,7 +102,6 @@ function changeHandleStyles(region){
         <DownloadTempFile v-if="fileToDownloadName" :filename="uploadedFile.name" :token="fileToDownloadName"/>
         <SaveToLibraryButton v-if="fileToDownloadName && page.props.auth.user" :file-link="fileToDownloadName"/>
 
-    </SidebarLayout>
 </template>
 
 <style scoped>

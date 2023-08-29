@@ -99,7 +99,6 @@ function updateTitle(e) {
 
 </script>
 <template>
-    <SidebarLayout>
 
         <!--    usunieto form.submit i dziala-->
         <form>
@@ -135,7 +134,6 @@ function updateTitle(e) {
             <DownloadTempFileButton v-if="downloadLink" :filename="fileUploaded.name" :token="downloadLink"/>
             <SaveToLibraryButton v-if="downloadLink" :file-link="downloadLink"/>
         </form>
-    </SidebarLayout>
 </template>
 
 

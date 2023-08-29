@@ -97,7 +97,6 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 </script>
 
 <template>
-    <SidebarLayout>
         <UploadFile @file="getFile" />
         <div v-for="(file, index) in uploadedFiles" :key="file.name">
             <div class="flex group">
@@ -124,7 +123,6 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
         <DownloadTempFileButton v-if="downloadLink" :token="downloadLink" :filename="'mixed_file.mp3'"/>
         <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink" />
-    </SidebarLayout>
 </template>
 
 <style scoped>
