@@ -61,9 +61,9 @@ const langMenu = {
 </script>
 
 <template>
-    <div class="">
+    <div class="flex">
         <div :class="{'w-48 transition-w duration-500': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed}"
-             class="h-screen bg-[#2D2D30] text-white flex flex-col fixed top-0 left-0 ">
+             class="h-screen bg-[#2D2D30] text-white flex flex-col fixed  ">
             <div class="flex mr-2 flex-none cursor-pointer"
                  :class="{'justify-center' : isSidebarCollapsed, 'justify-end ' : !isSidebarCollapsed}">
                 <!--                burger icon-->
@@ -170,7 +170,7 @@ const langMenu = {
         </div>
 
 
-        <div class="max-w-3xl mx-auto">
+        <div class="max-w-3xl mx-auto flex-grow">
             <slot/>
         </div>
 

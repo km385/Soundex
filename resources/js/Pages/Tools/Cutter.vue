@@ -112,7 +112,7 @@ function getRegionData(data) {
 <template>
 
     <!--             todo add change file button -->
-    <div class="mt-52" v-if="!isFileUploaded">
+    <div class="flex justify-center" v-if="!isFileUploaded">
         <UploadFile v-if="!isFileUploaded" @file="getFile" />
     </div>
 
