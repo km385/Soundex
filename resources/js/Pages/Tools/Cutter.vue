@@ -110,35 +110,38 @@ function getRegionData(data) {
 </script>
 
 <template>
-        <form>
-            <div class="mb-6">
-                <!--             todo add change file button -->
-                <UploadFile v-if="!isFileUploaded" @file="getFile" />
 
-                <div v-if="isFileUploaded">
-                    <button type="button"  @click="onCutClicked" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Cut</button>
-                    <label class="mr-3" for="regionCheckBox">Second region</label><input id="regionCheckBox" type="checkbox" v-model="regionCheckboxValue" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">
-                </div>
+    <!--             todo add change file button -->
+    <div class="mt-52" v-if="!isFileUploaded">
+        <UploadFile v-if="!isFileUploaded" @file="getFile" />
+    </div>
 
-            </div>
-        </form>
-
-        <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true" :second-region="regionCheckboxValue" @region-coords="getRegionData" />
-        <!--                <input type="range"-->
-        <!--                       style="appearance: slider-vertical"-->
-        <!--                       class=""-->
-        <!--                       id="volume"-->
-        <!--                       name="volume"-->
-        <!--                       min="0"-->
-        <!--                       max="1"-->
-        <!--                       step="0.1"-->
-        <!--                       v-model="volumeValue"-->
-        <!--                       v-if="isFileUploaded">-->
+    <div v-if="isFileUploaded" class="mb-6">
+        <button type="button" @click="onCutClicked"
+                class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Cut
+        </button>
+        <label class="mr-3" for="regionCheckBox">Second region</label><input id="regionCheckBox" type="checkbox"
+                                                                             v-model="regionCheckboxValue"
+                                                                             class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">
+    </div>
 
 
+    <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true"
+                :second-region="regionCheckboxValue" @region-coords="getRegionData"/>
+    <!--                <input type="range"-->
+    <!--                       style="appearance: slider-vertical"-->
+    <!--                       class=""-->
+    <!--                       id="volume"-->
+    <!--                       name="volume"-->
+    <!--                       min="0"-->
+    <!--                       max="1"-->
+    <!--                       step="0.1"-->
+    <!--                       v-model="volumeValue"-->
+    <!--                       v-if="isFileUploaded">-->
 
-        <DownloadTempFile v-if="fileToDownloadLink" :filename="uploadedFile.name" :token="fileToDownloadLink"/>
-        <SaveToLibraryButton v-if="fileToDownloadLink && page.props.auth.user" :file-link="fileToDownloadLink"/>
+
+    <DownloadTempFile v-if="fileToDownloadLink" :filename="uploadedFile.name" :token="fileToDownloadLink"/>
+    <SaveToLibraryButton v-if="fileToDownloadLink && page.props.auth.user" :file-link="fileToDownloadLink"/>
 
 
 </template>

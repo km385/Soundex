@@ -1,10 +1,8 @@
 <template>
 
     <Head title="Welcome" />
-    <SidebarLayout>
         home
 
-    </SidebarLayout>
 
 
 </template>
