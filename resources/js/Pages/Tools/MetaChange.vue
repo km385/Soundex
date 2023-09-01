@@ -132,7 +132,7 @@ function updateTitle(e) {
             <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
 
             <DownloadTempFileButton v-if="downloadLink" :filename="fileUploaded.name" :token="downloadLink"/>
-            <SaveToLibraryButton v-if="downloadLink" :file-link="downloadLink"/>
+            <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink"/>
         </form>
 </template>
 

@@ -173,7 +173,6 @@ class EditController extends Controller
             $isPrivate = true;
         }
 
-        // todo move to jobs
         if(!Request::hasFile('file')){
             return \response()->json(['message' => 'no file']);
         }

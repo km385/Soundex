@@ -36,7 +36,7 @@ class FileService
 
     public static function extractCover($filePath): string
     {
-        // TODO continuing after catch might cause bugs
+        // TODO: continuing after catch might cause bugs, check if cover available with FFProbe
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
         try {
@@ -55,9 +55,6 @@ class FileService
 
     public static function addCover($filePath, $coverPath): void
     {
-        // convert cover to jpg
-        // TODO possibly convert any to jpg
-        // TODO check if file and cover have both appropriate extensions
         // adding cover to opus is not supported yet by ffmpeg
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
@@ -65,7 +62,10 @@ class FileService
             error_log('opus/ogg file not compatible');
             return;
         }
-        if(File::extension($coverPath) == "webp"){
+
+        // TODO: check other extensions
+        // TODO: possibly convert any to jpg
+        if(in_array(strtolower(File::extension($coverPath)), ['webp', 'png'])) {
             FFMpeg::fromDisk('')
                 ->open($coverPath)
                 ->export()
@@ -74,7 +74,7 @@ class FileService
             $coverPath = pathinfo($coverPath, PATHINFO_FILENAME).'.jpg';
             error_log('converted webp to jpg');
         }
-        // napewno dla mp3 i jpg dziala
+        // it works for mp3 and jpg
         FFMpeg::fromDisk('')
             ->open($filename.'.'.$ext)
             ->export()
