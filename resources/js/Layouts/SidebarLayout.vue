@@ -4,6 +4,7 @@ import {ref} from "vue";
 import {Link} from '@inertiajs/vue3';
 import NavLink from "@/Components/NavLink.vue";
 import SidebarRow from "@/Components/SidebarRow.vue";
+import LoadingScreen from "@/Pages/Tools/LoadingScreen.vue";
 
 const isSidebarCollapsed = ref(false)
 
@@ -56,7 +57,12 @@ const langMenu = {
     },
 
 }
-
+const props = defineProps({
+    isLoading: {
+        type: Boolean,
+        required: true
+    }
+})
 
 </script>
 
@@ -65,10 +71,10 @@ const langMenu = {
     <div
         :class="{'w-48 transition-w duration-500': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed}"
         class="bg-[#2D2D30] text-white flex flex-col fixed h-full">
-        <div class="flex mr-2 flex-none cursor-pointer"
+        <div class="flex mr-2 flex-none"
              :class="{'justify-center' : isSidebarCollapsed, 'justify-end ' : !isSidebarCollapsed}">
             <!--                burger icon-->
-            <img src="../../images/menu_FILL0_wght400_GRAD0_opsz24.png" v-on:click="onClick" class="w-14">
+            <img src="../../images/menu_FILL0_wght400_GRAD0_opsz24.png" v-on:click="onClick" class="w-14 cursor-pointer">
         </div>
 
         <div id="tools" class="flex flex-col items-center grow">
@@ -175,9 +181,10 @@ const langMenu = {
 
 
     <div :class="{'ml-48 transition-w duration-500': !isSidebarCollapsed, 'ml-20 transition-w duration-500': isSidebarCollapsed}">
-        <div class="flex justify-center items-center ">
-            <div class="max-w-3xl flex-grow">
-                <slot/>
+        <LoadingScreen  v-if="isLoading" :is-collapsed="isSidebarCollapsed"/>
+        <div class="flex justify-center h-screen">
+            <div class="w-screen">
+                <slot />
             </div>
         </div>
     </div>
