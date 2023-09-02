@@ -1,8 +1,17 @@
+<script>
+import {ref} from "vue";
+
+const isLoading = ref(false)
+</script>
+
 <script setup>
 import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
 import {onMounted, ref} from "vue";
 import UploadFile from "@/Pages/Tools/UploadFile.vue";
 
+defineOptions({
+    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+})
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 
@@ -24,11 +33,13 @@ function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
     downloadLink.value = event.fileName
+    isLoading.value = false
 }
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
     downloadLink.value = event.fileName
+    isLoading.value = false
 }
 
 function record(){
@@ -92,6 +103,7 @@ async function onSend(){
     formData.append('guestId', guestId)
 
     try {
+        isLoading.value = true
         const result = await axios.post('/recorder', formData)
         console.log(result)
     }catch (error){
@@ -114,6 +126,7 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 </script>
 
 <template>
+    <div class="max-w-3xl mx-auto">
         <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
         <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
         <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
@@ -123,6 +136,7 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
         <DownloadTempFile v-if="downloadLink" :filename="'recording.mp3'" :token="downloadLink"/>
         <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink"/>
+    </div>
 </template>
 
 <style scoped>

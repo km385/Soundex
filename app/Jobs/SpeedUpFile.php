@@ -34,6 +34,7 @@ class SpeedUpFile implements ShouldQueue
      */
     public function handle(): void
     {
+        $currentCoverPath = FileService::extractCover($this->path);
 
 //        ffprobe -i .\song.mp3 -show_entries stream=sample_rate -of default=noprint_wrappers=1:nokey=1 -hide_banner -loglevel quiet
         try{
@@ -69,6 +70,12 @@ class SpeedUpFile implements ShouldQueue
             error_log('error');
         }
         error_log('file sped up');
+        if($currentCoverPath !== ""){
+            // TODO: does not work with files got from metaChange tool
+            error_log('keeping the same cover');
+            FileService::addCover($this->path, $currentCoverPath);
+            Storage::delete($currentCoverPath);
+        }
 
         Storage::delete($this->path);
         Storage::move(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', $this->path);

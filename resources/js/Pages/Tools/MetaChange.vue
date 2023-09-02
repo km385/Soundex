@@ -1,5 +1,10 @@
+<script>
+import {ref} from "vue";
+
+const isLoading = ref(false)
+</script>
+
 <script setup>
-import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import DownloadTempFileButton from "@/Pages/Tools/DownloadTempFileButton.vue";
 import {subToPrivate, subToChannel} from "@/subscriptions/subs.js";
 import {v4 as uuidv4} from "uuid";
@@ -9,10 +14,12 @@ import axios from "axios";
 
 import UploadFile from "@/Pages/Tools/UploadFile.vue";
 import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
 import InputFieldWithLabel from "@/Components/InputFieldWithLabel.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+
+defineOptions({
+    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+})
 const page = usePage()
 
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -37,14 +44,15 @@ function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
     downloadLink.value = event.fileName
+    isLoading.value = false
 }
 
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    downloadLink.value = event.fileName
+    downloadLink.value = event.fileName;
+    isLoading.value = false;
 }
-
 
 const form = ref({
     artist: '',
@@ -67,6 +75,7 @@ async function onSubmit() {
     formData.append('guestId', guestId)
 
     try {
+        isLoading.value = true
         const res = await axios.post('/metachange', formData)
         console.log(res.data.message)
     } catch (err) {
@@ -99,7 +108,7 @@ function updateTitle(e) {
 
 </script>
 <template>
-
+    <div class="max-w-3xl mx-auto">
         <!--    usunieto form.submit i dziala-->
         <form>
             <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
@@ -134,6 +143,7 @@ function updateTitle(e) {
             <DownloadTempFileButton v-if="downloadLink" :filename="fileUploaded.name" :token="downloadLink"/>
             <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink"/>
         </form>
+    </div>
 </template>
 
 

@@ -1,3 +1,9 @@
+<script>
+import {ref} from "vue";
+
+const isLoading = ref(false)
+</script>
+
 <script setup>
 import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
 import {nextTick, onMounted, reactive, ref, watch} from "vue";
@@ -12,6 +18,12 @@ import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "@/Pages/Tools/LoadingScreen.vue";
 
+// component data => layout props
+// choose manually persistent layout and give it its props and children
+// use h(type, props, children) render function
+defineOptions({
+    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+})
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 
@@ -112,15 +124,6 @@ function getRegionData(data) {
     }
 }
 
-defineOptions({
-    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
-})
-</script>
-
-<script>
-import {ref} from "vue";
-
-const isLoading = ref(false)
 </script>
 
 <template>

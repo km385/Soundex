@@ -60,6 +60,7 @@ class MergeFiles implements ShouldQueue
             error_log('ffmpeg done successfully');
 
         }catch (\Exception $e){
+            // TODO: when error clean up and notify user
             error_log($e);
         }
 

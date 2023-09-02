@@ -1,3 +1,9 @@
+<script>
+import {ref} from "vue";
+
+const isLoading = ref(false)
+</script>
+
 <script setup>
 
 import UploadFile from "@/Pages/Tools/UploadFile.vue";
@@ -10,6 +16,10 @@ import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+
+defineOptions({
+    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+})
 
 const uploadedFile = ref({})
 const speedValue = ref(null)
@@ -35,11 +45,13 @@ function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
     fileToDownloadName.value = event.fileName
+    isLoading.value = false
 }
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
     fileToDownloadName.value = event.fileName
+    isLoading.value = false
 }
 
 function getFile(file) {
@@ -48,7 +60,7 @@ function getFile(file) {
     isUploaded.value = true
 }
 
-function onUploadButtonClick() {
+async function onUploadButtonClick() {
     if(speedValue.value == null) {
         speedValue.value = 1.20
     }
@@ -62,13 +74,14 @@ function onUploadButtonClick() {
     formData.append('tempoValue', tempoValue.value)
     formData.append('guestId', guestId)
 
-    axios.post('/speedup', formData)
-        .then(res => {
-            console.log(res.data.message)
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    try {
+        isLoading.value = true
+        const res = await axios.post('/speedup', formData)
+        console.log(res.data.message)
+    } catch (e) {
+        console.log(e)
+    }
+
 }
 function changeHandleStyles(region){
     for(const child of region.element.children){
@@ -85,7 +98,7 @@ function changeHandleStyles(region){
 </script>
 
 <template>
-
+    <div class="max-w-3xl mx-auto">
         <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
         <div class="flex flex-col items-start ">
             <UploadFile v-if="!isUploaded" @file="getFile" />
@@ -101,7 +114,7 @@ function changeHandleStyles(region){
         </div>
         <DownloadTempFile v-if="fileToDownloadName" :filename="uploadedFile.name" :token="fileToDownloadName"/>
         <SaveToLibraryButton v-if="fileToDownloadName && page.props.auth.user" :file-link="fileToDownloadName"/>
-
+    </div>
 </template>
 
 <style scoped>

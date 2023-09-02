@@ -1,3 +1,9 @@
+<script>
+import {ref} from "vue";
+
+const isLoading = ref(false)
+</script>
+
 <script setup>
 
 import {nextTick, onMounted, ref} from "vue";
@@ -8,10 +14,13 @@ import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 
+defineOptions({
+    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+})
 const fileUploaded = ref(false)
 const fileToDownload = ref(null)
-const isProcessing = ref(false)
 
 const page = usePage()
 let guestId = 123
@@ -20,38 +29,28 @@ const form = ref({
     files: [],
 });
 
-function subToChannel() {
-    guestId = uuidv4()
-    const channel = Echo.channel(`fileUpload.${guestId}`)
-    console.log(channel)
-    channel.listen('FileReadyToDownload', (event) => {
-        console.log("the event has been successfully captured")
-        console.log(event)
-        fileToDownload.value = event.fileName
-    });
-    console.log('subbed to guest channel')
-}
-
-function subToPrivate() {
-    guestId = page.props.auth.user.id
-    const channelName = `user.${guestId}`
-    console.log(channelName)
-    const channel = Echo.private(channelName)
-    channel.listen('PrivateFileReadyToDownload', e => {
-        console.log("the event has been successfully captured")
-        console.log(e)
-        fileToDownload.value = e.fileName
-    })
-    console.log('subbed to private channel')
-}
-
 onMounted(() => {
+    console.log(guestId)
     if(page.props.auth.user){
-        subToPrivate()
+        subToPrivate(guestId, handleSubToPrivate)
     } else {
-        subToChannel()
+        subToChannel(guestId, handleSubToPublic)
     }
 })
+
+function handleSubToPublic(event) {
+    console.log("the event has been successfully captured")
+    console.log(event)
+    fileToDownload.value = event.fileName
+    isLoading.value = false
+}
+
+function handleSubToPrivate(event) {
+    console.log("the event has been successfully captured")
+    console.log(event)
+    fileToDownload.value = event.fileName;
+    isLoading.value = false;
+}
 
 function getFile(file) {
     form.value.files.push(file);
@@ -65,7 +64,7 @@ function getWaveformId(fileName) {
     return `waveform-${fileName.replace(/\s+/g, '-').replace(/[^\w-]/g, '')}`;
 }
 
-function onMergeClicked(){
+async function onMergeClicked(){
     const formData = new FormData()
     form.value.files.forEach((file) => {
         formData.append(getWaveformId(file.name), file)
@@ -77,16 +76,14 @@ function onMergeClicked(){
         console.log(value);
     }
 
-    axios.post('/merge', formData)
-        .then(res => {
-            console.log(res.data.message)
-            if(res.data.message === "processing started"){
-                isProcessing.value = true
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    try {
+        isLoading.value = true
+        const res = await axios.post('/merge', formData)
+        console.log(res.data.message)
+    } catch (e) {
+        console.log(e)
+    }
+
 }
 
 function onUpClicked(name) {
@@ -140,7 +137,7 @@ function downloadFile() {
 </script>
 
 <template>
-
+    <div class="max-w-3xl mx-auto">
         <div v-for="file in form.files" :key="file.name">
             <p>{{ file.name }}</p>
             <div class="flex group">
@@ -174,6 +171,7 @@ function downloadFile() {
                @click="downloadFile">Download file</a>
             <p class="w-full ml-3">{{ fileToDownload }}</p>
         </div>
+    </div>
 </template>
 
 <style scoped>

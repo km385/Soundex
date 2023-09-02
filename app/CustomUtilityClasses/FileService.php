@@ -45,12 +45,12 @@ class FileService
                 ->toDisk('')
                 ->addFilter('-an')
                 ->addFilter('-vcodec', 'copy')
-                ->save($filename . '.png');
+                ->save($filename . '.jpg');
         } catch (\Exception $e) {
             error_log('error during extracting a cover');
             return "";
         }
-        return $filename . '.png';
+        return $filename . '.jpg';
     }
 
     public static function addCover($filePath, $coverPath): void

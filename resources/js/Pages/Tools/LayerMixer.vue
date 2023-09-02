@@ -1,20 +1,32 @@
+<script>
+import {ref} from "vue";
+
+const isLoading = ref(false)
+</script>
+
 <script setup>
 import UploadFile from "@/Pages/Tools/UploadFile.vue";
 import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
+import DownloadTempFileButton from "@/Pages/Tools/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import {usePage} from "@inertiajs/vue3";
+
 import {v4 as uuidv4} from "uuid";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
+defineOptions({
+    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+})
 const page = usePage()
-
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 const uploadedFiles = ref([]);
+
 const isFileUploaded = ref(false)
 
 const downloadLink = ref("")
-
 onMounted(() => {
     console.log(guestId)
     if(page.props.auth.user){
@@ -23,22 +35,26 @@ onMounted(() => {
         subToChannel(guestId, handleSubToPublic)
     }
 })
+
 function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
     downloadLink.value = event.fileName
+    isLoading.value = false
 }
-
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
     downloadLink.value = event.fileName
+    isLoading.value = false
 }
+
 function getFile(file) {
     if(uploadedFiles.value.length >= 2) return
     uploadedFiles.value.push(file)
     isFileUploaded.value = true
 }
+
 
 async function onMergeClicked(){
     const formData = new FormData()
@@ -47,6 +63,7 @@ async function onMergeClicked(){
     formData.append('guestId', guestId)
 
     try {
+        isLoading.value = true
         const res = await axios.post('/layermixer', formData)
         console.log(res.data.message)
     } catch (err) {
@@ -54,7 +71,6 @@ async function onMergeClicked(){
     }
 
 }
-
 
 function getWaveformId(fileName) {
     // Remove spaces and special characters from the filename to get a valid HTML id
@@ -82,7 +98,6 @@ function onDownClicked(name, array) {
         array.splice(index + 1, 0, fileToMove); // Insert the file one position up
     }
 }
-
 function onDeleteClicked(name, array) {
     const index = array.findIndex((file) => file.name === name);
 
@@ -90,13 +105,10 @@ function onDeleteClicked(name, array) {
     array.splice(index, 1); // Remove the file from the current position
 
 }
-import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
-import DownloadTempFileButton from "@/Pages/Tools/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
-import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 </script>
 
 <template>
+    <div class="max-w-3xl mx-auto">
         <UploadFile @file="getFile" />
         <div v-for="(file, index) in uploadedFiles" :key="file.name">
             <div class="flex group">
@@ -123,6 +135,7 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
         <DownloadTempFileButton v-if="downloadLink" :token="downloadLink" :filename="'mixed_file.mp3'"/>
         <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink" />
+    </div>
 </template>
 
 <style scoped>
