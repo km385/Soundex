@@ -164,15 +164,19 @@ function changeHandleStyles(region){
 <template>
     <div :id="id"></div>
     <div v-if="showControls">
-        <button type="button" @click="onPlayClicked"
-                class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Play
-        </button>
-        <button type="button" @click="onStopClicked"
-                class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Stop
-        </button>
-
-        <input type="text" v-model="ws.currentTime" class="border-none">
-        <input type="text" v-model="ws.durationTime" class="border-none">
+        <div class="flex justify-between">
+<!--            <input type="text" v-model="ws.currentTime" class="border-none w-auto">-->
+            <p>{{ ws.currentTime }}</p>
+            <p>{{ ws.durationTime }}</p>
+        </div>
+        <div>
+            <button type="button" @click="onPlayClicked"
+                    class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Play
+            </button>
+            <button type="button" @click="onStopClicked"
+                    class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Stop
+            </button>
+        </div>
     </div>
 
 

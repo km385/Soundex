@@ -55,6 +55,10 @@ class FileService
 
     public static function addCover($filePath, $coverPath): void
     {
+        if($coverPath === ""){
+            error_log('no cover to add');
+            return;
+        }
         // adding cover to opus is not supported yet by ffmpeg
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
@@ -72,7 +76,7 @@ class FileService
                 ->toDisk('')
                 ->save(pathinfo($coverPath, PATHINFO_FILENAME).'.jpg');
             $coverPath = pathinfo($coverPath, PATHINFO_FILENAME).'.jpg';
-            error_log('converted webp to jpg');
+            error_log('converted to jpg');
         }
         // it works for mp3 and jpg
         FFMpeg::fromDisk('')
@@ -91,6 +95,8 @@ class FileService
         Storage::delete($coverPath);
 
         Storage::move('output.mp3', $filename.'.'.$ext);
+
+        error_log('added/kept cover');
     }
 
 }

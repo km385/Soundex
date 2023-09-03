@@ -98,17 +98,19 @@ function changeHandleStyles(region){
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto mt-20">
         <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
-        <div class="flex flex-col items-start ">
+        <div class="flex flex-col items-start mt-10">
             <UploadFile v-if="!isUploaded" @file="getFile" />
             <div class="w-auto mb-3 mt-3">
-                <input type="text" placeholder="1.06" class="border-2 border-black my-3 rounded" v-model="tempoValue">
+                <label for="tempo" class="block font-medium text-sm mb-1" >Tempo</label>
+                <input type="text" id="tempo" placeholder="1.06" class="bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="tempoValue">
             </div>
             <div class="w-auto">
-                <input type="text" placeholder="1.20" class="border-2 border-black mb-3 rounded" v-model="speedValue">
+                <label for="speed" class="block font-medium text-sm mb-1" >Speed</label>
+                <input type="text" id="speed" placeholder="1.20" class="bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="speedValue">
             </div>
-            <button @click="onUploadButtonClick" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500 mb-3">
+            <button @click="onUploadButtonClick" class="bg-blue-400 text-white rounded-lg py-2 px-4 mt-5 mr-3 hover:bg-blue-500 mb-3">
                 Upload
             </button>
         </div>

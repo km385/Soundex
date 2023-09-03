@@ -53,9 +53,9 @@ class CutFile implements ShouldQueue
 
         Storage::delete($this->path);
         Storage::move($name.'temp.'.$ext, $this->path);
-        if (!empty($coverPath)){
-            FileService::addCover($this->path, $coverPath);
-        }
+
+        FileService::addCover($this->path, $coverPath);
+
 
         error_log('cover added');
 

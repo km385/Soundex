@@ -24,7 +24,7 @@
 </script>
 
 <template>
-        <div class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative">
+        <div class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative rounded-lg">
             <img class="h-full mr-5 ml-2 justify-self-start" :src="url" alt="small icon">
             <div v-if="!showText" class="flex-grow text-2xl ">
                 <p>{{text}}</p>

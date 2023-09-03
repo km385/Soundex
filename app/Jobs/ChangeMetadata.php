@@ -54,12 +54,12 @@ class ChangeMetadata implements ShouldQueue
         Storage::move($name.'temp.'.$ext, $name.'.'.$ext);
         error_log("metadata added");
 
-        if(is_null($this->newCoverPath)) {
-            if($currentCoverPath !== ""){
-                error_log('keeping the same cover');
-                FileService::addCover($this->path, $currentCoverPath);
-                Storage::delete($currentCoverPath);
-            }
+        if (is_null($this->newCoverPath)) {
+
+            error_log('keeping the same cover');
+            FileService::addCover($this->path, $currentCoverPath);
+            Storage::delete($currentCoverPath);
+
         } else {
             error_log('adding new cover');
             FileService::addCover($this->path, $this->newCoverPath);

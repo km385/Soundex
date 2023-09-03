@@ -15,21 +15,17 @@ function onClick(e) {
 const isToolsPickerExpanded = ref(false)
 const toolsMenu = {
     expandTools: () => {
-        console.log('expand tools')
         if (!isSidebarCollapsed.value) {
             isToolsPickerExpanded.value = true
         }
     },
     collapseTools: () => {
-        console.log('collapse tools')
         isToolsPickerExpanded.value = false
     },
     mouseOverToolsEnter: () => {
-        console.log('mouse enter')
         isToolsPickerExpanded.value = true
     },
     mouseOverToolsLeave: () => {
-        console.log('mouse left')
         isToolsPickerExpanded.value = false
     },
 
@@ -38,21 +34,17 @@ const toolsMenu = {
 const isLangPickerExpanded = ref(false)
 const langMenu = {
     expandLang: () => {
-        console.log('expand tools')
         if (!isSidebarCollapsed.value) {
             isLangPickerExpanded.value = true
         }
     },
     collapseLang: () => {
-        console.log('collapse tools')
         isLangPickerExpanded.value = false
     },
     mouseOverLangEnter: () => {
-        console.log('mouse enter')
         isLangPickerExpanded.value = true
     },
     mouseOverLangLeave: () => {
-        console.log('mouse left')
         isLangPickerExpanded.value = false
     },
 
@@ -169,7 +161,7 @@ const props = defineProps({
 
         </div>
 
-
+        <hr class="border-gray-500 mb-2 border-1 mx-2">
         <div id="bottom" class="flex-none">
             <!--                user links section-->
             <SidebarRow icon="contrast_FILL0_wght400_GRAD0_opsz24.png" text="contrast" :show-text="isSidebarCollapsed"/>

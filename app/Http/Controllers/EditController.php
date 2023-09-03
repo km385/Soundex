@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomUtilityClasses\FileService;
 use App\Events\FileReadyToDownload;
 use App\Jobs\ChangeMetadata;
 use App\Jobs\CutFile;
@@ -23,6 +24,15 @@ use function Laravel\Prompts\error;
 
 class EditController extends Controller
 {
+
+    public function test() {
+        error_log('test');
+        $file = Request::file('file');
+        $path = Storage::putFile($file);
+
+//        $coverPath = FileService::extractCover($path);
+        FileService::addCover($path, 'pMPeKH8Lu61NStiLH2DSngdVhahWwTKsbOygR7rL.png');
+    }
     public function downloadFile ($token): StreamedResponse|JsonResponse
     {
         if(!Request::hasValidSignature(false)){

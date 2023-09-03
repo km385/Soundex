@@ -70,12 +70,10 @@ class SpeedUpFile implements ShouldQueue
             error_log('error');
         }
         error_log('file sped up');
-        if($currentCoverPath !== ""){
-            // TODO: does not work with files got from metaChange tool
-            error_log('keeping the same cover');
-            FileService::addCover($this->path, $currentCoverPath);
-            Storage::delete($currentCoverPath);
-        }
+
+        FileService::addCover(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', $currentCoverPath);
+        Storage::delete($currentCoverPath);
+
 
         Storage::delete($this->path);
         Storage::move(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', $this->path);

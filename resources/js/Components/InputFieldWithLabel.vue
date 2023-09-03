@@ -14,11 +14,11 @@ const input = ref(null)
 
 <template>
     <div class="mb-6">
-        <label for="title" class="block mb-2 uppercase font-bold text-xs text-gray-700">
+        <label :for="label" class="block mb-2 uppercase font-bold text-xs text-gray-700">
             {{ label }}
         </label>
-        <input id="title"
-               class="border border-gray-400 p-2 w-full"
+        <input :id="label"
+               class="bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500 w-full"
                name="title"
                type="text"
                ref="input"

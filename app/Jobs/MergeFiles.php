@@ -31,12 +31,8 @@ class MergeFiles implements ShouldQueue
      */
     public function handle(): void
     {
-        $filter_complex_value = "";
-        for($i = 0; $i < count($this->paths); $i++){
-            $filter_complex_value .= "[$i:a]";
-        }
-        $filter_complex_value .= "concat=n=".count($this->paths).":v=0:a=1[a]";
-        error_log("filter_complex: ".$filter_complex_value);
+        $filter_complex_value = $this->get_filter_complex_value();
+
         try {
             error_log('creating ffmpeg command based on the files');
             $ffmpeg = FFMpeg::fromDisk('')
@@ -44,7 +40,7 @@ class MergeFiles implements ShouldQueue
                 ->export()
                 ->toDisk('');
             foreach ($this->paths as $path){
-                // skip the first one since is already in use
+                // skip the first one since it's already in use
                 if($path == $this->paths[0]) continue;
 
                 $ffmpeg
@@ -72,5 +68,19 @@ class MergeFiles implements ShouldQueue
         error_log('final file created: '.$finalPath);
 
         FileService::createAndNotify($finalPath, $this->isPrivate, $this->guestId);
+    }
+
+    /**
+     * @return string
+     */
+    public function get_filter_complex_value(): string
+    {
+        $filter_complex_value = "";
+        for ($i = 0; $i < count($this->paths); $i++) {
+            $filter_complex_value .= "[$i:a]";
+        }
+        $filter_complex_value .= "concat=n=" . count($this->paths) . ":v=0:a=1[a]";
+        error_log("filter_complex: ".$filter_complex_value);
+        return $filter_complex_value;
     }
 }
