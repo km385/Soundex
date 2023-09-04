@@ -40,7 +40,9 @@ watch(uploadedFile, (value) => {
 </script>
 
 <template>
-    <div id="drop_zone" class="flex items-center justify-center" @drop="onDrop" @dragover="onDragOver" @click="onClick">
+    <div
+        class="flex items-center justify-center w-[300px] h-[300px] border-[5px] border-dashed border-blue-500 "
+        @click="onClick" @dragover="onDragOver" @drop="onDrop">
         <div class="flex flex-col items-center">
             <img class="w-1/2 h-1/2 mb-3" src="../../../images/file_icon.webp" alt="file image">
             <p class="text-blue-700 font-bold">Upload new file</p>
@@ -50,9 +52,5 @@ watch(uploadedFile, (value) => {
 </template>
 
 <style scoped>
-#drop_zone {
-    border: 5px dashed blue;
-    width: 300px;
-    height: 300px;
-}
+
 </style>

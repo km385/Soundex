@@ -8,7 +8,6 @@
         }
     })
     const computedWidth = computed(() => (props.isCollapsed ? '5' : '12'))
-    // TODO: when working with pages that are scrollable the loading is screen is at the top of the page
 </script>
 
 <template>

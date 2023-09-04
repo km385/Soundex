@@ -33,7 +33,7 @@ onMounted( () => {
 
     ws.wsInstance = WaveSurfer.create({
         container: `#${props.id}`,
-        waveColor: '#4F4A85',
+        waveColor: '#FECEAB',
         progressColor: '#383351',
         cursorColor: 'black',
         normalize: false,
@@ -54,6 +54,13 @@ onMounted( () => {
 
         changeHandleStyles(region)
     }
+
+    if(props.secondRegion){
+        // when user goes back from download screen and had second region selected
+        addSecondRegion()
+    }
+
+
     ws.wsInstance.on("audioprocess", () => {
         // since the event is triggered a lot, it might be good to consider a global ref to the region to
         // avoid allocation
@@ -127,24 +134,28 @@ watch(() => props.file, (value) => {
 
 watch(() => props.secondRegion, (value) => {
     if(value){
-        const region = regions.addRegion({
-            start: 0,
-            end: 1,
-            color: 'rgba(0,255,10,0.5)',
-            drag: true,
-            resize: true,
-
-        })
-        region.setOptions({
-            start: ws.durationTime * 0.3,
-            end: ws.durationTime * 0.4
-        })
-
-        changeHandleStyles(region)
+        addSecondRegion()
     } else {
         regions.getRegions()[1].remove()
     }
 })
+
+function addSecondRegion() {
+    const region = regions.addRegion({
+        start: 0,
+        end: 1,
+        color: 'rgba(0,255,10,0.5)',
+        drag: true,
+        resize: true,
+
+    })
+    region.setOptions({
+        start: ws.durationTime * 0.3,
+        end: ws.durationTime * 0.4
+    })
+
+    changeHandleStyles(region)
+}
 
 function changeHandleStyles(region){
     for(const child of region.element.children){

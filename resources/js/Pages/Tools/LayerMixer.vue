@@ -108,33 +108,42 @@ function onDeleteClicked(name, array) {
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto">
-        <UploadFile @file="getFile" />
-        <div v-for="(file, index) in uploadedFiles" :key="file.name">
-            <div class="flex group">
-                <div style="width: 100%">
-                    <p v-if="index === 0">foreground</p>
-                    <p v-else-if="index === 1">background - will determine the duration of the final song</p>
-                    <Wavesurfer v-if="isFileUploaded" :file="file" :id="getWaveformId(file.name)" />
-                </div>
-                <div
-                    class="flex flex-col justify-between opacity-30 group-hover:opacity-100 transition-opacity duration-300">
-                    <button @click="onUpClicked(file.name, uploadedFiles)">up</button>
-                    <button @click="onDeleteClicked(file.name, uploadedFiles)">delete</button>
-                    <button @click="onDownClicked(file.name, uploadedFiles)">down</button>
-                </div>
+    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
+        <div class="flex justify-center items-center" v-if="!downloadLink">
+            <UploadFile @file="getFile" />
+        </div>
 
+        <div v-if="isFileUploaded && !downloadLink">
+            <div v-for="(file, index) in uploadedFiles" :key="file.name">
+                <div class="flex group">
+                    <div style="width: 100%">
+                        <p v-if="index === 0">foreground</p>
+                        <p v-else-if="index === 1">background - will determine the duration of the final song</p>
+                        <Wavesurfer v-if="isFileUploaded" :file="file" :id="getWaveformId(file.name)" />
+                    </div>
+                    <div
+                        class="flex flex-col justify-between opacity-30 group-hover:opacity-100 transition-opacity duration-300">
+                        <button @click="onUpClicked(file.name, uploadedFiles)">up</button>
+                        <button @click="onDeleteClicked(file.name, uploadedFiles)">delete</button>
+                        <button @click="onDownClicked(file.name, uploadedFiles)">down</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div v-if="isFileUploaded">
+                <button type="button" @click="onMergeClicked"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
+                </button>
             </div>
         </div>
 
-        <div v-if="isFileUploaded">
-            <button type="button" @click="onMergeClicked"
-                    class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
-            </button>
+        <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
+            <p >You can now download your new file</p>
+            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
+            <DownloadTempFileButton :token="downloadLink" :filename="'mixed_file.mp3'"/>
+            <SaveToLibraryButton v-if=" page.props.auth.user" :file-link="downloadLink" />
         </div>
-
-        <DownloadTempFileButton v-if="downloadLink" :token="downloadLink" :filename="'mixed_file.mp3'"/>
-        <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink" />
     </div>
 </template>
 

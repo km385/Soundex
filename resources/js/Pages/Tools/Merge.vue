@@ -137,7 +137,7 @@ function downloadFile() {
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto" v-if="!isLoading">
         <div v-for="file in form.files" :key="file.name">
             <p>{{ file.name }}</p>
             <div class="flex group">

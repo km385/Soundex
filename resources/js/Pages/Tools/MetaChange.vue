@@ -92,6 +92,7 @@ function getFile(file) {
     console.log('file received')
     fileUploaded.value = file
     form.value.fileRef = file
+    isFileUploaded.value = true
 }
 
 function onCoverUpload(event) {
@@ -108,9 +109,13 @@ function updateTitle(e) {
 
 </script>
 <template>
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto" v-if="!isLoading">
+        <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
+            <UploadFile @file="getFile"/>
+        </div>
+
         <!--    usunieto form.submit i dziala-->
-        <form>
+        <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-2 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0" id="form">
             <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
             <InputFieldWithLabel label="Artist" @update:model-value="form.artist = $event"/>
             <InputFieldWithLabel label="Genre" @update:model-value="form.genre = $event"/>
@@ -118,52 +123,42 @@ function updateTitle(e) {
             <InputFieldWithLabel label="Date" @update:model-value="form.date = $event"/>
             <InputFieldWithLabel label="Album" @update:model-value="form.album = $event"/>
 
-            <div class="mb-6">
-                <label for="cover" class="block mb-2 uppercase font-bold text-xs text-gray-700">
+            <div class="mb-6 lg:col-span-2">
+                <label for="cover" class="block mb-2 uppercase font-bold text-xs text-white">
                     Cover
                 </label>
                 <!--            <div class="image-container">-->
                 <input id="cover"
-                       class="border border-gray-400 p-2 w-full"
+                       class="border border-gray-400 p-2 w-full text-white border-none rounded-lg bg-gray-500"
                        name="cover"
                        type="file"
                        @change="onCoverUpload"
                 >
                 <!--@input="file = $event.target.files[0].name" -->
 
-                <div v-if="isCoverUploaded" class="image-preview">
-                    <img :src="coverUrl" alt="Cover Image"/>
+                <div v-if="isCoverUploaded" class="w-[200px] h-[200px] ml-[10px] mt-2 ">
+                    <img :src="coverUrl" alt="Cover Image" class="w-full h-full object-cover"/>
                 </div>
                 <!--            </div>-->
             </div>
 
-            <UploadFile @file="getFile"/>
-            <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
+        </div>
 
-            <DownloadTempFileButton v-if="downloadLink" :filename="fileUploaded.name" :token="downloadLink"/>
-            <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink"/>
-        </form>
+        <div v-if="isFileUploaded && !downloadLink">
+            <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
+            <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+        </div>
+        <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
+            <p >You can now download your new file</p>
+            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
+            <DownloadTempFileButton :filename="fileUploaded.name" :token="downloadLink"/>
+            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="downloadLink"/>
+        </div>
+
     </div>
 </template>
 
 
 <style scoped>
-.image-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
 
-.image-preview {
-    margin-left: 10px;
-    width: 300px; /* Adjust the size as needed */
-    height: 300px; /* Adjust the size as needed */
-    overflow: hidden;
-}
-
-.image-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 </style>

@@ -98,24 +98,36 @@ function changeHandleStyles(region){
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto mt-20">
-        <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
-        <div class="flex flex-col items-start mt-10">
-            <UploadFile v-if="!isUploaded" @file="getFile" />
-            <div class="w-auto mb-3 mt-3">
-                <label for="tempo" class="block font-medium text-sm mb-1" >Tempo</label>
-                <input type="text" id="tempo" placeholder="1.06" class="bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="tempoValue">
-            </div>
-            <div class="w-auto">
-                <label for="speed" class="block font-medium text-sm mb-1" >Speed</label>
-                <input type="text" id="speed" placeholder="1.20" class="bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="speedValue">
-            </div>
-            <button @click="onUploadButtonClick" class="bg-blue-400 text-white rounded-lg py-2 px-4 mt-5 mr-3 hover:bg-blue-500 mb-3">
-                Upload
-            </button>
+    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
+        <div v-if="!isUploaded" class="flex justify-center items-center h-screen">
+            <UploadFile @file="getFile" />
         </div>
-        <DownloadTempFile v-if="fileToDownloadName" :filename="uploadedFile.name" :token="fileToDownloadName"/>
-        <SaveToLibraryButton v-if="fileToDownloadName && page.props.auth.user" :file-link="fileToDownloadName"/>
+
+        <div v-if="isUploaded && !fileToDownloadName">
+            <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
+            <div class="flex flex-col items-start mt-10">
+                <div class="w-auto mb-3 mt-3">
+                    <label for="tempo" class="block font-medium text-sm mb-1" >Tempo</label>
+                    <input type="text" id="tempo" placeholder="1.06" class="text-black bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="tempoValue">
+                </div>
+                <div class="w-auto">
+                    <label for="speed" class="block font-medium text-sm mb-1" >Speed</label>
+                    <input type="text" id="speed" placeholder="1.20" class="text-black bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="speedValue">
+                </div>
+                <button @click="onUploadButtonClick" class="bg-blue-400 text-white rounded-lg py-2 px-4 mt-5 mr-3 hover:bg-blue-500 mb-3">
+                    Upload
+                </button>
+                <button type="button"  @click="isUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+
+            </div>
+        </div>
+
+        <div v-if="fileToDownloadName" class="text-white flex flex-col justify-center items-center h-screen">
+            <p >You can now download your new file</p>
+            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadName = null">go back</button>
+            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadName"/>
+            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadName"/>
+        </div>
     </div>
 </template>
 

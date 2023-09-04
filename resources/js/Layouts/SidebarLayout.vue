@@ -59,10 +59,10 @@ const props = defineProps({
 </script>
 
 <template>
-
+<!--    TODO: when unwrapping sidebar the text appear before the animation ends -->
     <div
         :class="{'w-48 transition-w duration-500': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed}"
-        class="bg-[#2D2D30] text-white flex flex-col fixed h-full">
+        class="bg-[#2B2B2B] text-white flex flex-col fixed h-full">
         <div class="flex mr-2 flex-none"
              :class="{'justify-center' : isSidebarCollapsed, 'justify-end ' : !isSidebarCollapsed}">
             <!--                burger icon-->
@@ -171,7 +171,7 @@ const props = defineProps({
 
     </div>
 
-
+<!--    Background color set in app.blade.php-->
     <div :class="{'ml-48 transition-w duration-500': !isSidebarCollapsed, 'ml-20 transition-w duration-500': isSidebarCollapsed}">
         <LoadingScreen v-if="isLoading" :is-collapsed="isSidebarCollapsed"/>
         <div class="flex justify-center h-screen">

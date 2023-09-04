@@ -18,6 +18,8 @@ const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 const recordingFile = ref({})
 const isRecorded = ref(false)
 const backgroundFile = ref(null)
+const isFileUploaded = ref(false)
+
 const downloadLink = ref("")
 
 onMounted(() => {
@@ -111,10 +113,10 @@ async function onSend(){
     }
 
 }
-
 function getFile(file) {
     console.log('file received')
     backgroundFile.value = file
+    isFileUploaded.value = true
 }
 import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
@@ -126,16 +128,26 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto">
-        <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
-        <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
-        <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
-        <Wavesurfer v-if="isRecorded" :file="recordingFile" :show-controls="true"/>
+    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
+        <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
+            <UploadFile @file="getFile" />
+        </div>
 
-        <UploadFile @file="getFile"/>
+        <div v-if="isFileUploaded && !downloadLink">
+            <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
+            <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
+            <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
+            <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
 
-        <DownloadTempFile v-if="downloadLink" :filename="'recording.mp3'" :token="downloadLink"/>
-        <SaveToLibraryButton v-if="downloadLink && page.props.auth.user" :file-link="downloadLink"/>
+            <Wavesurfer v-if="isRecorded" :file="recordingFile" :show-controls="true"/>
+        </div>
+
+        <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
+            <p >You can now download your new file</p>
+            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
+            <DownloadTempFile :filename="'recording.mp3'" :token="downloadLink"/>
+            <SaveToLibraryButton v-if=" page.props.auth.user" :file-link="downloadLink"/>
+        </div>
     </div>
 </template>
 

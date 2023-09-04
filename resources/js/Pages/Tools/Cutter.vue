@@ -128,38 +128,44 @@ function getRegionData(data) {
 
 <template>
 <!--    TODO: add change file button -->
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
 
-        <div class="flex justify-center" v-if="!isFileUploaded">
-            <UploadFile v-if="!isFileUploaded" @file="getFile" />
+        <div class="flex justify-center items-center h-screen" v-if="!isFileUploaded">
+            <UploadFile  @file="getFile" />
         </div>
 
-        <div v-if="isFileUploaded" class="mb-6">
-            <button type="button" @click="onCutClicked"
-                    class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Cut
-            </button>
-            <label class="mr-3" for="regionCheckBox">Second region</label><input id="regionCheckBox" type="checkbox"
-                                                                                 v-model="regionCheckboxValue"
-                                                                                 class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">
+        <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10">
+            <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500 mb-10">Change file</button>
+            <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true"
+                        :second-region="regionCheckboxValue" @region-coords="getRegionData"/>
+            <!--                <input type="range"-->
+            <!--                       style="appearance: slider-vertical"-->
+            <!--                       class=""-->
+            <!--                       id="volume"-->
+            <!--                       name="volume"-->
+            <!--                       min="0"-->
+            <!--                       max="1"-->
+            <!--                       step="0.1"-->
+            <!--                       v-model="volumeValue"-->
+            <!--                       v-if="isFileUploaded">-->
+
+            <div v-if="isFileUploaded" class="mb-6">
+                <button type="button" @click="onCutClicked"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Cut
+                </button>
+                <br>
+                <label class="mr-3" for="regionCheckBox">Second region</label><input id="regionCheckBox" type="checkbox"
+                                                                                     v-model="regionCheckboxValue"
+                                                                                     class="checked:bg-blue-400 text-white rounded py-2 px-2 mr-3 ">
+            </div>
+
         </div>
-
-
-        <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true"
-                    :second-region="regionCheckboxValue" @region-coords="getRegionData"/>
-        <!--                <input type="range"-->
-        <!--                       style="appearance: slider-vertical"-->
-        <!--                       class=""-->
-        <!--                       id="volume"-->
-        <!--                       name="volume"-->
-        <!--                       min="0"-->
-        <!--                       max="1"-->
-        <!--                       step="0.1"-->
-        <!--                       v-model="volumeValue"-->
-        <!--                       v-if="isFileUploaded">-->
-
-
-        <DownloadTempFile v-if="fileToDownloadLink" :filename="uploadedFile.name" :token="fileToDownloadLink"/>
-        <SaveToLibraryButton v-if="fileToDownloadLink && page.props.auth.user" :file-link="fileToDownloadLink"/>
+        <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
+            <p >You can now download your new file</p>
+            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
+            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
+            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
+        </div>
     </div>
 
 
