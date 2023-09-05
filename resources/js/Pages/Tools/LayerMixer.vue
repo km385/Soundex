@@ -108,14 +108,14 @@ function onDeleteClicked(name, array) {
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
+    <div class="max-w-3xl mx-auto text-white">
         <div class="flex justify-center items-center" v-if="!downloadLink">
             <UploadFile @file="getFile" />
         </div>
 
         <div v-if="isFileUploaded && !downloadLink">
             <div v-for="(file, index) in uploadedFiles" :key="file.name">
-                <div class="flex group">
+                <div class="flex group mb-10">
                     <div style="width: 100%">
                         <p v-if="index === 0">foreground</p>
                         <p v-else-if="index === 1">background - will determine the duration of the final song</p>
@@ -142,7 +142,7 @@ function onDeleteClicked(name, array) {
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
             <DownloadTempFileButton :token="downloadLink" :filename="'mixed_file.mp3'"/>
-            <SaveToLibraryButton v-if=" page.props.auth.user" :file-link="downloadLink" />
+            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="downloadLink" />
         </div>
     </div>
 </template>

@@ -6,24 +6,25 @@ const isLoading = ref(false)
 
 <script setup>
 
-import {nextTick, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
 import UploadFile from "@/Pages/Tools/UploadFile.vue";
-import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
+import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
 
 defineOptions({
     layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
 })
-const fileUploaded = ref(false)
-const fileToDownload = ref(null)
+const isFileUploaded = ref(false)
+const fileToDownloadLink = ref(null)
 
 const page = usePage()
-let guestId = 123
+let guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 
 const form = ref({
     files: [],
@@ -41,21 +42,21 @@ onMounted(() => {
 function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownload.value = event.fileName
+    fileToDownloadLink.value = event.fileName
     isLoading.value = false
 }
 
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownload.value = event.fileName;
+    fileToDownloadLink.value = event.fileName;
     isLoading.value = false;
 }
 
 function getFile(file) {
     form.value.files.push(file);
 
-    fileUploaded.value = true
+    isFileUploaded.value = true
     console.log(file)
 }
 
@@ -114,11 +115,15 @@ function onDeleteClicked(name) {
     const fileToMove = form.value.files[index];
     form.value.files.splice(index, 1); // Remove the file from the current position
 
+    if(form.value.files.length === 0) {
+        isFileUploaded.value = false
+    }
+
 }
 
 function downloadFile() {
 
-    axios.get(`/files/${fileToDownload.value}`, {
+    axios.get(`/files/${fileToDownloadLink.value}`, {
         responseType: 'blob',
     })
         .then((response) => {
@@ -137,12 +142,24 @@ function downloadFile() {
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto" v-if="!isLoading">
-        <div v-for="file in form.files" :key="file.name">
+    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
+        <div class="mb-6" v-if="!fileToDownloadLink">
+            <div class="mt-6">
+                <UploadFile @file="getFile"/>
+            </div>
+
+            <div v-if="isFileUploaded">
+                <button type="button" @click="onMergeClicked"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
+                </button>
+            </div>
+        </div>
+
+        <div v-for="file in form.files" :key="file.name" v-if="!fileToDownloadLink">
             <p>{{ file.name }}</p>
-            <div class="flex group">
+            <div class="flex group mb-10">
                 <div style="width: 100%" class="mr-4">
-                    <Wavesurfer v-if="fileUploaded" :file="file" :show-controls="false" :show-region="false"
+                    <Wavesurfer v-if="isFileUploaded" :file="file" :show-controls="false" :show-region="false"
                                 :id="getWaveformId(file.name)"/>
                 </div>
                 <div
@@ -153,23 +170,12 @@ function downloadFile() {
                 </div>
             </div>
         </div>
-        <form>
-            <div class="mb-6">
-                <div class="mt-6">
-                    <UploadFile @file="getFile"/>
-                </div>
 
-                <div v-if="fileUploaded">
-                    <button type="button" @click="onMergeClicked"
-                            class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
-                    </button>
-                </div>
-            </div>
-        </form>
-        <div v-if="fileToDownload" class="mt-6 flex items-center">
-            <a class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 whitespace-nowrap" href="#"
-               @click="downloadFile">Download file</a>
-            <p class="w-full ml-3">{{ fileToDownload }}</p>
+        <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
+            <p >You can now download your new file</p>
+            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
+            <DownloadTempFile :filename="'merged.mp3'" :token="fileToDownloadLink"/>
+            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
     </div>
 </template>

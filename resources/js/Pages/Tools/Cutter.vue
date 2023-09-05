@@ -154,9 +154,10 @@ function getRegionData(data) {
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Cut
                 </button>
                 <br>
-                <label class="mr-3" for="regionCheckBox">Second region</label><input id="regionCheckBox" type="checkbox"
-                                                                                     v-model="regionCheckboxValue"
-                                                                                     class="checked:bg-blue-400 text-white rounded py-2 px-2 mr-3 ">
+                <label class="mr-3" for="regionCheckBox">Second region</label>
+                <input id="regionCheckBox" type="checkbox"
+                       v-model="regionCheckboxValue"
+                       class="form-checkbox accent-blue-600  transition duration-150 ease-in-out focus:ring focus:ring-blue-400">
             </div>
 
         </div>

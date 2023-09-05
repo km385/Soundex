@@ -83,12 +83,12 @@ const userDropDown = ref(false)
                         :show-text="isSidebarCollapsed"
                         @mouseenter="toolsMenu.expandTools" @mouseleave="toolsMenu.collapseTools">
                 <div v-if="isToolsPickerExpanded"
-                     class="w-48 bg-[#2D2D30] text-white absolute left-48 top-0 text-xl"
+                     class="w-48 bg-[#2D2D30] text-white absolute left-48 top-0 text-xl rounded-lg"
                      @mouseenter="toolsMenu.mouseOverToolsEnter" @mouseleave="toolsMenu.mouseOverToolsLeave">
                     <!--            expanded tools-->
                     <ul>
                         <Link href="/cutter">
-                            <li class="hover:bg-gray-500 cursor-pointer">
+                            <li class="hover:bg-gray-500 cursor-pointer rounded-t-lg">
                                 Cutter
                             </li>
                         </Link>
@@ -122,7 +122,7 @@ const userDropDown = ref(false)
 
 
                         <Link href="/layermixer">
-                            <li class="hover:bg-gray-500 cursor-pointer">
+                            <li class="hover:bg-gray-500 cursor-pointer rounded-b-lg">
                                 LayerMix
                             </li>
                         </Link>
@@ -141,19 +141,19 @@ const userDropDown = ref(false)
             <SidebarRow icon="language_FILL0_wght400_GRAD0_opsz24.png" text="lang" :show-text="isSidebarCollapsed"
                         @mouseenter="langMenu.expandLang" @mouseleave="langMenu.collapseLang">
                 <div v-if="isLangPickerExpanded"
-                     class="w-48 bg-[#2D2D30] text-white absolute left-48 top-0 text-xl"
+                     class="w-48 bg-[#2D2D30] text-white absolute left-48 top-0 text-xl rounded-lg"
                      @mouseenter="langMenu.mouseOverLangEnter" @mouseleave="langMenu.mouseOverLangLeave">
                     <!--            expanded tools-->
                     <ul>
                         <Link href="#">
-                            <li class="hover:bg-gray-500 cursor-pointer">
+                            <li class="hover:bg-gray-500 cursor-pointer rounded-t-lg">
                                 English
                             </li>
                         </Link>
 
 
                         <Link href="#">
-                            <li class="hover:bg-gray-500 cursor-pointer">
+                            <li class="hover:bg-gray-500 cursor-pointer rounded-b-lg">
                                 Polish
                             </li>
                         </Link>
