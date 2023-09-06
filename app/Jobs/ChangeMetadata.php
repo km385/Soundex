@@ -55,15 +55,11 @@ class ChangeMetadata implements ShouldQueue
         error_log("metadata added");
 
         if (is_null($this->newCoverPath)) {
-
             error_log('keeping the same cover');
             FileService::addCover($this->path, $currentCoverPath);
-            Storage::delete($currentCoverPath);
-
         } else {
             error_log('adding new cover');
             FileService::addCover($this->path, $this->newCoverPath);
-            Storage::delete($this->newCoverPath);
         }
         error_log("cover added");
 

@@ -66,7 +66,6 @@ class FileService
             error_log('opus/ogg file not compatible');
             return;
         }
-
         // TODO: check other extensions
         // TODO: possibly convert any to jpg
         if(in_array(strtolower(File::extension($coverPath)), ['webp', 'png'])) {
@@ -79,22 +78,34 @@ class FileService
             error_log('converted to jpg');
         }
         // it works for mp3 and jpg
-        FFMpeg::fromDisk('')
-            ->open($filename.'.'.$ext)
-            ->export()
-            ->toDisk('')
-            ->addFilter('-i', Storage::path($coverPath))
-            ->addFilter('-map', "0:0")
-            ->addFilter('-map', "1:0")
-            ->addFilter('-c', "copy")
-            ->addFilter('-id3v2_version', '3')
-            ->addFilter('-metadata:s:v', "title='Album cover'")
-            ->addFilter('-metadata:s:v', "comment='Cover (front)'")
-            ->save('output.mp3');
+//        ffmpeg.exe -i '.\song (1).flac' -i .\cover.jpg  -map 0:a -map 1 -codec copy -metadata:s:v title="Album cover" -metadata:s:v comment="Cover (front)" -disposition:v attached_pic songcover.flac
+
+        try {
+            $ffmpeg = FFMpeg::fromDisk('')
+                ->open($filename . '.' . $ext)
+                ->export()
+                ->toDisk('')
+                ->addFilter('-i', Storage::path($coverPath))
+                ->addFilter('-map', "0:0")
+                ->addFilter('-map', "1:0")
+                ->addFilter('-c', "copy")
+                ->addFilter('-id3v2_version', '3')
+                ->addFilter('-metadata:s:v', "title='Album cover'")
+                ->addFilter('-metadata:s:v', "comment='Cover (front)'");
+
+            if (strtolower(File::extension($filePath)) === "flac") {
+                $ffmpeg->addFilter('-disposition:v', 'attached_pic');
+            }
+            $ffmpeg->save('output.'.strtolower(File::extension($filePath)));
+        } catch (\Exception $e) {
+            error_log($e);
+        }
+
+
         Storage::delete($filename.'.'.$ext);
         Storage::delete($coverPath);
 
-        Storage::move('output.mp3', $filename.'.'.$ext);
+        Storage::move('output.'.strtolower(File::extension($filePath)), $filename.'.'.$ext);
 
         error_log('added/kept cover');
     }

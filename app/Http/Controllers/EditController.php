@@ -132,7 +132,8 @@ class EditController extends Controller
             $coverPath = null;
         }
         $metadata = [];
-        $fieldsToCheck = ['title', 'artist', 'year', 'genre', 'date'];
+        // mp3, flac support these and cover arts
+        $fieldsToCheck = ['title', 'artist', 'year', 'genre', 'date', 'album'];
         foreach ($fieldsToCheck as $field) {
             $value = Request::input($field);
             if(!empty($value)) {
