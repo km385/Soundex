@@ -35,7 +35,12 @@ class ChangeMetadata implements ShouldQueue
         $name = pathinfo($this->path, PATHINFO_FILENAME);
         $ext = pathinfo($this->path, PATHINFO_EXTENSION);
 
-        $currentCoverPath = FileService::extractCover($this->path);
+        try {
+            $currentCoverPath = FileService::extractCover($this->path);
+        } catch (\Exception $e) {
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
+        }
         // vn dodane po m4a, nie testowane w innych, uzywa tylko sound stream
         try {
             FFMpeg::fromDisk('')
@@ -47,7 +52,7 @@ class ChangeMetadata implements ShouldQueue
                 })
                 ->save($name.'temp.'.$ext);
         }catch (\Exception $e) {
-            error_log($e);
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
         Storage::delete($this->path);

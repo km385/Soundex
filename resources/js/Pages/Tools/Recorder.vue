@@ -22,6 +22,9 @@ const isFileUploaded = ref(false)
 
 const downloadLink = ref("")
 
+const isError = ref(false)
+const error = ref("")
+
 onMounted(() => {
     console.log(guestId)
     if(page.props.auth.user){
@@ -34,13 +37,25 @@ onMounted(() => {
 function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    downloadLink.value = event.fileName
+
+    if(event.fileName === "ERROR") {
+        error.value = "error has occurred"
+        isError.value = true
+    } else {
+        downloadLink.value = event.fileName
+    }
     isLoading.value = false
 }
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    downloadLink.value = event.fileName
+
+    if(event.fileName === "ERROR") {
+        error.value = "error has occurred"
+        isError.value = true
+    } else {
+        downloadLink.value = event.fileName
+    }
     isLoading.value = false
 }
 

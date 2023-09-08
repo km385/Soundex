@@ -37,9 +37,16 @@ class CutFile implements ShouldQueue
     {
         $name = pathinfo($this->path, PATHINFO_FILENAME);
         $ext = pathinfo($this->path, PATHINFO_EXTENSION);
+        // TODO: either combine 2 try/catch block together or give them different messages
+        try {
+            $coverPath = FileService::extractCover($this->path);
+        } catch (\Exception $e) {
+            // TODO: determine if cutter/speedup need to stop if error while extracting a cover
+            error_log('exception caught');
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
+        }
 
-        $coverPath = FileService::extractCover($this->path);
-        error_log('cover extracted');
         try{
             FFMpeg::fromDisk('')
                 ->open($name.'.'.$ext)
@@ -49,15 +56,14 @@ class CutFile implements ShouldQueue
                 ->save($name.'temp.'.$ext);
         }catch (\Exception $e){
             error_log($e);
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
         }
 
         Storage::delete($this->path);
         Storage::move($name.'temp.'.$ext, $this->path);
 
         FileService::addCover($this->path, $coverPath);
-
-
-        error_log('cover added');
 
         FileService::createAndNotify($this->path, $this->isPrivate, $this->guestId);
 

@@ -39,6 +39,8 @@ class MixFile implements ShouldQueue
 
         }catch (\Exception $e){
             error_log($e);
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
         } finally {
             Storage::delete($this->pathBg);
             Storage::delete($this->pathFg);

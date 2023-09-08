@@ -41,6 +41,8 @@ class Recorder implements ShouldQueue
             Storage::delete($this->path);
             Storage::delete($this->path2);
             error_log($e);
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
         }
 
         Storage::delete($this->path);

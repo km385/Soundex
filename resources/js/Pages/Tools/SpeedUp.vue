@@ -27,10 +27,13 @@ const tempoValue = ref(null)
 const isUploaded = ref(false)
 
 
-const fileToDownloadName = ref("")
+const fileToDownloadLink = ref("")
 const page = usePage()
 
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+
+const isError = ref(false)
+const error = ref("")
 
 onMounted(() => {
     console.log(guestId)
@@ -44,13 +47,25 @@ onMounted(() => {
 function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownloadName.value = event.fileName
+
+    if(event.fileName === "ERROR") {
+        error.value = "error has occurred"
+        isError.value = true
+    } else {
+        fileToDownloadLink.value = event.fileName
+    }
     isLoading.value = false
 }
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownloadName.value = event.fileName
+
+    if(event.fileName === "ERROR") {
+        error.value = "error has occurred"
+        isError.value = true
+    } else {
+        fileToDownloadLink.value = event.fileName
+    }
     isLoading.value = false
 }
 
@@ -103,7 +118,7 @@ function changeHandleStyles(region){
             <UploadFile @file="getFile" />
         </div>
 
-        <div v-if="isUploaded && !fileToDownloadName">
+        <div v-if="isUploaded && !fileToDownloadLink">
             <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
             <div class="flex flex-col items-start mt-10">
                 <div class="w-auto mb-3 mt-3">
@@ -122,11 +137,11 @@ function changeHandleStyles(region){
             </div>
         </div>
 
-        <div v-if="fileToDownloadName" class="text-white flex flex-col justify-center items-center h-screen">
+        <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
-            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadName = null">go back</button>
-            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadName"/>
-            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadName"/>
+            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
+            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
+            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
     </div>
 </template>

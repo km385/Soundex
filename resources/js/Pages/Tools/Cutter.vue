@@ -31,6 +31,9 @@ const uploadedFile = ref({})
 const isFileUploaded = ref(false)
 const fileToDownloadLink = ref("")
 
+const isError = ref(false)
+const error = ref("")
+
 const mainRegionData = reactive({
     start: 0,
     end: 0
@@ -61,16 +64,27 @@ onMounted(() => {
 function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownloadLink.value = event.fileName
+
+    if(event.fileName === "ERROR") {
+        error.value = "error has occurred"
+        isError.value = true
+    } else {
+        fileToDownloadLink.value = event.fileName
+    }
     isLoading.value = false
 }
 
 function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-    fileToDownloadLink.value = event.fileName
-    isLoading.value = false
 
+    if(event.fileName === "ERROR") {
+        error.value = "error has occurred"
+        isError.value = true
+    } else {
+        fileToDownloadLink.value = event.fileName
+    }
+    isLoading.value = false
 }
 
 async function onCutClicked(){
@@ -127,7 +141,6 @@ function getRegionData(data) {
 </script>
 
 <template>
-<!--    TODO: add change file button -->
     <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
 
         <div class="flex justify-center items-center h-screen" v-if="!isFileUploaded">
@@ -166,6 +179,9 @@ function getRegionData(data) {
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
             <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
+        </div>
+        <div v-if="isError">
+            <p>{{ error }}</p>
         </div>
     </div>
 

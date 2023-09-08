@@ -34,9 +34,15 @@ class SpeedUpFile implements ShouldQueue
      */
     public function handle(): void
     {
-        $currentCoverPath = FileService::extractCover($this->path);
+        try {
+            $currentCoverPath = FileService::extractCover($this->path);
+        } catch (\Exception $e) {
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->userId);
+            return;
+        }
 
 //        ffprobe -i .\song.mp3 -show_entries stream=sample_rate -of default=noprint_wrappers=1:nokey=1 -hide_banner -loglevel quiet
+        $sample_rate = null;
         try{
 
             $values = FFProbe::create()
@@ -49,7 +55,6 @@ class SpeedUpFile implements ShouldQueue
             $sample_rate = $json['streams'][0]['sample_rate'];
         } catch (\Exception $e){
             error_log($e);
-            return;
         }
 
         if(!$sample_rate){
@@ -67,7 +72,8 @@ class SpeedUpFile implements ShouldQueue
         } catch (\Exception $e){
             Storage::delete($this->path);
             error_log($e);
-            error_log('error');
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->userId);
+            return;
         }
         error_log('file sped up');
 

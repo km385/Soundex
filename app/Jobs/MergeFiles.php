@@ -56,8 +56,9 @@ class MergeFiles implements ShouldQueue
             error_log('ffmpeg done successfully');
 
         }catch (\Exception $e){
-            // TODO: when error clean up and notify user
             error_log($e);
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
         }
 
         foreach ($this->paths as $path){

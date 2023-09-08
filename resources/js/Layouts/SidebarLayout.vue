@@ -63,7 +63,6 @@ const userDropDown = ref(false)
 </script>
 
 <template>
-<!--    TODO: when unwrapping sidebar the text appear before the animation ends -->
     <div
         :class="{'w-48 transition-w duration-500': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed}"
         class="bg-[#2B2B2B] text-white flex flex-col fixed h-full">

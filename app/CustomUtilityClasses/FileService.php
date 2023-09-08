@@ -8,6 +8,7 @@ use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class FileService
@@ -34,9 +35,58 @@ class FileService
         }
     }
 
+    public static function errorNotify($error, $isPrivate, $userId): void
+    {
+        if($isPrivate){
+            error_log('creating private event');
+            event(new PrivateFileReadyToDownload($error, $userId));
+        } else {
+            error_log('creating public event');
+            event(new FileReadyToDownload($error, $userId));
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private static function hasCover($filePath): bool
+    {
+        try {
+            $FFProbe = FFProbe::create()
+                ->getFFProbeDriver()
+                ->command([
+                    '-v', 'error',
+                    '-select_streams', '1',
+                    '-show_entries', 'stream=codec_name:format_tags=cover_art',
+                    '-of', 'default=noprint_wrappers=1:nokey=1',
+                    Storage::path($filePath)
+                ]);
+            error_log($FFProbe);
+            if(empty($FFProbe)) {
+                error_log('hasCover: no cover present');
+                return false;
+            } else {
+                error_log('hasCover: cover exist');
+                return true;
+            }
+        } catch (\Exception $e) {
+            error_log('hasCover: ERROR');
+            throw $e;
+        }
+    }
+
+
+    /**
+     * @throws \Exception
+     */
     public static function extractCover($filePath): string
     {
         // TODO: continuing after catch might cause bugs, check if cover available with FFProbe
+        $hasCover = self::hasCover($filePath);
+        if(!$hasCover) {
+            return "";
+        }
+
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
         try {
@@ -48,7 +98,7 @@ class FileService
                 ->save($filename . '.jpg');
         } catch (\Exception $e) {
             error_log('error during extracting a cover');
-            return "";
+            throw $e;
         }
         return $filename . '.jpg';
     }
@@ -68,6 +118,7 @@ class FileService
         }
         // TODO: check other extensions
         // TODO: possibly convert any to jpg
+        // TODO: prohibit svg files ever making out of client
         if(in_array(strtolower(File::extension($coverPath)), ['webp', 'png'])) {
             FFMpeg::fromDisk('')
                 ->open($coverPath)
