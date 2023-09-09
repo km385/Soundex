@@ -71,6 +71,7 @@ class EditController extends Controller
         $file = TemporaryFile::where('token', $token)->first();
         $song = new Song();
         $song->name = 'tytul';
+        // TODO: path as file name or userId/path
         $song->songPath = $file->filePath;
         $user->songs()->save($song);
         error_log($user->id);

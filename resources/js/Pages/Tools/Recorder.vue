@@ -163,6 +163,11 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
             <DownloadTempFile :filename="'recording.mp3'" :token="downloadLink"/>
             <SaveToLibraryButton v-if=" page.props.auth.user" :file-link="downloadLink"/>
         </div>
+
+        <div v-if="isError">
+            <p>{{ error }}</p>
+        </div>
+
     </div>
 </template>
 

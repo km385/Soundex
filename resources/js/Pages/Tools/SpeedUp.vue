@@ -143,6 +143,11 @@ function changeHandleStyles(region){
             <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
+
+        <div v-if="isError">
+            <p>{{ error }}</p>
+        </div>
+
     </div>
 </template>
 

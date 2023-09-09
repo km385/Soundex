@@ -11,10 +11,20 @@ function onDrop(event) {
     if (event.dataTransfer.items) {
         const item = event.dataTransfer.items[0]
         if (item.kind === "file") {
-            uploadedFile.value = item.getAsFile()
+            const file = item.getAsFile()
+            if(checkIfAudioFile(file)) {
+                uploadedFile.value = file
+            } else {
+                alert("Please upload an audio file.");
+            }
         }
     } else {
-        uploadedFile.value = event.dataTransfer.files[0]
+        const file = event.dataTransfer.files[0]
+        if(checkIfAudioFile(file)) {
+            uploadedFile.value = file
+        } else {
+            alert("Please upload an audio file.");
+        }
     }
 }
 
@@ -30,8 +40,21 @@ function onClick(event) {
 function handleFileChange(event) {
     console.log('handle file input')
     if(event.target.files[0] !== undefined){
-        uploadedFile.value = event.target.files[0]
+        const file = event.target.files[0]
+        if(checkIfAudioFile(file)) {
+            uploadedFile.value = file
+        } else {
+            alert("Please upload an audio file.");
+        }
+
     }
+}
+
+// TODO: MIME type is determine based on extension, double check on the server (mime_content_type possibly)
+function checkIfAudioFile(file) {
+    console.log(file.type)
+    // Check the MIME type of the file
+    return file.type.startsWith("audio/");
 }
 
 watch(uploadedFile, (value) => {
