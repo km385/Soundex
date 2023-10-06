@@ -158,30 +158,33 @@ function downloadFile() {
 
 <template>
     <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
-        <div class="mb-6" v-if="!fileToDownloadLink">
-            <div class="mt-6">
+        <div class="mb-10" v-if="!fileToDownloadLink">
+            <div class="mt-10 flex justify-center items-center">
                 <UploadFile @file="getFile"/>
             </div>
 
+
+        </div>
+
+        <div class="p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded">
             <div v-if="isFileUploaded">
                 <button type="button" @click="onMergeClicked"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
                 </button>
             </div>
-        </div>
-
-        <div v-for="file in form.files" :key="file.name" v-if="!fileToDownloadLink">
-            <p>{{ file.name }}</p>
-            <div class="flex group mb-10">
-                <div style="width: 100%" class="mr-4">
-                    <Wavesurfer v-if="isFileUploaded" :file="file" :show-controls="false" :show-region="false"
-                                :id="getWaveformId(file.name)"/>
-                </div>
-                <div
-                    class="flex flex-col justify-between opacity-30 group-hover:opacity-100 transition-opacity duration-300">
-                    <button @click="onUpClicked(file.name)">up</button>
-                    <button @click="onDeleteClicked(file.name)">delete</button>
-                    <button @click="onDownClicked(file.name)">down</button>
+            <div v-for="file in form.files" :key="file.name" v-if="!fileToDownloadLink">
+                <p>{{ file.name }}</p>
+                <div class="flex group mb-10">
+                    <div style="width: 100%" class="mr-4">
+                        <Wavesurfer v-if="isFileUploaded" :file="file" :show-controls="false" :show-region="false"
+                                    :id="getWaveformId(file.name)"/>
+                    </div>
+                    <div
+                        class="flex flex-col justify-between opacity-30 group-hover:opacity-100 transition-opacity duration-300">
+                        <button @click="onUpClicked(file.name)">up</button>
+                        <button @click="onDeleteClicked(file.name)">delete</button>
+                        <button @click="onDownClicked(file.name)">down</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -189,7 +192,7 @@ function downloadFile() {
         <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
-            <DownloadTempFile :filename="'merged.mp3'" :token="fileToDownloadLink" :show-button="true"/>
+            <DownloadTempFile :filename="'merged.mp3'" :token="fileToDownloadLink"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
 

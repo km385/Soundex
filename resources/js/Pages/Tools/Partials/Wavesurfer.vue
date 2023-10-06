@@ -11,6 +11,16 @@ const ws = reactive({
 
 let regions = reactive({})
 
+const volumeValue = ref(0.1)
+watch(volumeValue, (value) => {
+    ws.wsInstance.setVolume(value)
+})
+
+const regionCheckboxValue = ref(false)
+watch(regionCheckboxValue, (value) => {
+
+})
+
 const props = defineProps({
     file: {
         type: File,
@@ -22,7 +32,7 @@ const props = defineProps({
     },
     showRegion: Boolean,
     showControls: Boolean,
-    secondRegion: Boolean
+    allowSecondRegion: Boolean
 })
 const emit = defineEmits(['regionCoords'])
 
@@ -36,10 +46,11 @@ onMounted( () => {
         waveColor: '#FECEAB',
         progressColor: '#383351',
         cursorColor: 'black',
-        normalize: false,
+        normalize: true,
         cursorWidth: 5,
         url: URL.createObjectURL(props.file)
     })
+    ws.wsInstance.setVolume(0.1)
 
     if(props.showRegion){
         regions = ws.wsInstance.registerPlugin(RegionsPlugin.create())
@@ -55,10 +66,10 @@ onMounted( () => {
         changeHandleStyles(region)
     }
 
-    if(props.secondRegion){
-        // when user goes back from download screen and had second region selected
-        addSecondRegion()
-    }
+    // if(regionCheckboxValue.value){
+    //     // when user goes back from download screen and had second region selected
+    //     addSecondRegion()
+    // }
 
 
     ws.wsInstance.on("audioprocess", () => {
@@ -94,12 +105,12 @@ onMounted( () => {
             }
             emit('regionCoords', regionData)
 
-            if(props.secondRegion){
-                regions.getRegions()[1].setOptions({
-                    start: duration * 0.3,
-                    end: duration * 0.4
-                })
-            }
+            // if(regionCheckboxValue.value){
+            //     regions.getRegions()[1].setOptions({
+            //         start: duration * 0.3,
+            //         end: duration * 0.4
+            //     })
+            // }
         }
     })
 
@@ -132,12 +143,13 @@ watch(() => props.file, (value) => {
     ws.wsInstance.load(URL.createObjectURL(blob))
 })
 
-watch(() => props.secondRegion, (value) => {
+watch(regionCheckboxValue, (value) => {
     if(value){
         addSecondRegion()
     } else {
         regions.getRegions()[1].remove()
     }
+    console.log(regions.getRegions())
 })
 
 function addSecondRegion() {
@@ -176,7 +188,7 @@ function changeHandleStyles(region){
     <div :id="id"></div>
     <div v-if="showControls">
         <div class="flex justify-between">
-<!--            <input type="text" v-model="ws.currentTime" class="border-none w-auto">-->
+            <!--            <input type="text" v-model="ws.currentTime" class="border-none w-auto">-->
             <p>{{ ws.currentTime }}</p>
             <p>{{ ws.durationTime }}</p>
         </div>
@@ -187,6 +199,11 @@ function changeHandleStyles(region){
             <button type="button" @click="onStopClicked"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Stop
             </button>
+            <input type="range" min="0" max="1" step="0.01" class="slider" id="myRange" v-model="volumeValue">
+            <div class="inline" v-if="allowSecondRegion">
+                <input id="regionCheckBox" type="checkbox" v-model="regionCheckboxValue" class="ml-2 form-checkbox accent-blue-600 transition duration-150 ease-in-out focus:ring focus:ring-blue-400" />
+                <label class="ml-2" for="regionCheckBox">Second Region</label>
+            </div>
         </div>
     </div>
 

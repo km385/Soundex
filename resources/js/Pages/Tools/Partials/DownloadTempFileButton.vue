@@ -9,11 +9,19 @@
         <p class="w-full ml-3">BPM found in your song:{{ token }}</p>
     </div>
 </template>
-  
+
 <script setup>
 import axios from "axios";
 
-const props = defineProps(['token', 'filename', 'showButton']);
+const props = defineProps({
+    token: {
+        type: String
+    }, filename: {
+        type: String
+    }, showButton: {
+        type: Boolean,
+        default: true
+    }});
 
 function downloadFile() {
     console.log(props.token);

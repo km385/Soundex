@@ -130,7 +130,7 @@ function updateTitle(e) {
         </div>
 
         <!--    usunieto form.submit i dziala-->
-        <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-2 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0" id="form">
+        <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-2 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
             <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
             <InputFieldWithLabel label="Artist" @update:model-value="form.artist = $event"/>
             <InputFieldWithLabel label="Genre" @update:model-value="form.genre = $event"/>
@@ -157,12 +157,12 @@ function updateTitle(e) {
                 <!--            </div>-->
             </div>
 
+            <div v-if="isFileUploaded && !downloadLink">
+                <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
+                <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+            </div>
         </div>
 
-        <div v-if="isFileUploaded && !downloadLink">
-            <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
-            <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
-        </div>
         <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>

@@ -144,7 +144,7 @@ class FileService
                 ->addFilter('-metadata:s:v', "title='Album cover'")
                 ->addFilter('-metadata:s:v', "comment='Cover (front)'");
 
-            if (strtolower(File::extension($filePath)) === "flac") {
+            if (strtolower(File::extension($filePath)) === "flac" || strtolower(File::extension($filePath)) === "m4a") {
                 $ffmpeg->addFilter('-disposition:v', 'attached_pic');
             }
             $ffmpeg->save('output.'.strtolower(File::extension($filePath)));

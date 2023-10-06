@@ -124,11 +124,11 @@ function onDeleteClicked(name, array) {
 
 <template>
     <div class="max-w-3xl mx-auto text-white">
-        <div class="flex justify-center items-center" v-if="!downloadLink">
+        <div class="flex justify-center items-center mt-10" v-if="!downloadLink">
             <UploadFile @file="getFile" />
         </div>
 
-        <div v-if="isFileUploaded && !downloadLink">
+        <div v-if="isFileUploaded && !downloadLink" class="p-6 bg-gray-800 rounded-lg shadow-lg">
             <div v-for="(file, index) in uploadedFiles" :key="file.name">
                 <div class="flex group mb-10">
                     <div style="width: 100%">
@@ -156,7 +156,7 @@ function onDeleteClicked(name, array) {
         <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
-            <DownloadTempFileButton :token="downloadLink" :filename="'mixed_file.mp3'" :show-button="true"/>
+            <DownloadTempFileButton :token="downloadLink" :filename="'mixed_file.mp3'"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="downloadLink" />
         </div>
 

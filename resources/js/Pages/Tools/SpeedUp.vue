@@ -118,7 +118,13 @@ function changeHandleStyles(region){
             <UploadFile @file="getFile" />
         </div>
 
-        <div v-if="isUploaded && !fileToDownloadLink">
+        <div v-if="isUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+            <button type="button"  @click="isUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+
+            <div class="my-4">
+                <p class="text-lg">File Name: {{ uploadedFile.name }}</p>
+                <p class="text-sm">File Size: {{ (uploadedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+            </div>
             <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
             <div class="flex flex-col items-start mt-10">
                 <div class="w-auto mb-3 mt-3">
@@ -132,7 +138,6 @@ function changeHandleStyles(region){
                 <button @click="onUploadButtonClick" class="bg-blue-400 text-white rounded-lg py-2 px-4 mt-5 mr-3 hover:bg-blue-500 mb-3">
                     Upload
                 </button>
-                <button type="button"  @click="isUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
 
             </div>
         </div>
@@ -140,7 +145,7 @@ function changeHandleStyles(region){
         <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
-            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink" :show-button="true"/>
+            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
 

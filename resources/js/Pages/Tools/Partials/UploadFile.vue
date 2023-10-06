@@ -63,15 +63,18 @@ watch(uploadedFile, (value) => {
 </script>
 
 <template>
-    <div
-        class="flex items-center justify-center w-[300px] h-[300px] border-[5px] border-dashed border-blue-500 "
-        @click="onClick" @dragover="onDragOver" @drop="onDrop">
-        <div class="flex flex-col items-center">
-            <img class="w-1/2 h-1/2 mb-3" src="../../../../images/file_icon.webp" alt="file image">
-            <p class="text-blue-700 font-bold">Upload new file</p>
+    <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
+
+        <div
+            class="flex items-center justify-center w-[300px] h-[300px] border-[5px] border-dashed border-blue-500 "
+            @click="onClick" @dragover="onDragOver" @drop="onDrop">
+            <div class="flex flex-col items-center">
+                <img class="w-1/2 h-1/2 mb-3" src="../../../../images/file_icon.webp" alt="file image">
+                <p class="text-blue-700 font-bold">Upload new file</p>
+            </div>
         </div>
+        <input ref="fileInput" class="hidden" type="file" name="fileInput" id="fileInput" @change="handleFileChange">
     </div>
-    <input ref="fileInput" class="hidden" type="file" name="fileInput" id="fileInput" @change="handleFileChange">
 </template>
 
 <style scoped>
