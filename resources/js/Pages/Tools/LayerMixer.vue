@@ -5,10 +5,10 @@ const isLoading = ref(false)
 </script>
 
 <script setup>
-import UploadFile from "@/Pages/Tools/UploadFile.vue";
-import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
-import DownloadTempFileButton from "@/Pages/Tools/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
+import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
+import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
+import DownloadTempFileButton from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
@@ -79,7 +79,7 @@ async function onMergeClicked(){
 
     try {
         isLoading.value = true
-        const res = await axios.post('/layermixer', formData)
+        const res = await axios.post('/tools/layermixer', formData)
         console.log(res.data.message)
     } catch (err) {
         console.log(err)
@@ -156,7 +156,7 @@ function onDeleteClicked(name, array) {
         <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
-            <DownloadTempFileButton :token="downloadLink" :filename="'mixed_file.mp3'"/>
+            <DownloadTempFileButton :token="downloadLink" :filename="'mixed_file.mp3'" :show-button="true"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="downloadLink" />
         </div>
 

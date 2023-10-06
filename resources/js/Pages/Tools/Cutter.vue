@@ -5,18 +5,16 @@ const isLoading = ref(false)
 </script>
 
 <script setup>
-import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
-import {nextTick, onMounted, reactive, ref, watch} from "vue";
+import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
+import {onMounted, reactive, ref, watch} from "vue";
 import axios from "axios";
-import UploadFile from "@/Pages/Tools/UploadFile.vue";
-import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
+import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import {usePage} from "@inertiajs/vue3";
 import { v4 as uuidv4 } from 'uuid';
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
-import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
-import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
+import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import LoadingScreen from "@/Pages/Tools/LoadingScreen.vue";
 
 // component data => layout props
 // choose manually persistent layout and give it its props and children
@@ -109,7 +107,7 @@ async function onCutClicked(){
 
     try {
         isLoading.value = true
-        const res = await axios.post('/cutFile', formData)
+        const res = await axios.post('/tools/cutFile', formData)
         console.log(res.data.message)
     }catch (e) {
         console.log(e)
@@ -177,7 +175,7 @@ function getRegionData(data) {
         <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
-            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
+            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink" :show-button="true"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
         <div v-if="isError">

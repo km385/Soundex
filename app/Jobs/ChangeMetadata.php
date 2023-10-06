@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\CustomUtilityClasses\FileService;
+use App\Http\UtilityClasses\FileService;
 use FFMpeg\Filters\Audio\AudioFilters;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;

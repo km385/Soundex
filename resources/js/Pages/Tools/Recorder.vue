@@ -5,9 +5,15 @@ const isLoading = ref(false)
 </script>
 
 <script setup>
-import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
+import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import {onMounted, ref} from "vue";
-import UploadFile from "@/Pages/Tools/UploadFile.vue";
+import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
+import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
+import {v4 as uuidv4} from "uuid";
+import {usePage} from "@inertiajs/vue3";
+import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
 defineOptions({
     layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
@@ -121,7 +127,7 @@ async function onSend(){
 
     try {
         isLoading.value = true
-        const result = await axios.post('/recorder', formData)
+        const result = await axios.post('recorder', formData)
         console.log(result)
     }catch (error){
         console.log(`ERROR: ${error}`)
@@ -133,13 +139,7 @@ function getFile(file) {
     backgroundFile.value = file
     isFileUploaded.value = true
 }
-import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
-import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
-import {v4 as uuidv4} from "uuid";
-import {usePage} from "@inertiajs/vue3";
-import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
-import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+
 </script>
 
 <template>
@@ -160,7 +160,7 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
         <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
-            <DownloadTempFile :filename="'recording.mp3'" :token="downloadLink"/>
+            <DownloadTempFile :filename="'recording.mp3'" :token="downloadLink" :show-button="true"/>
             <SaveToLibraryButton v-if=" page.props.auth.user" :file-link="downloadLink"/>
         </div>
 
@@ -170,7 +170,3 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
     </div>
 </template>
-
-<style scoped>
-
-</style>

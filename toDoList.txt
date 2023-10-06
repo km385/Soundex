@@ -1,0 +1,59 @@
+## Small Tasks:
+    In the layout, change images to paths.
+    Add missing fields in temporary files; change files to songs for clarity.
+    Add missing models and controllers for playlists, songs, and playlistsInSongs.
+    Add functionality to the save button in the after-tool.
+    Make sure long nicknames display properly on the sidebar.
+    Add converter from country codes into proper country names (base on ISO 3166-1 alpha-3).
+    Add more fields to users, like birth date, phone number or avatars.
+    Split songs, temporary song and covers into different disks with proper names for clarity.
+    Possibly split utility classes into separate modules to improve readability and align with SOLID principles.
+    Ensure proper webpage names are set throughout the entire project. 
+    Add the rest of metadata fields to Song migration and model.
+    Take into account genre tags (see en.wikipedia.org/wiki/List_of_ID3v1_genres).
+    Separate views into the right directories based on usage and hierarchy for clarity.
+    Replace direct paths (e.g., src="../../../../images/") with {{ resource_path('') }} instead.
+    Fix the recorder.
+    Add basic song cover to be used when no is available and add needed exception to gitignore.    
+    Look into wave-based beat detection and compare it to the current BPM detection (see github.com/mziccard/scala-audio-file/blob/master/src/main/scala/me/mziccard/audio/bpm/WaveletBPMDetector.scala).
+    Implement a warrning window before user removes a song from his database.
+    Move context menu into separate component to ensure clarity and no code redundancy.
+    Set bigger invisible boundaries on context menu button in grid view to ensure easy usage.
+    Add BMP field to database and save it directly with the song.
+
+## Big Tasks:
+    Add an automatic temporary song remover.
+    Improve tools songs player:
+        Add volume control.
+        Improve style, make visualization smoother.
+        Stop songs from looping.
+        Determine the appropriate action when boundaries are modified during song playback.
+        Ensure consistency in darkening of unneeded portions of song in visualization.
+    User Profile Module
+        Create a profile screen with user information and statistics.
+        create a profile editor screen.
+        Implement a profile remover button.
+    Admin Module
+        Implement authorization.
+        Create an admin layout displaying other users' information with options to remove files and change status.
+        Create admin table/model/controller.
+        Implement the entire site's statistics.
+    Help Screen Module
+        Develop a help screen layout, either as a Q&A or review system for logged-in users.
+        Possibly sort the reviews based on language and votes, and create a voting system.
+    Language Module: Create and ensure consistent functionality across every layout.
+    High-Contrast Module: Create and ensure consistent functionality across every layout.
+    Beautify 💅: Create and standardize the style throughout the entire project.
+    Clean up: Remove instances of code from the original Laravel source code and unneeded snippets throughout the entire project.
+    Phone Layout: Create proper layout for mobile users.
+    Make the player persistent across whole project even when using tools (see https://inertiajs.com/pages#persistent-layouts).
+
+## Bugs:
+    Context menus do not show when the sidebar is folded.
+    The profile pop-out doesn't hide itself when folding the sidebar.
+    Some pages are missing names.
+    Tools file upload square is not consistent.
+    Grid in database displays over context menu from sidebar.
+    Opening context menu in one view type than changing it breaks it.
+    User has to press id twice to sort it for the first time as sorting by asc does nothning
+    Recorder and Layer Mix crash when not provided with sufficient data.

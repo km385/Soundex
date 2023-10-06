@@ -8,14 +8,14 @@ const isLoading = ref(false)
 
 import {onMounted, ref} from "vue";
 import axios from "axios";
-import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
-import UploadFile from "@/Pages/Tools/UploadFile.vue";
+import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
+import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
-import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
+import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 
 defineOptions({
     layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
@@ -94,7 +94,7 @@ async function onMergeClicked(){
 
     try {
         isLoading.value = true
-        const res = await axios.post('/merge', formData)
+        const res = await axios.post('/tools/merge', formData)
         console.log(res.data.message)
     } catch (e) {
         console.log(e)
@@ -189,7 +189,7 @@ function downloadFile() {
         <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
-            <DownloadTempFile :filename="'merged.mp3'" :token="fileToDownloadLink"/>
+            <DownloadTempFile :filename="'merged.mp3'" :token="fileToDownloadLink" :show-button="true"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
 

@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\CustomUtilityClasses\FileService;
+use App\Http\UtilityClasses\FileService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;

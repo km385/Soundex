@@ -6,14 +6,14 @@ const isLoading = ref(false)
 
 <script setup>
 
-import UploadFile from "@/Pages/Tools/UploadFile.vue";
+import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import {onMounted, ref} from "vue";
-import Wavesurfer from "@/Pages/Tools/Wavesurfer.vue";
+import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import {usePage} from "@inertiajs/vue3";
 import { v4 as uuidv4 } from 'uuid';
 import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
-import DownloadTempFile from "@/Pages/Tools/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "@/Pages/Tools/SaveToLibraryButton.vue";
+import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
@@ -91,7 +91,7 @@ async function onUploadButtonClick() {
 
     try {
         isLoading.value = true
-        const res = await axios.post('/speedup', formData)
+        const res = await axios.post('/tools/speedup', formData)
         console.log(res.data.message)
     } catch (e) {
         console.log(e)
@@ -140,7 +140,7 @@ function changeHandleStyles(region){
         <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
             <p >You can now download your new file</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
-            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
+            <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink" :show-button="true"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
         </div>
 

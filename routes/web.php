@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\EditController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SongController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\DownloadController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,47 +22,65 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
-// test route
-Route::post('/test', [EditController::class, 'test']);
-
 Route::get('/files/{fileName}', [EditController::class, 'downloadFile'])->name('downloadFile');
+
 Route::post('/savetolibrary', [EditController::class, 'saveToLibrary']);
 
-Route::get('/cutter', function () {
-    return Inertia::render('Tools/Cutter');
-})->name('cutter');
-Route::post('/cutFile', [EditController::class, 'cut']);
+// Tools routes
+Route::prefix('tools')->name('tools.')->group(function () {
 
-Route::get('/merge', function () {
-    return Inertia::render('Tools/Merge');
-})->name('merge');
-Route::post('/merge', [EditController::class, 'merge']);
+    Route::get('/', function () {
+        return redirect()->route('tools.cutter');
+    });
 
-Route::get('/speedup', function () {
-    return Inertia::render('Tools/SpeedUp');
-})->name('speedup');
-Route::post('/speedup', [EditController::class, 'speedup']);
+    Route::get('/cutter', function () {
+        return Inertia::render('Tools/Cutter');
+    })->name('cutter');
+    Route::post('/cutFile', [EditController::class, 'cut']);
 
-Route::get('/recorder', function () {
-    return Inertia::render('Tools/Recorder');
-})->name('recorder');
-Route::post('/recorder', [EditController::class, 'recorder']);
+    Route::get('/merge', function () {
+        return Inertia::render('Tools/Merge');
+    })->name('merge');
+    Route::post('/merge', [EditController::class, 'merge']);
 
-Route::get('/metachange', function () {
-    return Inertia::render('Tools/MetaChange');
-})->name('metaChange');
-Route::post('/metachange', [EditController::class, 'metachange']);
+    Route::get('/speedup', function () {
+        return Inertia::render('Tools/SpeedUp');
+    })->name('speedup');
+    Route::post('/speedup', [EditController::class, 'speedup']);
 
-Route::get('/layermixer', function () {
-    return Inertia::render('Tools/LayerMixer');
-})->name('layerMixer');
-Route::post('/layermixer', [EditController::class, 'layerMixer']);
+    Route::get('/recorder', function () {
+        return Inertia::render('Tools/Recorder');
+    })->name('recorder');
+    Route::post('/recorder', [EditController::class, 'recorder']);
 
+    Route::get('/tageditor', function () {
+        return Inertia::render('Tools/TagEditor');
+    })->name('tagEditor');
+    Route::post('/tageditor', [EditController::class, 'tageditor']);
+
+    Route::get('/layermixer', function () {
+        return Inertia::render('Tools/LayerMixer');
+    })->name('layerMixer');
+    Route::post('/layermixer', [EditController::class, 'layerMixer']);
+
+    Route::get('/bpmFinder', function () {
+        return Inertia::render('Tools/BPMFinder');
+    })->name('BPM Finder');
+    Route::post('/bpmFinder', [EditController::class, 'bpmFinder']);
+});
+
+//Database routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/database', [SongController::class, 'index'])->name('Database');
+    Route::delete('/database/songs/{song}', [SongController::class, 'destroy'])->name('Database.destroy');
+    
+});
+//
+Route::post('/database/songs/{songId}', [SongController::class, 'post']);
+Route::get('/musicplayer-song', [DownloadController::class, 'download'])->name('musicplayer-song');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -73,4 +92,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

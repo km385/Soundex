@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\CustomUtilityClasses\FileService;
+use App\Http\UtilityClasses\FileService;
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
 use App\Models\TemporaryFile;

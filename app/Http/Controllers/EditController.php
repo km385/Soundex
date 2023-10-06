@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\CustomUtilityClasses\FileService;
-use App\Events\FileReadyToDownload;
+use App\Http\UtilityClasses\FileService;
 use App\Jobs\ChangeMetadata;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
 use App\Jobs\MixFile;
 use App\Jobs\Recorder;
 use App\Jobs\SpeedUpFile;
+use App\Jobs\BPMFinder;
 use App\Models\Song;
 use App\Models\TemporaryFile;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use function Laravel\Prompts\error;
 
 class EditController extends Controller
 {
@@ -106,7 +103,7 @@ class EditController extends Controller
         return \response()->json(['message' => 'success']);
     }
 
-    public function metachange(): JsonResponse
+    public function tagEditor(): JsonResponse
     {
         $user = Request::user();
 
@@ -271,5 +268,38 @@ class EditController extends Controller
         MergeFiles::dispatch($paths, $guestId, $isPrivate);
 
         return \response()->json(['message' => 'processing started']);
+    }
+    public function bpmFinder(): JsonResponse
+    {
+        $user = Request::user();
+
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
+        }
+
+        $guestId = Request::input('guestId');
+
+        if(Request::hasFile('fileRef')) {
+            $audioFile = Request::file('fileRef');
+            $audioPath = Storage::putFile($audioFile);
+            error_log($audioPath);
+        } else {
+            return response()->json(['error' => 'file is required'], 400);
+        }
+
+        if (Request::hasFile('coverRef')) {
+            $coverFile = Request::file('coverRef');
+            $coverPath = Storage::putFile($coverFile);
+        } else {
+            $coverPath = null;
+        }
+
+        error_log("prepering");
+
+        BPMFinder::dispatch($audioPath, $coverPath, $guestId, $isPrivate);
+
+        return response()->json(['message' => 'success']);
     }
 }
