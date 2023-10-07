@@ -1,16 +1,15 @@
 <script setup>
-import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import {onMounted, reactive, ref, watch} from "vue";
 import axios from "axios";
-import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import {usePage} from "@inertiajs/vue3";
 import { v4 as uuidv4 } from 'uuid';
-import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
-import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
-import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
+import {subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
-
+import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
+import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
+import LoadingScreen from "./Partials/LoadingScreen.vue";
+import Wavesurfer from "./Partials/Wavesurfer.vue";
+import UploadFile from "./Partials/UploadFile.vue";
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function

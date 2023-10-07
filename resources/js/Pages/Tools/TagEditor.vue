@@ -1,21 +1,16 @@
-<script>
-import {ref} from "vue";
-
-</script>
-
 <script setup>
-import DownloadTempFileButton from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
-import {subToPrivate, subToChannel} from "@/subscriptions/subs.js";
+import {subToPrivate, subToChannel} from "@/Subscriptions/subs.js";
 import {v4 as uuidv4} from "uuid";
-import {useForm, usePage} from "@inertiajs/vue3";
-import {onMounted, ref, watch} from "vue";
+import {usePage} from "@inertiajs/vue3";
+import {onMounted, ref} from "vue";
 import axios from "axios";
-import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
-
-import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
-import InputFieldWithLabel from "@/Components/InputFieldWithLabel.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
+import UploadFile from "./Partials/UploadFile.vue";
+import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
+import InputFieldWithLabel from "./Partials/InputFieldWithLabel.vue";
+import LoadingScreen from "./Partials/LoadingScreen.vue";
+
 defineOptions({
     layout: SidebarLayout
 })

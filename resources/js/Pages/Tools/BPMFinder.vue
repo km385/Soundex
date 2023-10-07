@@ -1,24 +1,21 @@
-<script>
-import { ref } from "vue";
-const isLoading = ref(false)
-</script>
-
 <script setup>
-import DownloadTempFileButton from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
-import { subToPrivate, subToChannel } from "@/subscriptions/subs.js";
 import { v4 as uuidv4 } from "uuid";
 import { usePage } from "@inertiajs/vue3";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
-import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
-import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
+import { subToPrivate, subToChannel } from "@/Subscriptions/subs.js";
+import UploadFile from "./Partials/UploadFile.vue";
+import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+import LoadingScreen from "./Partials/LoadingScreen.vue";
 
 defineOptions({
-    layout: (h, page) => h(SidebarLayout, { isLoading: isLoading.value }, () => page)
+    layout: SidebarLayout
 })
+
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const isLoading = ref(false);
 const fileUploaded = ref({})
 const isFileUploaded = ref(false)
 const downloadLink = ref("")
@@ -96,6 +93,7 @@ function getFile(file) {
 
 </script>
 <template>
+    <loading-screen v-if="isLoading" />
     <div class="max-w-3xl mx-auto" v-if="!isLoading">
         <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
             <UploadFile @file="getFile" />

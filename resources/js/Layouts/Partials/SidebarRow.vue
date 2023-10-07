@@ -19,7 +19,7 @@
     })
 
     const url = computed(() => {
-        return new URL(`../../images/${props.icon}`, import.meta.url)
+        return new URL(`../../../images/${props.icon}`, import.meta.url)
     })
 
 </script>

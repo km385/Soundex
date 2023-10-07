@@ -11,7 +11,7 @@ use App\Jobs\Recorder;
 use App\Jobs\SpeedUpFile;
 use App\Jobs\BPMFinder;
 use App\Models\Song;
-use App\Models\TemporaryFile;
+use App\Models\TemporarySong;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -36,7 +36,7 @@ class EditController extends Controller
             error_log('expired url');
             return response()->json(['message' => 'expired url'], 500);
         }
-        $file = TemporaryFile::where('token', $token)->first();
+        $file = TemporarySong::where('token', $token)->first();
         if($file) {
             $filePath = $file->filePath;
             error_log($filePath);
@@ -65,7 +65,7 @@ class EditController extends Controller
         error_log('valid');
         $parts = explode("?", $link);
         $token = $parts[0];
-        $file = TemporaryFile::where('token', $token)->first();
+        $file = TemporarySong::where('token', $token)->first();
         $song = new Song();
         $song->name = 'tytul';
         // TODO: path as file name or userId/path

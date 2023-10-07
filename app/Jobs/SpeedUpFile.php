@@ -3,17 +3,12 @@
 namespace App\Jobs;
 
 use App\Http\UtilityClasses\FileService;
-use App\Events\FileReadyToDownload;
-use App\Events\PrivateFileReadyToDownload;
-use App\Models\TemporaryFile;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 

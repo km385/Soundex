@@ -2,15 +2,11 @@
 
 import { ref, provide} from "vue";
 import { Link, usePage } from '@inertiajs/vue3';
-//import NavLink from "@/Components/NavLink.vue";
-import SidebarRow from "@/Components/SidebarRow.vue";
-import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
+import SidebarRow from "./Partials/SidebarRow.vue";
 
 const page = usePage()
-
 const isSidebarCollapsed = ref(false);
 const onClick = () => isSidebarCollapsed.value = !isSidebarCollapsed.value;
-
 
 const isToolsPickerExpanded = ref(false)
 const toolsMenu = {

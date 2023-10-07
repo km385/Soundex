@@ -14,11 +14,11 @@
 </template>
 
 <script setup>
-import DisplaySelector from '@/Pages/Database/Partials/DisplaySelector.vue';
+import DisplaySelector from './Partials/DisplaySelector.vue';
 import { ref, inject } from 'vue';
 import DatabaseDashboard from '@/Pages/Database/DatabaseDashboard.vue';
-import MediaPlayer from '@/Pages/Database/Partials/MusicPlayer.vue';
-import SongQueue from '@/Pages/Database/Partials/SongQueue.vue';
+import MediaPlayer from './Partials/MusicPlayer.vue';
+import SongQueue from './Partials/SongQueue.vue';
 
 defineProps({
     songs: Array,

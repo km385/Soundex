@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class TemporaryFile extends Model
+class TemporarySong extends Model
 {
     use HasFactory;
 

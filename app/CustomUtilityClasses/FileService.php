@@ -4,7 +4,7 @@ namespace App\CustomUtilityClasses;
 
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
-use App\Models\TemporaryFile;
+use App\Models\TemporarySong;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -15,7 +15,7 @@ class FileService
 {
     public static function createAndNotify($path, $isPrivate, $userId): void
     {
-        $tempFile = TemporaryFile::create(['filePath' => $path]);
+        $tempFile = TemporarySong::create(['filePath' => $path]);
 
         $temporaryUrl = URL::temporarySignedRoute(
             'downloadFile', // Route name

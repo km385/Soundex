@@ -14,8 +14,8 @@
 </template>
 
 <script setup>
-import SongGrid from '@/Pages/Database/Partials/SongGrid.vue';
-import SongList from '@/Pages/Database/Partials/SongList.vue';
+import SongGrid from './Partials/SongGrid.vue';
+import SongList from './Partials/SongList.vue';
 
 const {songs,selectedDisplay } = defineProps({
   songs: Array,

@@ -1,21 +1,14 @@
-<script>
-import {ref} from "vue";
-
-</script>
-
 <script setup>
-import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
-
 import {onMounted, ref} from "vue";
-import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
+import {v4 as uuidv4 } from 'uuid';
 import {usePage} from "@inertiajs/vue3";
-import { v4 as uuidv4 } from 'uuid';
-import CustomAuthenticatedLayout from "@/Layouts/CustomAuthenticatedLayout.vue";
-import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
-import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
+import {subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
+import Wavesurfer from "./Partials/Wavesurfer.vue";
+import UploadFile from "./Partials/UploadFile.vue";
+import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
+import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
+import LoadingScreen from "./Partials/LoadingScreen.vue";
 defineOptions({
     layout: SidebarLayout
 })
