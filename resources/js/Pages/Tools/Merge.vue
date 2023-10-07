@@ -1,12 +1,11 @@
 <script>
 import {ref} from "vue";
 
-const isLoading = ref(false)
 </script>
 
 <script setup>
-
 import {onMounted, ref} from "vue";
+
 import axios from "axios";
 import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
@@ -16,15 +15,17 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
-
+import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 defineOptions({
-    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+    layout: SidebarLayout
 })
+
 const isFileUploaded = ref(false)
 const fileToDownloadLink = ref(null)
-
 const page = usePage()
+
 let guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const isLoading = ref(false)
 
 const form = ref({
     files: [],
@@ -157,6 +158,8 @@ function downloadFile() {
 </script>
 
 <template>
+    <loading-screen v-if="isLoading" />
+
     <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
         <div class="mb-10" v-if="!fileToDownloadLink">
             <div class="mt-10 flex justify-center items-center">
@@ -166,7 +169,7 @@ function downloadFile() {
 
         </div>
 
-        <div class="p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded">
+        <div class="p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded && !fileToDownloadLink">
             <div v-if="isFileUploaded">
                 <button type="button" @click="onMergeClicked"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge

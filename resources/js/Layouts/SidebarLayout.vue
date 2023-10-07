@@ -49,12 +49,6 @@ const langMenu = {
     },
 
 }
-const props = defineProps({
-    isLoading: {
-        type: Boolean,
-        required: true
-    }
-})
 
 const userDropDown = ref(false)
 provide('isSidebarCollapsed', isSidebarCollapsed);
@@ -214,7 +208,6 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
     <!--    Background color set in app.blade.php-->
     <div
         :class="{ 'ml-48 transition-w duration-500': !isSidebarCollapsed, 'ml-20 transition-w duration-500': isSidebarCollapsed }">
-        <LoadingScreen v-if="isLoading" :is-collapsed="isSidebarCollapsed" />
         <div class="flex justify-center h-screen">
             <div class="w-screen">
                 <slot />

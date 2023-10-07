@@ -1,12 +1,11 @@
 <script>
 import {ref} from "vue";
 
-const isLoading = ref(false)
 </script>
 
 <script setup>
-
 import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
+
 import {onMounted, ref} from "vue";
 import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import {usePage} from "@inertiajs/vue3";
@@ -16,21 +15,22 @@ import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue"
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-
+import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 defineOptions({
-    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+    layout: SidebarLayout
 })
 
 const uploadedFile = ref({})
+
 const speedValue = ref(null)
 const tempoValue = ref(null)
 const isUploaded = ref(false)
-
-
 const fileToDownloadLink = ref("")
-const page = usePage()
 
+
+const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const isLoading = ref(false)
 
 const isError = ref(false)
 const error = ref("")
@@ -113,6 +113,8 @@ function changeHandleStyles(region){
 </script>
 
 <template>
+    <loading-screen v-if="isLoading" />
+
     <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
         <div v-if="!isUploaded" class="flex justify-center items-center h-screen">
             <UploadFile @file="getFile" />

@@ -1,7 +1,6 @@
 <script>
 import {ref} from "vue";
 
-const isLoading = ref(false)
 </script>
 
 <script setup>
@@ -11,18 +10,20 @@ import {v4 as uuidv4} from "uuid";
 import {useForm, usePage} from "@inertiajs/vue3";
 import {onMounted, ref, watch} from "vue";
 import axios from "axios";
-
 import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
+
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import InputFieldWithLabel from "@/Components/InputFieldWithLabel.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-
+import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 defineOptions({
-    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+    layout: SidebarLayout
 })
-const page = usePage()
 
+const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const isLoading = ref(false);
+
 const fileUploaded = ref({})
 const coverUploaded = ref({})
 const coverUrl = ref("")
@@ -124,13 +125,20 @@ function updateTitle(e) {
 
 </script>
 <template>
+    <loading-screen v-if="isLoading" />
+
     <div class="max-w-3xl mx-auto" v-if="!isLoading">
         <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
             <UploadFile @file="getFile"/>
         </div>
 
         <!--    usunieto form.submit i dziala-->
+
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-2 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
+            <div class="my-4 lg:col-span-2 text-white">
+                <p class="text-lg">File Name: {{ fileUploaded.name }}</p>
+                <p class="text-sm">File Size: {{ (fileUploaded.size / 1024 / 1024).toFixed(2) }} MB</p>
+            </div>
             <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
             <InputFieldWithLabel label="Artist" @update:model-value="form.artist = $event"/>
             <InputFieldWithLabel label="Genre" @update:model-value="form.genre = $event"/>

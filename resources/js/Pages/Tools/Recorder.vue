@@ -1,9 +1,3 @@
-<script>
-import {ref} from "vue";
-
-const isLoading = ref(false)
-</script>
-
 <script setup>
 import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import {onMounted, ref} from "vue";
@@ -14,16 +8,18 @@ import {usePage} from "@inertiajs/vue3";
 import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-
+import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 defineOptions({
-    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+    layout: SidebarLayout
 })
+
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const isLoading = ref(false)
 
 const recordingFile = ref({})
 const isRecorded = ref(false)
-const backgroundFile = ref(null)
+const backgroundFile = ref({})
 const isFileUploaded = ref(false)
 
 const downloadLink = ref("")
@@ -143,18 +139,39 @@ function getFile(file) {
 </script>
 
 <template>
+    <loading-screen v-if="isLoading" />
+
     <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
         <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
             <UploadFile @file="getFile" />
         </div>
 
-        <div v-if="isFileUploaded && !downloadLink">
-            <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
-            <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
-            <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
+        <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+            <div class="my-4">
+                <p class="text-lg">File Name: {{ backgroundFile.name }}</p>
+                <p class="text-sm">File Size: {{ (backgroundFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+            </div>
+            <Wavesurfer v-if="isFileUploaded" :file="backgroundFile" :show-controls="true" :id="'background'" />
 
-            <Wavesurfer v-if="isRecorded" :file="recordingFile" :show-controls="true"/>
+            <div v-if="isRecorded">
+                <hr class="mt-10 border-blue-600">
+                <div class="my-4">
+                    <p class="text-lg">File Name: {{ recordingFile.name }}</p>
+                    <p class="text-sm">File Size: {{ (recordingFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+                </div>
+                <Wavesurfer v-if="isRecorded" :file="recordingFile" :show-controls="true" :id="'recording'" />
+            </div>
+            <hr class="mt-10 border-blue-600">
+
+
+            <div>
+                <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
+                <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
+            </div>
+            <div v-if="isRecorded && isFileUploaded">
+                <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
+            </div>
         </div>
 
         <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">

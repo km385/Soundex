@@ -1,9 +1,3 @@
-<script>
-import {ref} from "vue";
-
-const isLoading = ref(false)
-</script>
-
 <script setup>
 import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import {onMounted, reactive, ref, watch} from "vue";
@@ -15,15 +9,18 @@ import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function
 defineOptions({
-    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+    layout: SidebarLayout
 })
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const isLoading = ref(false)
+
 
 const uploadedFile = ref({})
 const isFileUploaded = ref(false)
@@ -139,6 +136,7 @@ function getRegionData(data) {
 </script>
 
 <template>
+    <loading-screen v-if="isLoading" />
     <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
         <div class="flex justify-center items-center min-h-screen" v-if="!isFileUploaded">
             <!-- Upload File Section -->

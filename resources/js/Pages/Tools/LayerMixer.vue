@@ -1,9 +1,3 @@
-<script>
-import {ref} from "vue";
-
-const isLoading = ref(false)
-</script>
-
 <script setup>
 import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
@@ -13,15 +7,17 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import {usePage} from "@inertiajs/vue3";
-
 import {v4 as uuidv4} from "uuid";
-import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 defineOptions({
-    layout: ( h, page ) => h( SidebarLayout, {  isLoading : isLoading.value } , () => page )
+    layout: SidebarLayout
 })
+
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const isLoading = ref(false)
 const uploadedFiles = ref([]);
 
 const isFileUploaded = ref(false)
@@ -123,6 +119,8 @@ function onDeleteClicked(name, array) {
 </script>
 
 <template>
+    <loading-screen v-if="isLoading" />
+
     <div class="max-w-3xl mx-auto text-white">
         <div class="flex justify-center items-center mt-10" v-if="!downloadLink">
             <UploadFile @file="getFile" />
