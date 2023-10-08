@@ -141,8 +141,12 @@ function getFile(file) {
 <template>
     <loading-screen v-if="isLoading" />
 
-    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
-        <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
+    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
+        <div v-if="!isFileUploaded" class="flex flex-col flex-grow justify-center items-center">
+            <div class="mb-5 text-center">
+                <p class="text-5xl font-bold mb-2">Recorder Tool</p>
+                <p class="text-3xl">Record your voice over any song</p>
+            </div>
             <UploadFile @file="getFile" />
         </div>
 

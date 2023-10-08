@@ -122,8 +122,12 @@ function updateTitle(e) {
 <template>
     <loading-screen v-if="isLoading" />
 
-    <div class="max-w-3xl mx-auto" v-if="!isLoading">
-        <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
+    <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
+        <div v-if="!isFileUploaded" class="flex flex-col flex-grow justify-center items-center">
+            <div class="mb-5 text-center">
+                <p class="text-5xl font-bold mb-2">Tag Editor</p>
+                <p class="text-3xl">Change information about your songs</p>
+            </div>
             <UploadFile @file="getFile"/>
         </div>
 

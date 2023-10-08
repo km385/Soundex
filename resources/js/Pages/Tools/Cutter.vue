@@ -136,9 +136,13 @@ function getRegionData(data) {
 
 <template>
     <loading-screen v-if="isLoading" />
-    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
-        <div class="flex justify-center items-center min-h-screen" v-if="!isFileUploaded">
+    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
+        <div class="flex flex-col flex-grow justify-center items-center" v-if="!isFileUploaded">
             <!-- Upload File Section -->
+            <div class="mb-5 text-center">
+                <p class="text-5xl font-bold mb-2">Cutting Tool</p>
+                <p class="text-3xl">Cut your song to your </p>
+            </div>
             <UploadFile @file="getFile" />
         </div>
 
@@ -159,7 +163,7 @@ function getRegionData(data) {
             <!--            </div>-->
         </div>
 
-        <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center min-h-screen">
+        <div v-if="fileToDownloadLink" class="text-white flex flex-col flex-grow justify-center items-center">
             <!-- File Download Section -->
             <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
                 <p>You can now download your new file</p>

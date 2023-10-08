@@ -154,20 +154,18 @@ function downloadFile() {
 <template>
     <loading-screen v-if="isLoading" />
 
-    <div class="max-w-3xl mx-auto text-white" v-if="!isLoading">
-        <div class="mb-10" v-if="!fileToDownloadLink">
-            <div class="mt-10 flex justify-center items-center">
-                <UploadFile @file="getFile"/>
+    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
+        <div class="my-10 flex flex-col flex-grow justify-center items-center" v-if="!isFileUploaded">
+            <div class="mb-5 text-center">
+                <p class="text-5xl font-bold mb-2">Merge Tool</p>
+                <p class="text-3xl">Merge multiple songs into one</p>
             </div>
-
-
+            <UploadFile @file="getFile"/>
         </div>
 
-        <div class="p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded && !fileToDownloadLink">
-            <div v-if="isFileUploaded">
-                <button type="button" @click="onMergeClicked"
-                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
-                </button>
+        <div class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded && !fileToDownloadLink">
+            <div class="mb-5">
+                <upload-file @file="getFile" :is-button="true" />
             </div>
             <div v-for="file in form.files" :key="file.name" v-if="!fileToDownloadLink">
                 <p>{{ file.name }}</p>
@@ -184,6 +182,12 @@ function downloadFile() {
                     </div>
                 </div>
             </div>
+            <div v-if="isFileUploaded">
+                <button type="button" @click="onMergeClicked"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
+                </button>
+            </div>
+
         </div>
 
         <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">

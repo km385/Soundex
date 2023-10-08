@@ -120,12 +120,19 @@ function onDeleteClicked(name, array) {
 <template>
     <loading-screen v-if="isLoading" />
 
-    <div class="max-w-3xl mx-auto text-white">
-        <div class="flex justify-center items-center mt-10" v-if="!downloadLink">
+    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen">
+        <div class="flex flex-grow flex-col justify-center items-center" v-if="!isFileUploaded">
+            <div class="mb-5 text-center ">
+                <p class="text-5xl font-bold mb-2">Layer Mixer Tool</p>
+                <p class="text-3xl">Put two songs on top of each other</p>
+            </div>
             <UploadFile @file="getFile" />
         </div>
 
-        <div v-if="isFileUploaded && !downloadLink" class="p-6 bg-gray-800 rounded-lg shadow-lg">
+        <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+            <div class="mb-5">
+                <upload-file @file="getFile" :is-button="true" />
+            </div>
             <div v-for="(file, index) in uploadedFiles" :key="file.name">
                 <div class="flex group mb-10">
                     <div style="width: 100%">

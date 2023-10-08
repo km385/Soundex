@@ -94,8 +94,12 @@ function getFile(file) {
 </script>
 <template>
     <loading-screen v-if="isLoading" />
-    <div class="max-w-3xl mx-auto" v-if="!isLoading">
-        <div v-if="!isFileUploaded" class="flex justify-center items-center h-screen">
+    <div class="max-w-3xl mx-auto h-screen text-white flex flex-col" v-if="!isLoading">
+        <div v-if="!isFileUploaded" class="flex justify-center items-center flex-col flex-grow">
+            <div class="mb-5 text-center ">
+                <p class="text-5xl font-bold mb-2">BPM Finder Tool</p>
+                <p class="text-3xl">Find out what is the BPM of your songs</p>
+            </div>
             <UploadFile @file="getFile" />
         </div>
 
