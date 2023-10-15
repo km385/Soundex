@@ -68,14 +68,10 @@ class FileService
             $FFProbe = FFProbe::create()
                 ->getFFProbeDriver()
                 ->command([
-                    '-v',
-                    'error',
-                    '-select_streams',
-                    '1',
-                    '-show_entries',
-                    'stream=codec_name:format_tags=cover_art',
-                    '-of',
-                    'default=noprint_wrappers=1:nokey=1',
+                    '-v', 'error',
+                    '-select_streams', '1',
+                    '-show_entries', 'stream=codec_name:format_tags=cover_art',
+                    '-of', 'default=noprint_wrappers=1:nokey=1',
                     Storage::path($filePath)
                 ]);
             error_log($FFProbe);
