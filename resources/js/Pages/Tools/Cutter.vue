@@ -167,7 +167,7 @@ function getRegionData(data) {
             <!-- File Download Section -->
             <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
                 <p>You can now download your new file</p>
-                <button class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="fileToDownloadLink = null">Go Back</button>
+                <button class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="fileToDownloadLink = ''">Go Back</button>
                 <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink" />
                 <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink" />
             </div>

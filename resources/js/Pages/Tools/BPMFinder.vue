@@ -89,6 +89,10 @@ function getFile(file) {
     fileUploaded.value = file
     form.value.fileRef = file
     isFileUploaded.value = true
+    // submit file immediately
+    onSubmit()
+    isLoading.value = true
+
 }
 
 </script>
@@ -102,7 +106,7 @@ function getFile(file) {
             </div>
             <UploadFile @file="getFile" />
         </div>
-
+<!--        TODO: should i use waveform to visualize the song or have it auto submit when uploaded by user -->
         <div v-if="isFileUploaded && !downloadLink">
             <button type="button" @click="onSubmit"
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
@@ -111,9 +115,12 @@ function getFile(file) {
         </div>
 
         <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen w-full">
-            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500"
-                @click="downloadLink = null">go back</button>
-            <DownloadTempFileButton :filename="fileUploaded.name" :token="downloadLink" :show-button="false" />
+            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
+<!--                go back here works as change file also-->
+                <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500"
+                        @click="downloadLink = ''; isFileUploaded = false">go back</button>
+                <DownloadTempFileButton :filename="fileUploaded.name" :token="downloadLink" :show-button="false" />
+            </div>
         </div>
 
         <div v-if="isError">

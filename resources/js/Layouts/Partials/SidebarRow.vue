@@ -26,16 +26,18 @@
 
 <template>
         <div class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative rounded-lg">
-            <img class="h-full mr-5 ml-2 justify-self-start" :src="url" alt="small icon">
+            <div class="h-full mr-5 ml-2 flex items-center">
+                <slot name="icon"/>
+            </div>
+
             <transition name="slide-fade">
 
                 <div v-if="!showText" class="flex-grow text-2xl ">
                     <p>{{text}}</p>
                 </div></transition>
 
-
 <!--            use this to add expanded menu for a row-->
-            <slot />
+            <slot name="expanded_menu" />
         </div>
 </template>
 

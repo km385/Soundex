@@ -69,7 +69,7 @@ class EditController extends Controller
         $song = new Song();
         $song->name = 'tytul';
         // TODO: path as file name or userId/path
-        $song->songPath = $file->filePath;
+        $song->song_path = $file->filePath;
         $user->songs()->save($song);
         error_log($user->id);
 
