@@ -1,6 +1,6 @@
 <template>
   <div
-    class="display-options bg-[conic-gradient(at_bottom_right,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900  mb-3 transition-w duration-500 border-black border-b-2 z-10 w-full ">
+    class="display-options bg-[conic-gradient(at_bottom_right,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900 transition-w duration-500 border-black border-b-2 z-10 w-full ">
     <ul class="flex pt-2 pl-2">
       <li class="mr-3">
         <button :class="{

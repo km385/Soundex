@@ -3,7 +3,7 @@
         'folded_player': isSidebarCollapsed,
         'unfolded_player': !isSidebarCollapsed
     }"
-        class="border-l-4 border-t-2  border-[#060a13] media-player transition-w duration-500 h-36 fixed bottom-0 right-0 bg-[conic-gradient(var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black">
+        class="border-l-4 border-t-2  border-[#060a13] media-player transition-w duration-500 h-36 fixed bottom-0 right-0 bg-gradient-to-t from-slate-900 via-slate-900 to-purple-900 ml-4">
 
         <!-- hidden audio player-->
         <audio ref="audioPlayer" controls="false" class="hidden">
@@ -11,7 +11,7 @@
         </audio>
 
         <div class="relative">
-            <img :src="computedCoverPath" class="h-24 w-24 object-cover p-2">
+            <img :src="computedCoverPath" class="h-20 w-20 object-cover m-2 border-2 rounded-md border-black">
             <div class="absolute ps-24 p-2 inset-0 flex flex-col justify-en  text-white">
                 <h3 class="font-bold text-lg">{{ selectedSong.title }}</h3>
                 <span class="opacity-70 text-base">{{ selectedSong.artist }}</span>
