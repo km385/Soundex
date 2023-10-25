@@ -130,12 +130,16 @@ onMounted(() => {
 
 })
 
+const isPlaying = ref(false)
+
 function onPlayClicked() {
     ws.wsInstance.play()
+    isPlaying.value = !isPlaying.value
 }
 
 function onStopClicked() {
     ws.wsInstance.pause()
+    isPlaying.value = !isPlaying.value
 }
 
 watch(() => props.file, (value) => {
@@ -192,7 +196,10 @@ function formatTime(time) {
 </script>
 
 <template>
-    <div :id="id"></div>
+    <div class="p-4 rounded-lg shadow-xl">
+
+        <div :id="id"></div>
+    </div>
     <div v-if="showControls">
         <div class="flex justify-between">
             <!--            <input type="text" v-model="ws.currentTime" class="border-none w-auto">-->
@@ -202,14 +209,14 @@ function formatTime(time) {
         <div>
             <div class="flex items-center mt-5">
 <!--                TODO: add style when button pressed-->
-                <button type="button" @click="onPlayClicked"
+                <button type="button" v-if="!isPlaying" @click="onPlayClicked"
                         class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
                         <path  fill="#F2F3F5" d="M381-239q-20 13-40.5 1.5T320-273v-414q0-24 20.5-35.5T381-721l326 207q18 12 18 34t-18 34L381-239Zm19-241Zm0 134 210-134-210-134v268Z"/>
                     </svg>
 
                 </button>
-                <button type="button" @click="onStopClicked"
+                <button type="button" v-if="isPlaying" @click="onStopClicked"
                         class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
                         <path  fill="#F2F3F5" d="M600-200q-33 0-56.5-23.5T520-280v-400q0-33 23.5-56.5T600-760h80q33 0 56.5 23.5T760-680v400q0 33-23.5 56.5T680-200h-80Zm-320 0q-33 0-56.5-23.5T200-280v-400q0-33 23.5-56.5T280-760h80q33 0 56.5 23.5T440-680v400q0 33-23.5 56.5T360-200h-80Zm320-80h80v-400h-80v400Zm-320 0h80v-400h-80v400Zm0-400v400-400Zm320 0v400-400Z"/>
