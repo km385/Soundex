@@ -26,6 +26,5 @@
 
 .icon-path {
     animation: rotateIcon 2s linear infinite;
-    cursor: pointer;
 }
 </style>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use function Laravel\Prompts\error;
 
 class FileService
 {
@@ -57,6 +58,26 @@ class FileService
             error_log('creating public event');
             event(new FileReadyToDownload($error, $userId));
         }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public static function convertFile($filePath, $newExtension): string
+    {
+        $filename = pathinfo($filePath, PATHINFO_FILENAME);
+        try {
+            FFMpeg::fromDisk('')
+                ->open($filePath)
+                ->export()
+                ->toDisk('')
+                ->save($filename.'.'.$newExtension);
+        } catch (\Exception $e) {
+            error($e);
+            throw $e;
+        }
+        Storage::delete($filePath);
+        return $filename.'.'.$newExtension;
     }
 
     /**

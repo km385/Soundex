@@ -18,7 +18,7 @@ class CutFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $af, private $path, private $guestId, private $isPrivate)
+    public function __construct(private $af, private $path, private $newExtension, private $guestId, private $isPrivate)
     {
         //
     }
@@ -28,6 +28,16 @@ class CutFile implements ShouldQueue
      */
     public function handle(): void
     {
+
+        try {
+            $this->path = FileService::convertFile($this->path, $this->newExtension);
+
+        } catch (\Exception $e) {
+            error_log('exception caught');
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
+        }
+
         $name = pathinfo($this->path, PATHINFO_FILENAME);
         $ext = pathinfo($this->path, PATHINFO_EXTENSION);
         // TODO: either combine 2 try/catch block together or give them different messages

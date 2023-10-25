@@ -10,6 +10,7 @@ import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import Wavesurfer from "./Partials/Wavesurfer.vue";
 import UploadFile from "./Partials/UploadFile.vue";
+import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function
@@ -24,6 +25,7 @@ const isLoading = ref(false)
 const uploadedFile = ref({})
 const isFileUploaded = ref(false)
 const fileToDownloadLink = ref("")
+const extension = ref("")
 
 const isError = ref(false)
 const error = ref("")
@@ -100,6 +102,7 @@ async function onCutClicked(){
     }
     formData.append('file', uploadedFile.value)
     formData.append('guestId', guestId)
+    formData.append('extension', extension.value)
 
     try {
         isLoading.value = true
@@ -132,6 +135,11 @@ function getRegionData(data) {
     }
 }
 
+function getExtension(data) {
+    extension.value = data
+    console.log(data)
+}
+
 </script>
 
 <template>
@@ -141,7 +149,7 @@ function getRegionData(data) {
             <!-- Upload File Section -->
             <div class="mb-5 text-center">
                 <p class="text-5xl font-bold mb-2">Cutting Tool</p>
-                <p class="text-3xl">Cut your song to your </p>
+                <p class="text-3xl">Cut your song to your liking</p>
             </div>
             <UploadFile @file="getFile" />
         </div>
@@ -160,6 +168,8 @@ function getRegionData(data) {
             <div class="mt-6">
                 <button type="button" @click="onCutClicked" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">Cut</button>
             </div>
+            <SelectExtension @extension="getExtension"/>
+
             <!--            </div>-->
         </div>
 

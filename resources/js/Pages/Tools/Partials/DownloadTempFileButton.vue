@@ -30,10 +30,19 @@ function downloadFile() {
             responseType: 'blob',
         })
         .then((response) => {
+            // get extension from received file (it has random name)
+            const arrivedName = response.headers['content-disposition']
+            const newExtension = arrivedName.split('.')[1];
+
+            // get name without the extension from the prop
+            const newName = props.filename.split('.')
+            newName.pop();
+            const fileNameWithoutExtension = newName.join('.');
+
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', props.filename);
+            link.setAttribute('download', fileNameWithoutExtension + '.' + newExtension);
             document.body.appendChild(link);
             link.click();
         })
