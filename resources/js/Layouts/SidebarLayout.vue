@@ -59,7 +59,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
     <div class="divide-x divide-slate-700">
 
         <div
-            :class="{ 'w-48 transition-w duration-500': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed }"
+            :class="{ 'w-48 transition-w duration-500 z-30': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed }"
             class="bg-[#2B2B2B] text-white flex flex-col fixed h-full">
             <div class="flex mr-2 flex-none"
                  :class="{ 'justify-center': isSidebarCollapsed, 'justify-end ': !isSidebarCollapsed }">
@@ -231,12 +231,12 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                 <div class="relative flex justify-center" v-if="page.props.auth.user">
                     <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg" v-if="userDropDown"
                          @click="userDropDown = !userDropDown">
-                        <Link href="dashboard">
+                        <Link href="/dashboard">
                             <div class="border-b py-2 hover:bg-red-500 rounded-t-lg">
                                 <p class="pl-2">Profile</p>
                             </div>
                         </Link>
-                        <Link href="logout" method="post">
+                        <Link href="/logout" method="post">
                             <div class="py-2 hover:bg-red-500 rounded-b-lg">
                                 <p class="pl-2">Log out</p>
                             </div>
@@ -259,13 +259,13 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                     <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg" v-if="userDropDown"
                          @click="userDropDown = !userDropDown">
 
-                        <Link href="register">
+                        <Link href="/register">
                             <div class="border-b py-2 hover:bg-red-500 rounded-t-lg">
                                 <p class="pl-2">Register</p>
                             </div>
                         </Link>
 
-                        <Link href="login">
+                        <Link href="/login">
                             <div class="py-2 hover:bg-red-500 rounded-b-lg">
                                 <p class="pl-2">Login</p>
                             </div>
