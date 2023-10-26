@@ -46,6 +46,11 @@ Route::prefix('tools')->name('tools.')->group(function () {
     })->name('merge');
     Route::post('/merge', [EditController::class, 'merge']);
 
+    Route::get('/converter', function () {
+        return Inertia::render('Tools/Converter');
+    })->name('converter');
+    Route::post('/converter', [EditController::class, 'convert']);
+
     Route::get('/speedup', function () {
         return Inertia::render('Tools/SpeedUp');
     })->name('speedup');
@@ -76,7 +81,7 @@ Route::prefix('tools')->name('tools.')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/database', [SongController::class, 'index'])->name('Database');
     Route::delete('/database/songs/{song}', [SongController::class, 'destroy'])->name('Database.destroy');
-    
+
 });
 //
 Route::post('/database/songs/{songId}', [SongController::class, 'post']);

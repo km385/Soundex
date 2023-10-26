@@ -71,12 +71,14 @@ class FileService
                 ->open($filePath)
                 ->export()
                 ->toDisk('')
-                ->save($filename.'.'.$newExtension);
+                ->save($filename.'temp.'.$newExtension);
         } catch (\Exception $e) {
             error($e);
             throw $e;
         }
         Storage::delete($filePath);
+
+        Storage::move($filename.'temp.'.$newExtension, $filename.'.'.$newExtension);
         return $filename.'.'.$newExtension;
     }
 

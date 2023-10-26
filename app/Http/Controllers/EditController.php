@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\UtilityClasses\FileService;
 use App\Jobs\ChangeMetadata;
+use App\Jobs\ConvertFile;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
 use App\Jobs\MixFile;
@@ -147,6 +148,25 @@ class EditController extends Controller
         ChangeMetadata::dispatch($audioPath, $coverPath, $metadata, $guestId, $isPrivate);
 
         return response()->json(['message' => 'success']);
+    }
+
+    public function convert() {
+        $user = Request::user();
+
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
+        }
+        $file = Request::file('file');
+        $guestId = Request::input('guestId');
+        $extension = Request::input('extension');
+        $bitrate = Request::input('bitrate');
+        $path = Storage::putFile($file);
+
+        ConvertFile::dispatch($path, $extension, $bitrate, $guestId, $isPrivate);
+        return \response()->json(['message' => 'success']);
+
     }
 
     public function recorder(): JsonResponse
