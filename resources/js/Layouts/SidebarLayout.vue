@@ -136,6 +136,12 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                                     </li>
                                 </Link>
 
+                                <Link href="/tools/videotoaudio">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1">
+                                        Video to Audio
+                                    </li>
+                                </Link>
+
                                 <Link href="/tools/recorder">
                                     <li class="hover:bg-gray-500 cursor-pointerpy-1">
                                         Recorder

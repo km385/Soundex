@@ -11,6 +11,7 @@ use App\Jobs\MixFile;
 use App\Jobs\Recorder;
 use App\Jobs\SpeedUpFile;
 use App\Jobs\BPMFinder;
+use App\Jobs\VideoToAudio;
 use App\Models\Song;
 use App\Models\TemporarySong;
 use Illuminate\Http\JsonResponse;
@@ -147,6 +148,25 @@ class EditController extends Controller
         ChangeMetadata::dispatch($audioPath, $coverPath, $metadata, $newExtension, $guestId, $isPrivate);
 
         return response()->json(['message' => 'success']);
+    }
+
+    public function videoToAudio(): JsonResponse
+    {
+        $user = Request::user();
+
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
+        }
+        $file = Request::file('file');
+        $guestId = Request::input('guestId');
+        $path = Storage::putFile($file);
+
+        VideoToAudio::dispatch($path, $guestId, $isPrivate);
+
+        return \response()->json(['message' => 'success']);
+
     }
 
     public function convert(): JsonResponse

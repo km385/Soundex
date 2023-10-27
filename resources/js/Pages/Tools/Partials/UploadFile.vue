@@ -6,7 +6,11 @@ const fileInput = ref(null)
 const emit = defineEmits(['file'])
 
 const props = defineProps({
-    isButton: Boolean
+    isButton: Boolean,
+    allowVideo: {
+        default: false,
+        type: Boolean
+    }
 })
 
 function onDrop(event) {
@@ -58,6 +62,9 @@ function handleFileChange(event) {
 function checkIfAudioFile(file) {
     console.log(file.type)
     // Check the MIME type of the file
+    if(props.allowVideo) {
+        return file.type.startsWith("video/")
+    }
     return file.type.startsWith("audio/");
 }
 
