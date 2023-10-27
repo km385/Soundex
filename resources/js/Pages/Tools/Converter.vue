@@ -89,7 +89,7 @@ function getExtension(data) {
 }
 
 const bitrates = ref([64, 128, 192, 256, 320]);
-const selectedBitrate = ref(null);
+const selectedBitrate = ref(192);
 
 const selectBitrate = (bitrate) => {
     selectedBitrate.value = bitrate;

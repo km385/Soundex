@@ -67,6 +67,12 @@ function getFile(file) {
 
 
 async function onMergeClicked(){
+    if(uploadedFiles.value.length < 2) {
+        error.value = "add foreground and background"
+        isError.value = true
+        return
+    }
+
     const formData = new FormData()
     formData.append('foreground', uploadedFiles.value[0])
     formData.append('background', uploadedFiles.value[1])

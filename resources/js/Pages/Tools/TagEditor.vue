@@ -79,12 +79,21 @@ const form = ref({
 })
 
 async function onSubmit() {
+    const isAllFieldsEmpty = Object.values(form.value).slice(0, -3).every(value => value === '');
+    if(isAllFieldsEmpty && isCoverUploaded.value === false) {
+        error.value = "fill at least 1 field"
+        isError.value = true
+        console.log(form.value.coverRef)
+        return
+    }
+
     const formData = new FormData()
     Object.keys(form.value).forEach(key => {
         const value = form.value[key]
         formData.append(key, value)
         console.log(key, value)
     })
+
     formData.append('guestId', guestId)
 
     try {
@@ -109,6 +118,13 @@ function getFile(file) {
 }
 
 function onCoverUpload(event) {
+
+    if(!event.target.files[0].type.startsWith("image/")) {
+        error.value = "not a valid image"
+        isError.value = true
+        document.getElementById('cover').value = null
+        return
+    }
     isCoverUploaded.value = true
     coverUploaded.value = event.target.files[0]
     form.coverRef = event.target.files[0]
@@ -122,6 +138,8 @@ function updateTitle(e) {
 function getExtension(ext) {
     form.value.extension = ext
 }
+
+const coverInput = ref()
 
 </script>
 <template>

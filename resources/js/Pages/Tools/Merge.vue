@@ -76,6 +76,12 @@ function getWaveformId(fileName) {
 }
 
 async function onMergeClicked(){
+    if(form.value.files.length < 2) {
+        error.value = "submit at least 2 files"
+        isError.value = true
+        return
+    }
+
     const formData = new FormData()
     form.value.files.forEach((file) => {
         formData.append(getWaveformId(file.name), file)
