@@ -21,7 +21,7 @@ class ChangeMetadata implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $path, private $newCoverPath, private $metadata, private $guestId, private $isPrivate)
+    public function __construct(private $path, private $newCoverPath, private $metadata, private $newExtension, private $guestId, private $isPrivate)
     {
         //
     }
@@ -31,6 +31,12 @@ class ChangeMetadata implements ShouldQueue
      */
     public function handle(): void
     {
+        try {
+            $this->path = FileService::convertFile($this->path, $this->newExtension);
+        }catch (\Exception $e) {
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+        }
+
         $meta = $this->metadata;
         $name = pathinfo($this->path, PATHINFO_FILENAME);
         $ext = pathinfo($this->path, PATHINFO_EXTENSION);

@@ -25,7 +25,6 @@ const isLoading = ref(false)
 const uploadedFile = ref({})
 const isFileUploaded = ref(false)
 const fileToDownloadLink = ref("")
-const extension = ref("")
 
 const isError = ref(false)
 const error = ref("")
@@ -102,7 +101,6 @@ async function onCutClicked(){
     }
     formData.append('file', uploadedFile.value)
     formData.append('guestId', guestId)
-    formData.append('extension', extension.value)
 
     try {
         isLoading.value = true
@@ -135,11 +133,6 @@ function getRegionData(data) {
     }
 }
 
-function getExtension(data) {
-    extension.value = data
-    console.log(data)
-}
-
 </script>
 
 <template>
@@ -168,7 +161,6 @@ function getExtension(data) {
             <div class="mt-6">
                 <button type="button" @click="onCutClicked" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">Cut</button>
             </div>
-            <SelectExtension @extension="getExtension"/>
 
             <!--            </div>-->
         </div>

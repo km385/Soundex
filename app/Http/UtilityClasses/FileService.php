@@ -191,6 +191,7 @@ class FileService
 
         Storage::delete($filename . '.' . $ext);
         Storage::delete($coverPath);
+        Storage::delete($filePath);
 
         Storage::move('output.' . strtolower(File::extension($filePath)), $filename . '.' . $ext);
 

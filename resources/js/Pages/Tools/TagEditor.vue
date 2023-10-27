@@ -10,6 +10,7 @@ import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import InputFieldWithLabel from "./Partials/InputFieldWithLabel.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
+import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -74,6 +75,7 @@ const form = ref({
     album: '',
     coverRef: File,
     fileRef: File,
+    extension: ''
 })
 
 async function onSubmit() {
@@ -87,7 +89,7 @@ async function onSubmit() {
 
     try {
         isLoading.value = true
-        const res = await axios.post('/tools/tagEditor', formData)
+        const res = await axios.post('/tools/tageditor', formData)
         console.log(res.data.message)
     } catch (err) {
         if(err.response.data.error){
@@ -116,6 +118,9 @@ function onCoverUpload(event) {
 
 function updateTitle(e) {
     form.value.title = e
+}
+function getExtension(ext) {
+    form.value.extension = ext
 }
 
 </script>
@@ -161,6 +166,7 @@ function updateTitle(e) {
                 <div v-if="isCoverUploaded" class="w-[200px] h-[200px] ml-[10px] mt-2 ">
                     <img :src="coverUrl" alt="Cover Image" class="w-full h-full object-cover"/>
                 </div>
+                <select-extension @extension="getExtension"/>
                 <!--            </div>-->
             </div>
 

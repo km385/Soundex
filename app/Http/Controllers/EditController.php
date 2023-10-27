@@ -140,17 +140,17 @@ class EditController extends Controller
             }
         }
 
-
-
+        $newExtension = Request::input('extension');
 
         error_log("prepering");
 
-        ChangeMetadata::dispatch($audioPath, $coverPath, $metadata, $guestId, $isPrivate);
+        ChangeMetadata::dispatch($audioPath, $coverPath, $metadata, $newExtension, $guestId, $isPrivate);
 
         return response()->json(['message' => 'success']);
     }
 
-    public function convert() {
+    public function convert(): JsonResponse
+    {
         $user = Request::user();
 
         if(!$user){
@@ -233,8 +233,6 @@ class EditController extends Controller
         $file = Request::file('file');
         $path = Storage::putFile($file);
         $guestId = Request::input('guestId');
-        $newExtension = Request::input('extension');
-        error_log($newExtension);
 
         $af = "";
         if(Request::has('start2') && Request::has('end2')){
@@ -261,7 +259,7 @@ class EditController extends Controller
         }
 //        ffmpeg -i lol.mp3 -af "aselect='between(t,4,6.5)+between(t,17,26)+between(t,74,91)',asetpts=N/SR/TB" out.mp3
 
-        CutFile::dispatch($af, $path, $newExtension, $guestId, $isPrivate);
+        CutFile::dispatch($af, $path, $guestId, $isPrivate);
         return response()->json(['message' => 'success']);
     }
 
