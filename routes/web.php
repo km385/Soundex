@@ -71,6 +71,11 @@ Route::prefix('tools')->name('tools.')->group(function () {
     })->name('layerMixer');
     Route::post('/layermixer', [EditController::class, 'layerMixer']);
 
+    Route::get('/volumechanger', function () {
+        return Inertia::render('Tools/VolumeChanger');
+    })->name('volumechanger');
+    Route::post('/volumechanger', [EditController::class, 'volumeChanger']);
+
     Route::get('/bpmFinder', function () {
         return Inertia::render('Tools/BPMFinder');
     })->name('BPM Finder');

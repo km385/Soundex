@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\UtilityClasses\FileService;
 use App\Jobs\ChangeMetadata;
+use App\Jobs\ChangeVolume;
 use App\Jobs\ConvertFile;
 use App\Jobs\CutFile;
 use App\Jobs\MergeFiles;
@@ -78,6 +79,26 @@ class EditController extends Controller
         $directory = "user_files" . DIRECTORY_SEPARATOR . $user->id. DIRECTORY_SEPARATOR;
         Storage::copy($file->filePath, $directory . $file->filePath);
 
+        return response()->json(['message' => 'success']);
+
+    }
+
+    public function volumeChanger(): JsonResponse
+    {
+        $user = Request::user();
+
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
+        }
+
+        $file = Request::file('file');
+        $volume = Request::input('volume');
+        $guestId = Request::input('guestId');
+        $path = Storage::putFile($file);
+
+        ChangeVolume::dispatch($path, $volume, $guestId, $isPrivate);
         return response()->json(['message' => 'success']);
 
     }

@@ -11,7 +11,18 @@ const ws = reactive({
 
 let regions = reactive({})
 
-const volumeValue = ref(0.1)
+// expose set volume to parent component
+defineExpose({
+    changeVolume
+})
+
+function changeVolume(value) {
+    ws.wsInstance.setVolume(value)
+}
+
+const startVolumeValue = 0.5
+const volumeValue = ref(startVolumeValue)
+
 watch(volumeValue, (value) => {
     ws.wsInstance.setVolume(value)
 })
@@ -32,7 +43,10 @@ const props = defineProps({
     },
     showRegion: Boolean,
     showControls: Boolean,
-    allowSecondRegion: Boolean
+    allowSecondRegion: Boolean,
+    allowVolumeControl: {
+        default: true,
+    }
 })
 const emit = defineEmits(['regionCoords'])
 
@@ -50,7 +64,7 @@ onMounted(() => {
         cursorWidth: 5,
         url: URL.createObjectURL(props.file)
     })
-    ws.wsInstance.setVolume(0.1)
+    ws.wsInstance.setVolume(startVolumeValue)
 
     if (props.showRegion) {
         regions = ws.wsInstance.registerPlugin(RegionsPlugin.create())
@@ -223,7 +237,7 @@ function formatTime(time) {
                     </svg>
 
                 </button>
-                <input type="range" min="0" max="1" step="0.01" class="slider" id="myRange" v-model="volumeValue">
+                <input v-if="allowVolumeControl" type="range" min="0" max="1" step="0.01" class="slider" id="myRange" v-model="volumeValue">
                 <div class="inline" v-if="allowSecondRegion">
                     <input id="regionCheckBox" type="checkbox" v-model="regionCheckboxValue"
                            class="ml-2 form-checkbox accent-blue-600 transition duration-150 ease-in-out focus:ring focus:ring-blue-400" />
