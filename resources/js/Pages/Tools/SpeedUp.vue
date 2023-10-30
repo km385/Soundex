@@ -16,7 +16,7 @@ defineOptions({
 const uploadedFile = ref({})
 
 const speedValue = ref(null)
-const tempoValue = ref(null)
+const pitchValue = ref(null)
 const isUploaded = ref(false)
 const fileToDownloadLink = ref("")
 
@@ -72,14 +72,14 @@ async function onUploadButtonClick() {
     if(speedValue.value == null) {
         speedValue.value = 1.20
     }
-    if(tempoValue.value == null) {
-        tempoValue.value = 1.06
+    if(pitchValue.value == null) {
+        pitchValue.value = 1.06
     }
 
     const formData = new FormData()
     formData.append('file', uploadedFile.value)
     formData.append('speedValue', speedValue.value)
-    formData.append('tempoValue', tempoValue.value)
+    formData.append('pitchValue', pitchValue.value)
     formData.append('guestId', guestId)
 
     try {
@@ -127,8 +127,8 @@ function changeHandleStyles(region){
             <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
             <div class="flex flex-col items-start mt-10">
                 <div class="w-auto mb-3 mt-3">
-                    <label for="tempo" class="block font-medium text-sm mb-1" >Tempo</label>
-                    <input type="text" id="tempo" placeholder="1.06" class="text-black bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="tempoValue">
+                    <label for="pitch" class="block font-medium text-sm mb-1" >Pitch</label>
+                    <input type="text" id="pitch" placeholder="1.06" class="text-black bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="pitchValue">
                 </div>
                 <div class="w-auto">
                     <label for="speed" class="block font-medium text-sm mb-1" >Speed</label>

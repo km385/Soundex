@@ -85,6 +85,10 @@ Route::prefix('tools')->name('tools.')->group(function () {
         return Inertia::render('Tools/VideoToAudio');
     })->name('videotoaudio');
     Route::post('/videotoaudio', [EditController::class, 'videoToAudio']);
+
+    Route::get('/index', function () {
+        return Inertia::render('Tools/Index');
+    })->name('index');
 });
 
 //Database routes

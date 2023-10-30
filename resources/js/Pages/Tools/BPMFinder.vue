@@ -106,7 +106,6 @@ function getFile(file) {
             </div>
             <UploadFile @file="getFile" />
         </div>
-<!--        TODO: should i use waveform to visualize the song or have it auto submit when uploaded by user -->
         <div v-if="isFileUploaded && !downloadLink">
             <button type="button" @click="onSubmit"
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>

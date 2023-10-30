@@ -19,7 +19,7 @@ class SpeedUpFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $path, private $tempo, private $speed, private $isPrivate, private $userId)
+    public function __construct(private $path, private $pitch, private $speed, private $isPrivate, private $userId)
     {
         //
     }
@@ -57,12 +57,16 @@ class SpeedUpFile implements ShouldQueue
             $sample_rate = 48000;
         }
         error_log('sample rate obtained');
-        // ffmpeg.exe -i .\song.mp3 -filter:a "atempo=1.06,asetrate=48000*1.2" speed.mp3
+
         try {
             FFMpeg::fromDisk('')
                 ->open($this->path)
                 ->export()
-                ->addFilter('-filter:a', "atempo=".$this->tempo.",asetrate=".$sample_rate."*".$this->speed)
+                ->addFilter('-filter:a',
+                    "asetrate=".$sample_rate*$this->pitch
+                    .",aresample=".$sample_rate
+                    .",atempo=".(1/$this->pitch)
+                    .",atempo=".$this->speed)
                 ->save(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3');
         } catch (\Exception $e){
             Storage::delete($this->path);

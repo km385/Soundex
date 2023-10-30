@@ -248,12 +248,12 @@ class EditController extends Controller
         }
         $file = Request::file('file');
         $path = Storage::putFile($file);
-        $tempo = Request::input('tempoValue');
+        $pitch = Request::input('pitchValue');
         $speed = Request::input('speedValue');
         $guestId = Request::input('guestId');
         error_log($isPrivate);
         error_log($guestId);
-        SpeedUpFile::dispatch($path, $tempo, $speed, $isPrivate, $guestId);
+        SpeedUpFile::dispatch($path, $pitch, $speed, $isPrivate, $guestId);
 
         return \response()->json(['message' => 'success']);
     }

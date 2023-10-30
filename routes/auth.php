@@ -12,7 +12,6 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    // TODO: login and register routes does not work when in any tool page
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
 
