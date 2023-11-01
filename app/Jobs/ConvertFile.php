@@ -30,6 +30,14 @@ class ConvertFile implements ShouldQueue
     public function handle(): void
     {
 
+        try {
+            $coverPath = FileService::extractCover($this->path);
+        } catch (\Exception $e) {
+            // TODO: determine if cutter/speedup need to stop if error while extracting a cover
+            error_log('exception caught');
+            FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
+            return;
+        }
 
         try {
             $this->path = FileService::convertFile($this->path, $this->newExtension);
@@ -46,6 +54,8 @@ class ConvertFile implements ShouldQueue
 
             Storage::delete($this->path);
             Storage::move($filename.'temp.'.$ext, $filename.'.'.$ext);
+            FileService::addCover($this->path, $coverPath);
+
             FileService::createAndNotify($filename.'.'.$ext, $this->isPrivate, $this->guestId);
         } catch (\Exception $e) {
             error_log('exception caught');
