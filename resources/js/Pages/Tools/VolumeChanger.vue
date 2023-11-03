@@ -11,6 +11,7 @@ import {v4 as uuidv4} from "uuid";
 import {computed, onMounted, reactive, ref, watch} from "vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
+import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -123,10 +124,8 @@ const percentageVolumeChange = computed(() => {
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File</button>
 
-            <div class="my-4">
-                <p class="text-lg">File Name: {{ uploadedFile.name }}</p>
-                <p class="text-sm">File Size: {{ (uploadedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
-            </div>
+            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
+
             <Wavesurfer ref="waveformRef" v-if="isFileUploaded" :file="uploadedFile" :show-region="false"
                         :show-controls="true" :allow-second-region="false" :allow-volume-control="false"/>
 

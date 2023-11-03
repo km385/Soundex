@@ -6,9 +6,15 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { Link } from "@inertiajs/vue3";
+import { createI18n } from "vue-i18n";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+import message from '@/lang/messages.js'
+
+const messages = message;
+
+
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -21,8 +27,18 @@ createInertiaApp({
     },
     // resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
+
+        console.log(props.initialPage.props.locale)
+        const i18n = createI18n({
+            locale: props.initialPage.props.locale,
+            legacy: false, // allow for composition api
+            fallbackLocale: 'en',
+            messages,
+        })
+
         return createSSRApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(i18n)
             .use(ZiggyVue, Ziggy)
             .component('Link', Link)
             .mount(el);

@@ -3,6 +3,7 @@
 import {ref, provide} from "vue";
 import {Link, usePage} from '@inertiajs/vue3';
 import SidebarRow from "./Partials/SidebarRow.vue";
+import {useI18n} from "vue-i18n";
 
 const page = usePage()
 const isSidebarCollapsed = ref(false);
@@ -56,11 +57,16 @@ const langMenu = {
 
 const userDropDown = ref(false)
 provide('isSidebarCollapsed', isSidebarCollapsed);
+
+const i18 = useI18n()
+function setLang(lang) {
+    i18.locale.value = lang
+    document.cookie = `locale=${i18.locale.value}`
+}
 </script>
 
 <template>
     <div class="divide-x divide-slate-700">
-
         <div
             :class="{ 'w-48 transition-w duration-500 z-30': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed }"
             class="bg-[#2B2B2B] text-white flex flex-col fixed h-full">
@@ -75,11 +81,11 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                 </div>
 
             </div>
-
             <div id="tools" class="flex flex-col items-center grow">
                 <!--                tools links section-->
                 <Link href="/" class="flex items-center w-full">
-                    <SidebarRow icon="home_FILL0_wght400_GRAD0_opsz24.png" text="home" :show-text="isSidebarCollapsed">
+
+                    <SidebarRow icon="home_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.home')" :show-text="isSidebarCollapsed">
                         <template v-slot:icon>
                             <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
                                  :width="iconSize.width">
@@ -90,7 +96,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                     </SidebarRow>
                 </Link>
 
-                <SidebarRow icon="construction_FILL0_wght400_GRAD0_opsz24.png" text="tools"
+                <SidebarRow icon="construction_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.tools')"
                             :show-text="isSidebarCollapsed"
                             @mouseenter="toolsMenu.expandTools" @mouseleave="toolsMenu.collapseTools">
                     <template v-slot:icon>
@@ -177,7 +183,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                 </SidebarRow>
 
                 <Link href="/database" class="flex items-center w-full">
-                    <SidebarRow icon="folder_open_FILL0_wght400_GRAD0_opsz24.png" text="files"
+                    <SidebarRow icon="folder_open_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.files')"
                                 :show-text="isSidebarCollapsed">
                         <template v-slot:icon>
                             <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
@@ -189,7 +195,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                     </SidebarRow>
                 </Link>
 
-                <SidebarRow icon="help_FILL0_wght400_GRAD0_opsz24.png" text="help" :show-text="isSidebarCollapsed">
+                <SidebarRow icon="help_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.help')" :show-text="isSidebarCollapsed">
                     <template v-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
                              :width="iconSize.width">
@@ -199,7 +205,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                     </template>
                 </SidebarRow>
 
-                <SidebarRow icon="language_FILL0_wght400_GRAD0_opsz24.png" text="lang" :show-text="isSidebarCollapsed"
+                <SidebarRow icon="language_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.lang')" :show-text="isSidebarCollapsed"
                             @mouseenter="langMenu.expandLang" @mouseleave="langMenu.collapseLang">
                     <template v-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
@@ -214,20 +220,14 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                              @mouseenter="langMenu.mouseOverLangEnter" @mouseleave="langMenu.mouseOverLangLeave">
                             <!--            expanded tools-->
                             <ul>
-                                <Link href="#">
-                                    <li class="hover:bg-gray-500 cursor-pointer rounded-t-lg">
-                                        English
-                                    </li>
-                                </Link>
+                                <li @click="setLang('en')" class="hover:bg-gray-500 cursor-pointer rounded-t-lg">
+                                    English
+                                </li>
 
 
-                                <Link href="#">
-                                    <li class="hover:bg-gray-500 cursor-pointer rounded-b-lg">
-                                        Polish
-                                    </li>
-                                </Link>
-
-
+                                <li @click="setLang('pl')" class="hover:bg-gray-500 cursor-pointer rounded-b-lg">
+                                    Polish
+                                </li>
                             </ul>
                         </div>
 
@@ -239,7 +239,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
             <hr class="border-gray-500 mb-2 border-1 mx-2">
             <div id="bottom" class="flex-none">
                 <!--                user links section-->
-                <SidebarRow icon="contrast_FILL0_wght400_GRAD0_opsz24.png" text="contrast"
+                <SidebarRow icon="contrast_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.contrast')"
                             :show-text="isSidebarCollapsed">
                     <template v-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
@@ -292,7 +292,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
                             </div>
                         </Link>
                     </div>
-                    <SidebarRow icon="account_circle_FILL0_wght400_GRAD0_opsz24.png" text="user"
+                    <SidebarRow icon="account_circle_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.user')"
                                 :show-text="isSidebarCollapsed"
                                 @click="userDropDown = !userDropDown">
                         <template v-slot:icon>

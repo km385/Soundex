@@ -9,6 +9,7 @@ import UploadFile from "./Partials/UploadFile.vue";
 import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
+import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -152,18 +153,14 @@ function getFile(file) {
 
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
-            <div class="my-4">
-                <p class="text-lg">File Name: {{ backgroundFile.name }}</p>
-                <p class="text-sm">File Size: {{ (backgroundFile.size / 1024 / 1024).toFixed(2) }} MB</p>
-            </div>
+            <FileInfo :file-size="backgroundFile.size" :file-name="backgroundFile.name" />
+
             <Wavesurfer v-if="isFileUploaded" :file="backgroundFile" :show-controls="true" :id="'background'" />
 
             <div v-if="isRecorded">
                 <hr class="mt-10 border-blue-600">
-                <div class="my-4">
-                    <p class="text-lg">File Name: {{ recordingFile.name }}</p>
-                    <p class="text-sm">File Size: {{ (recordingFile.size / 1024 / 1024).toFixed(2) }} MB</p>
-                </div>
+                <FileInfo :file-size="recordingFile.size" :file-name="recordingFile.name" />
+
                 <Wavesurfer v-if="isRecorded" :file="recordingFile" :show-controls="true" :id="'recording'" />
             </div>
             <hr class="mt-10 border-blue-600">

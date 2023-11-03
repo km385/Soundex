@@ -9,6 +9,7 @@ import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
+import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -120,10 +121,8 @@ function changeHandleStyles(region){
         <div v-if="isUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <button type="button"  @click="isUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
 
-            <div class="my-4">
-                <p class="text-lg">File Name: {{ uploadedFile.name }}</p>
-                <p class="text-sm">File Size: {{ (uploadedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
-            </div>
+            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
+
             <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
             <div class="flex flex-col items-start mt-10">
                 <div class="w-auto mb-3 mt-3">

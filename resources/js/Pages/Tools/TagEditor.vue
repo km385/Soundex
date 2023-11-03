@@ -11,6 +11,7 @@ import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import InputFieldWithLabel from "./Partials/InputFieldWithLabel.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
+import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -157,10 +158,8 @@ const coverInput = ref()
         <!--    usunieto form.submit i dziala-->
 
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-2 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
-            <div class="my-4 lg:col-span-2 text-white">
-                <p class="text-lg">File Name: {{ fileUploaded.name }}</p>
-                <p class="text-sm">File Size: {{ (fileUploaded.size / 1024 / 1024).toFixed(2) }} MB</p>
-            </div>
+            <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name" />
+
             <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
             <InputFieldWithLabel label="Artist" @update:model-value="form.artist = $event"/>
             <InputFieldWithLabel label="Genre" @update:model-value="form.genre = $event"/>

@@ -11,6 +11,7 @@ import LoadingScreen from "./Partials/LoadingScreen.vue";
 import Wavesurfer from "./Partials/Wavesurfer.vue";
 import UploadFile from "./Partials/UploadFile.vue";
 import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
+import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function
@@ -137,10 +138,10 @@ function getRegionData(data) {
         <div class="flex flex-col flex-grow justify-center items-center" v-if="!isFileUploaded">
             <!-- Upload File Section -->
             <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">Cutting Tool</p>
-                <p class="text-3xl">Cut your song to your liking</p>
+                <p class="text-5xl font-bold mb-2">{{ $t('cutter.title') }}</p>
+                <p class="text-3xl">{{ $t('cutter.description') }}</p>
             </div>
-            <UploadFile @file="getFile" />
+            <UploadFile @file="getFile"/>
         </div>
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
@@ -148,10 +149,7 @@ function getRegionData(data) {
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File</button>
 
-            <div class="my-4">
-                <p class="text-lg">File Name: {{ uploadedFile.name }}</p>
-                <p class="text-sm">File Size: {{ (uploadedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
-            </div>
+            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
             <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true" :allow-second-region="true" @region-coords="getRegionData" />
 
             <div class="mt-6">

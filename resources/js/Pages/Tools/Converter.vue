@@ -10,6 +10,7 @@ import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import axios from "axios";
+import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -115,11 +116,9 @@ const selectBitrate = (bitrate) => {
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File</button>
 
-            <div class="my-4">
-                <p class="text-lg">File Name: {{ uploadedFile.name }}</p>
-                <p class="text-sm">File Size: {{ (uploadedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
-            </div>
-<!--            nice info here :)-->
+            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
+
+            <!--            nice info here :)-->
             <div id="app">
                 <button
                     v-for="bitrate in bitrates"

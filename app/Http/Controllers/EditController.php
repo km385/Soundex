@@ -18,8 +18,10 @@ use App\Models\TemporarySong;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EditController extends Controller
@@ -274,7 +276,6 @@ class EditController extends Controller
         $file = Request::file('file');
         $path = Storage::putFile($file);
         $guestId = Request::input('guestId');
-
         $af = "";
         if(Request::has('start2') && Request::has('end2')){
             error_log('2 ranges');
