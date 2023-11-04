@@ -61,7 +61,16 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
 const i18 = useI18n()
 function setLang(lang) {
     i18.locale.value = lang
-    document.cookie = `locale=${i18.locale.value}`
+    setCookie("locale", lang, 60 * 60 * 24 * 30)
+}
+
+function setCookie(key, value, expiresInSeconds) {
+    let now = new Date();
+    let time = now.getTime();
+    let expireTime = time + 1000 * expiresInSeconds; // to milliseconds
+    now.setTime(expireTime);
+    document.cookie = `${key}=${value};expires=${now.toUTCString()}`
+
 }
 </script>
 
