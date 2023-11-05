@@ -1,0 +1,22 @@
+{
+    "cutter": {
+        "title": "Przycinarka",
+        "description": "Przytnij piosenki pod siebie"
+    },
+    "sidebar": {
+        "home": "główna",
+        "tools": "narzędzia",
+        "files": "pliki",
+        "help": "pomoc",
+        "lang": "języki",
+        "contrast": "kontrast",
+        "user": "konto"
+    },
+    "upload": {
+        "title": "Prześlij nowy plik"
+    },
+    "tools": {
+        "fileName": "Nazwa pliku:",
+        "fileSize": "Rozmiar pliku:"
+    }
+}

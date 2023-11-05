@@ -10,9 +10,8 @@ import { createI18n } from "vue-i18n";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-import message from '@/lang/messages.js'
-
-const messages = message;
+import en from '@/locales/en.json'
+import pl from '@/locales/pl.json'
 
 
 
@@ -28,12 +27,11 @@ createInertiaApp({
     // resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
 
-        console.log(props.initialPage.props.locale)
         const i18n = createI18n({
             locale: props.initialPage.props.locale,
             legacy: false, // allow for composition api
             fallbackLocale: 'en',
-            messages,
+            messages: { en, pl },
         })
 
         return createSSRApp({ render: () => h(App, props) })

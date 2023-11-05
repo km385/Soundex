@@ -1,0 +1,22 @@
+{
+    "cutter": {
+        "title": "Cutting Tool",
+        "description": "Cut your song to your liking"
+    },
+    "sidebar": {
+        "home": "home",
+        "tools": "tools",
+        "files": "files",
+        "help": "help",
+        "lang": "lang",
+        "contrast": "contrast",
+        "user": "user"
+    },
+    "upload": {
+        "title": "Upload new file"
+    },
+    "tools": {
+        "fileName": "File Name:",
+        "fileSize": "File Size:"
+    }
+}
