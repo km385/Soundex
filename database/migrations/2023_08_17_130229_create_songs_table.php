@@ -12,7 +12,8 @@ return new class extends Migration {
     {
         Schema::create('songs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('originalName');
+            $table->string('extension');
             // name of the song set by user/name of the file when uploaded
             $table->unsignedBigInteger('duration_sec')->nullable();
             $table->unsignedBigInteger('user_id');
@@ -34,7 +35,7 @@ return new class extends Migration {
             $table->string('publisher')->nullable();
             $table->string('genre')->nullable();
             $table->text('lyrics')->nullable();
-            $table->unsignedSmallInteger('track_number')->nullable(); 
+            $table->unsignedSmallInteger('track_number')->nullable();
             // number of song in given album
 
             $table->timestamps();

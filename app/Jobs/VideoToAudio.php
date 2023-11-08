@@ -19,7 +19,7 @@ class VideoToAudio implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $path, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $guestId, private $isPrivate)
     {
         //
     }
@@ -29,10 +29,10 @@ class VideoToAudio implements ShouldQueue
      */
     public function handle(): void
     {
-        $name = pathinfo($this->path, PATHINFO_FILENAME);
+        $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
         try {
             FFMpeg::fromDisk('')
-                ->open($this->path)
+                ->open($this->fileInfo['path'])
                 ->export()
                 ->toDisk('')
                 ->addFilter('-vn')
@@ -42,9 +42,11 @@ class VideoToAudio implements ShouldQueue
             return;
         }
 
-        Storage::delete($this->path);
+        Storage::delete($this->fileInfo['path']);
         Storage::move($name.'temp.mp3', $name.'.mp3');
-        FileService::createAndNotify($name.'.mp3', $this->isPrivate, $this->guestId);
+        $this->fileInfo['path'] = $name.'.mp3';
+
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
     }
 }

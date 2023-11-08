@@ -21,7 +21,7 @@ class ChangeMetadata implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $path, private $newCoverPath, private $metadata, private $newExtension, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $newCoverPath, private $metadata, private $newExtension, private $guestId, private $isPrivate)
     {
         //
     }
@@ -32,17 +32,17 @@ class ChangeMetadata implements ShouldQueue
     public function handle(): void
     {
         try {
-            $this->path = FileService::convertFile($this->path, $this->newExtension);
+            $this->fileInfo['path'] = FileService::convertFile($this->fileInfo['path'], $this->newExtension);
         }catch (\Exception $e) {
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
         }
 
         $meta = $this->metadata;
-        $name = pathinfo($this->path, PATHINFO_FILENAME);
-        $ext = pathinfo($this->path, PATHINFO_EXTENSION);
+        $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
+        $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
 
         try {
-            $currentCoverPath = FileService::extractCover($this->path);
+            $currentCoverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
@@ -51,7 +51,7 @@ class ChangeMetadata implements ShouldQueue
         // wav works for tags but it is not shown is windows context menu. cover does not work
         try {
             FFMpeg::fromDisk('')
-                ->open($this->path)
+                ->open($this->fileInfo['path'])
                 ->export()
 //            ->addFilter('-vn')
                 ->addFilter(function (AudioFilters $filters) use ($meta){
@@ -62,20 +62,21 @@ class ChangeMetadata implements ShouldQueue
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
-        Storage::delete($this->path);
+        Storage::delete($this->fileInfo['path']);
         Storage::move($name.'temp.'.$ext, $name.'.'.$ext);
+        $this->fileInfo['path'] = $name.'.'.$ext;
         error_log("metadata added");
 
         if (is_null($this->newCoverPath)) {
             error_log('keeping the same cover');
-            FileService::addCover($this->path, $currentCoverPath);
+            FileService::addCover($this->fileInfo['path'], $currentCoverPath);
         } else {
             error_log('adding new cover');
-            FileService::addCover($this->path, $this->newCoverPath);
+            FileService::addCover($this->fileInfo['path'], $this->newCoverPath);
         }
         error_log("cover added");
 
-        FileService::createAndNotify($this->path, $this->isPrivate, $this->guestId);
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
     }
 
 }

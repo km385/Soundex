@@ -12,6 +12,7 @@ import Wavesurfer from "./Partials/Wavesurfer.vue";
 import UploadFile from "./Partials/UploadFile.vue";
 import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
+import ChooseFile from "@/Pages/Tools/Partials/ChooseFile.vue";
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function
@@ -143,6 +144,8 @@ function getRegionData(data) {
             </div>
             <UploadFile @file="getFile"/>
         </div>
+
+        <ChooseFile v-if="!isFileUploaded" @file-chosen="getFile" />
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->

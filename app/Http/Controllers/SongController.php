@@ -23,6 +23,23 @@ class SongController extends Controller
             'songs' => $songs,
         ]);
     }
+
+    public function getSongs() {
+        $user = auth()->user();
+        $songs = $user->songs;
+        error_log($songs[0]->song_path);
+        return response()->json(['songs' => $songs]);
+    }
+
+    public function getSongById($songId) {
+
+        error_log('haha');
+        $user = auth()->user();
+        $song = $user->songs()->where('id', $songId)->first();
+        error_log($song->song_path);
+        return Storage::disk('')->download($song->song_path);
+    }
+
     public function destroy(Song $song)
     {
         if ($song->user_id !== auth()->id()) {
@@ -40,7 +57,7 @@ class SongController extends Controller
     public function post($songId)
     {
         $song = Song::find($songId);
-        
+
         if (!$song || $song->user_id !== auth()->id()) {
             abort(403, 'Unauthorized');
         }
@@ -50,7 +67,7 @@ class SongController extends Controller
             $expiration,
             ['disk' => $song->disk == null ? "" : $song->disk, 'path' => $song->song_path]
         );
-    
+
         return response()->json(['songURL' => $temporaryUrl]);
     }
 

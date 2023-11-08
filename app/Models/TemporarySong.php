@@ -11,8 +11,10 @@ class TemporarySong extends Model
     use HasFactory;
 
     protected $fillable = [
-      'token',
-      'filePath'
+        'token',
+        'filePath',
+        'originalName',
+        'extension'
     ];
 
     protected static function boot()

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('token');
             $table->string('filePath');
+            $table->string('originalName');
+            $table->string('extension');
             $table->timestamps();
         });
     }

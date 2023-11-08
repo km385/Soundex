@@ -72,11 +72,11 @@ class EditController extends Controller
         $token = $parts[0];
         $file = TemporarySong::where('token', $token)->first();
         $song = new Song();
-        $song->name = 'tytul';
         // TODO: path as file name or userId/path
         $song->song_path = $file->filePath;
+        $song->originalName = $file->originalName;
+        $song->extension = $file->extension;
         $user->songs()->save($song);
-        error_log($user->id);
 
         $directory = "user_files" . DIRECTORY_SEPARATOR . $user->id. DIRECTORY_SEPARATOR;
         Storage::copy($file->filePath, $directory . $file->filePath);
@@ -98,9 +98,10 @@ class EditController extends Controller
         $file = Request::file('file');
         $volume = Request::input('volume');
         $guestId = Request::input('guestId');
-        $path = Storage::putFile($file);
 
-        ChangeVolume::dispatch($path, $volume, $guestId, $isPrivate);
+        $fileInfo = $this->getFileInfo($file);
+
+        ChangeVolume::dispatch($fileInfo, $volume, $guestId, $isPrivate);
         return response()->json(['message' => 'success']);
 
     }
@@ -142,8 +143,8 @@ class EditController extends Controller
 
         if(Request::hasFile('fileRef')) {
             $audioFile = Request::file('fileRef');
-            $audioPath = Storage::putFile($audioFile);
-            error_log($audioPath);
+            $fileInfo = $this->getFileInfo($audioFile);
+
         } else {
             return response()->json(['error' => 'file is required'], 400);
         }
@@ -168,7 +169,7 @@ class EditController extends Controller
 
         error_log("prepering");
 
-        ChangeMetadata::dispatch($audioPath, $coverPath, $metadata, $newExtension, $guestId, $isPrivate);
+        ChangeMetadata::dispatch($fileInfo, $coverPath, $metadata, $newExtension, $guestId, $isPrivate);
 
         return response()->json(['message' => 'success']);
     }
@@ -184,9 +185,10 @@ class EditController extends Controller
         }
         $file = Request::file('file');
         $guestId = Request::input('guestId');
-        $path = Storage::putFile($file);
+        $fileInfo = $this->getFileInfo($file);
 
-        VideoToAudio::dispatch($path, $guestId, $isPrivate);
+
+        VideoToAudio::dispatch($fileInfo, $guestId, $isPrivate);
 
         return \response()->json(['message' => 'success']);
 
@@ -205,9 +207,10 @@ class EditController extends Controller
         $guestId = Request::input('guestId');
         $extension = Request::input('extension');
         $bitrate = Request::input('bitrate');
-        $path = Storage::putFile($file);
+        $fileInfo = $this->getFileInfo($file);
 
-        ConvertFile::dispatch($path, $extension, $bitrate, $guestId, $isPrivate);
+
+        ConvertFile::dispatch($fileInfo, $extension, $bitrate, $guestId, $isPrivate);
         return \response()->json(['message' => 'success']);
 
     }
@@ -249,13 +252,14 @@ class EditController extends Controller
             return \response()->json(['message' => 'no file']);
         }
         $file = Request::file('file');
-        $path = Storage::putFile($file);
+        $fileInfo = $this->getFileInfo($file);
+
         $pitch = Request::input('pitchValue');
         $speed = Request::input('speedValue');
         $guestId = Request::input('guestId');
         error_log($isPrivate);
         error_log($guestId);
-        SpeedUpFile::dispatch($path, $pitch, $speed, $isPrivate, $guestId);
+        SpeedUpFile::dispatch($fileInfo, $pitch, $speed, $isPrivate, $guestId);
 
         return \response()->json(['message' => 'success']);
     }
@@ -274,7 +278,8 @@ class EditController extends Controller
         $end = Request::input('end');
 
         $file = Request::file('file');
-        $path = Storage::putFile($file);
+        $fileInfo = $this->getFileInfo($file);
+
         $guestId = Request::input('guestId');
         $af = "";
         if(Request::has('start2') && Request::has('end2')){
@@ -301,7 +306,7 @@ class EditController extends Controller
         }
 //        ffmpeg -i lol.mp3 -af "aselect='between(t,4,6.5)+between(t,17,26)+between(t,74,91)',asetpts=N/SR/TB" out.mp3
 
-        CutFile::dispatch($af, $path, $guestId, $isPrivate);
+        CutFile::dispatch($af, $fileInfo, $guestId, $isPrivate);
         return response()->json(['message' => 'success']);
     }
 
@@ -363,5 +368,24 @@ class EditController extends Controller
         BPMFinder::dispatch($audioPath, $coverPath, $guestId, $isPrivate);
 
         return response()->json(['message' => 'success']);
+    }
+
+    /**
+     * @param array|\Illuminate\Http\UploadedFile|null $file
+     * @param bool|string $path
+     * @return array
+     */
+    public function getFileInfo(array|\Illuminate\Http\UploadedFile|null $file): array
+    {
+        $path = Storage::putFile($file);
+
+        $originalName = $file->getClientOriginalName();
+        $originalName = pathinfo($originalName, PATHINFO_FILENAME);
+        $originalExt = $file->getClientOriginalExtension();
+        return [
+            'originalName' => $originalName,
+            'originalExt' => $originalExt,
+            'path' => $path,
+        ];
     }
 }

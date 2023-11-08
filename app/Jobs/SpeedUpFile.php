@@ -19,7 +19,7 @@ class SpeedUpFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $path, private $pitch, private $speed, private $isPrivate, private $userId)
+    public function __construct(private $fileInfo, private $pitch, private $speed, private $isPrivate, private $userId)
     {
         //
     }
@@ -30,7 +30,7 @@ class SpeedUpFile implements ShouldQueue
     public function handle(): void
     {
         try {
-            $currentCoverPath = FileService::extractCover($this->path);
+            $currentCoverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
             FileService::errorNotify("ERROR", $this->isPrivate, $this->userId);
             return;
@@ -60,31 +60,31 @@ class SpeedUpFile implements ShouldQueue
 
         try {
             FFMpeg::fromDisk('')
-                ->open($this->path)
+                ->open($this->fileInfo['path'])
                 ->export()
                 ->addFilter('-filter:a',
                     "asetrate=".$sample_rate*$this->pitch
                     .",aresample=".$sample_rate
                     .",atempo=".(1/$this->pitch)
                     .",atempo=".$this->speed)
-                ->save(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3');
+                ->save(pathinfo($this->fileInfo['path'], PATHINFO_FILENAME).'temp.mp3');
         } catch (\Exception $e){
-            Storage::delete($this->path);
+            Storage::delete($this->fileInfo['path']);
             error_log($e);
             FileService::errorNotify("ERROR", $this->isPrivate, $this->userId);
             return;
         }
         error_log('file sped up');
 
-        FileService::addCover(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', $currentCoverPath);
+        FileService::addCover(pathinfo($this->fileInfo['path'], PATHINFO_FILENAME).'temp.mp3', $currentCoverPath);
         Storage::delete($currentCoverPath);
 
 
-        Storage::delete($this->path);
-        Storage::move(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', $this->path);
+        Storage::delete($this->fileInfo['path']);
+        Storage::move(pathinfo($this->fileInfo['path'], PATHINFO_FILENAME).'temp.mp3', $this->fileInfo['path']);
 
 
-        FileService::createAndNotify($this->path, $this->isPrivate, $this->userId);
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId);
 
     }
 }

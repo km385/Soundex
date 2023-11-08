@@ -19,7 +19,7 @@ class ConvertFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $path, private $newExtension, private $bitrate, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $newExtension, private $bitrate, private $guestId, private $isPrivate)
     {
         //
     }
@@ -31,7 +31,7 @@ class ConvertFile implements ShouldQueue
     {
 
         try {
-            $coverPath = FileService::extractCover($this->path);
+            $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
             // TODO: determine if cutter/speedup need to stop if error while extracting a cover
             error_log('exception caught');
@@ -40,23 +40,24 @@ class ConvertFile implements ShouldQueue
         }
 
         try {
-            $this->path = FileService::convertFile($this->path, $this->newExtension);
+            $this->fileInfo['path'] = FileService::convertFile($this->fileInfo['path'], $this->newExtension);
             // change bitrate
-            $filename = pathinfo($this->path, PATHINFO_FILENAME);
-            $ext = pathinfo($this->path, PATHINFO_EXTENSION);
-            error_log($this->path);
+            $filename = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
+            $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
+            error_log($this->fileInfo['path']);
             FFMpeg::fromDisk('')
-                ->open($this->path)
+                ->open($this->fileInfo['path'])
                 ->export()
                 ->toDisk('')
                 ->addFilter('-b:a', $this->bitrate."K")
                 ->save($filename.'temp.'.$ext);
 
-            Storage::delete($this->path);
+            Storage::delete($this->fileInfo['path']);
             Storage::move($filename.'temp.'.$ext, $filename.'.'.$ext);
-            FileService::addCover($this->path, $coverPath);
+            FileService::addCover($this->fileInfo['path'], $coverPath);
 
-            FileService::createAndNotify($filename.'.'.$ext, $this->isPrivate, $this->guestId);
+            $this->fileInfo['path'] = $filename.'.'.$ext;
+            FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
         } catch (\Exception $e) {
             error_log('exception caught');
             error_log($e);

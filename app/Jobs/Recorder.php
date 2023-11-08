@@ -50,6 +50,12 @@ class Recorder implements ShouldQueue
         $finalPath = pathinfo($this->path, PATHINFO_FILENAME).'.mp3';
         Storage::move(pathinfo($this->path, PATHINFO_FILENAME).'temp.mp3', $finalPath);
 
-        FileService::createAndNotify($finalPath, $this->isPrivate, $this->guestId);
+        $fileInfo = [
+            'originalName' => 'recording',
+            'originalExt' => 'mp3',
+            'path' => $finalPath,
+        ];
+
+        FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
     }
 }

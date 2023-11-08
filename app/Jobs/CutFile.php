@@ -18,7 +18,7 @@ class CutFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $af, private $path, private $guestId, private $isPrivate)
+    public function __construct(private $af, private $fileInfo, private $guestId, private $isPrivate)
     {
         //
     }
@@ -28,11 +28,11 @@ class CutFile implements ShouldQueue
      */
     public function handle(): void
     {
-        $name = pathinfo($this->path, PATHINFO_FILENAME);
-        $ext = pathinfo($this->path, PATHINFO_EXTENSION);
+        $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
+        $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
         // TODO: either combine 2 try/catch block together or give them different messages
         try {
-            $coverPath = FileService::extractCover($this->path);
+            $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
             // TODO: determine if cutter/speedup need to stop if error while extracting a cover
             error_log('exception caught');
@@ -53,12 +53,12 @@ class CutFile implements ShouldQueue
             return;
         }
 
-        Storage::delete($this->path);
-        Storage::move($name.'temp.'.$ext, $this->path);
+        Storage::delete($this->fileInfo['path']);
+        Storage::move($name.'temp.'.$ext, $this->fileInfo['path']);
 
-        FileService::addCover($this->path, $coverPath);
+        FileService::addCover($this->fileInfo['path'], $coverPath);
 
-        FileService::createAndNotify($this->path, $this->isPrivate, $this->guestId);
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
     }
 

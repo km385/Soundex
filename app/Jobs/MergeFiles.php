@@ -68,7 +68,13 @@ class MergeFiles implements ShouldQueue
         Storage::move(pathinfo($this->paths[0], PATHINFO_FILENAME).'temp.mp3', $finalPath);
         error_log('final file created: '.$finalPath);
 
-        FileService::createAndNotify($finalPath, $this->isPrivate, $this->guestId);
+        $fileInfo = [
+            'originalName' => 'merge',
+            'originalExt' => 'mp3',
+            'path' => $finalPath,
+        ];
+
+        FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
     }
 
     /**

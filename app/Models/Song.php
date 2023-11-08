@@ -10,7 +10,8 @@ class Song extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
+        'originalName',
+        'extension',
         'duration_sec',
         'user_id',
         'disk',
@@ -35,7 +36,7 @@ class Song extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = ['name','user_id','disk','song_path','cover_path','song_status'];
+    protected $hidden = ['user_id','disk','song_path','cover_path','song_status'];
 
     public function user(): BelongsTo
     {

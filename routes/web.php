@@ -90,6 +90,9 @@ Route::prefix('tools')->name('tools.')->group(function () {
         return Inertia::render('Tools/Index');
     })->name('index');
 });
+Route::get('/songs', [SongController::class, 'getSongs']);
+Route::get('/songs/{id}', [SongController::class, 'getSongById']);
+
 
 //Database routes
 Route::middleware(['auth'])->group(function () {

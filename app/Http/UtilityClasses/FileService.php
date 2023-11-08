@@ -14,9 +14,13 @@ use function Laravel\Prompts\error;
 
 class FileService
 {
-    public static function createAndNotify($path, $isPrivate, $userId): void
+    public static function createAndNotify($fileInfo, $isPrivate, $userId): void
     {
-        $tempFile = TemporarySong::create(['filePath' => $path]);
+        error_log('createandnotify');
+        $tempFile = TemporarySong::create([
+            'filePath' => $fileInfo['path'],
+            'originalName' => $fileInfo['originalName'],
+            'extension' => $fileInfo['originalExt']]);
 
         $temporaryUrl = URL::temporarySignedRoute(
             'downloadFile',
