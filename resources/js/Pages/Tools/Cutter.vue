@@ -145,7 +145,6 @@ function getRegionData(data) {
             <UploadFile @file="getFile"/>
         </div>
 
-        <ChooseFile v-if="!isFileUploaded" @file-chosen="getFile" />
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->

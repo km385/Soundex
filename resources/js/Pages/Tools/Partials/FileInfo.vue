@@ -8,7 +8,7 @@
         },
         fileSize: {
             required: true,
-            type: String
+            type: Number
         }
     })
 </script>

@@ -1,5 +1,7 @@
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
+import ChooseFile from "@/Pages/Tools/Partials/ChooseFile.vue";
+import {usePage} from "@inertiajs/vue3";
 
 const uploadedFile = ref({})
 const fileInput = ref(null)
@@ -12,6 +14,8 @@ const props = defineProps({
         type: Boolean
     }
 })
+
+const page = usePage()
 
 function onDrop(event) {
     console.log('handle drag event')
@@ -77,6 +81,10 @@ function checkIfAudioFile(file) {
     return file.type.startsWith("audio/");
 }
 
+function getUsersFile(file) {
+    uploadedFile.value = file
+}
+
 watch(uploadedFile, (value) => {
     emit('file', uploadedFile.value)
 })
@@ -111,6 +119,10 @@ watch(uploadedFile, (value) => {
         </div>
         <input ref="fileInput" class="hidden" type="file" name="fileInput" id="fileInput" @change="handleFileChange">
     </div>
+    <div v-if="page.props.auth.user">
+        <ChooseFile @file-chosen="getUsersFile" class="mt-10" />
+    </div>
+
 </template>
 
 <style scoped>
