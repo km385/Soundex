@@ -78,7 +78,7 @@ function setCookie(key, value, expiresInSeconds) {
     <div class="divide-x divide-slate-700">
         <div
             :class="{ 'w-48 transition-w duration-500 z-30': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed }"
-            class="bg-[#2B2B2B] text-white flex flex-col fixed h-full">
+            class="bg-[#2B2B2B] text-white flex flex-col fixed h-full select-none">
             <div class="flex mr-2 flex-none"
                  :class="{ 'justify-center': isSidebarCollapsed, 'justify-end ': !isSidebarCollapsed }">
                 <div class="cursor-pointer w-14" v-on:click="onClick">
