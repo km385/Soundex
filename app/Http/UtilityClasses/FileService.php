@@ -64,6 +64,29 @@ class FileService
         }
     }
 
+    public static function extractMetadata($filePath)
+    {
+        $filePath = Storage::path($filePath);
+        error_log($filePath);
+
+        try {
+            $FFProbe = FFProbe::create()
+                ->getFFProbeDriver()
+                ->command([
+                    '-v', 'quiet',
+                    '-print_format', 'json',
+                    '-show_format',
+                    $filePath
+                ]);
+            $arr = json_decode($FFProbe, 1);
+
+            // if mp3
+            return $arr['format'];
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
     /**
      * @throws \Exception
      */

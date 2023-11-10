@@ -44,7 +44,7 @@ class SpeedUpFile implements ShouldQueue
                 ->getFFProbeDriver()
                 ->command(['-v', 'quiet',
                     '-print_format', 'json',
-                    '-show_streams',Storage::path($this->path)]);
+                    '-show_streams', Storage::path($this->fileInfo['path'])]);
 
             $json = json_decode($values, true);
             $sample_rate = $json['streams'][0]['sample_rate'];

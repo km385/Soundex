@@ -55,6 +55,7 @@ class EditController extends Controller
 
     public function saveToLibrary(): JsonResponse
     {
+        // todo: check if already saved
         $user = Auth::user();
         if(!$user){
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -71,11 +72,23 @@ class EditController extends Controller
         $parts = explode("?", $link);
         $token = $parts[0];
         $file = TemporarySong::where('token', $token)->first();
+
+        $tags = FileService::extractMetadata($file->filePath);
+
+
         $song = new Song();
         // TODO: path as file name or userId/path
         $song->song_path = $file->filePath;
         $song->originalName = $file->originalName;
         $song->extension = $file->extension;
+        // todo: supports mp3 and flac
+        $song->title = $tags['tags']['title'] ?? null;
+        $song->album = $tags['tags']['album'] ?? null;
+        // todo: validate client side dateformat
+        $song->year = "2000-12-01" ?? null;
+        $song->artist = $tags['tags']['artist'] ?? null;
+        $song->genre = $tags['tags']['genre'] ?? null;
+
         $user->songs()->save($song);
 
         $directory = "user_files" . DIRECTORY_SEPARATOR . $user->id. DIRECTORY_SEPARATOR;
@@ -157,7 +170,7 @@ class EditController extends Controller
         }
         $metadata = [];
         // mp3, flac support these and cover arts
-        $fieldsToCheck = ['title', 'artist', 'year', 'genre', 'date', 'album'];
+        $fieldsToCheck = ['title', 'artist', 'year', 'genre', 'date', 'album', 'composer'];
         foreach ($fieldsToCheck as $field) {
             $value = Request::input($field);
             if(!empty($value)) {
