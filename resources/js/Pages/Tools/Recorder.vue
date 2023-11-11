@@ -11,6 +11,7 @@ import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -144,13 +145,8 @@ function getFile(file) {
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <div v-if="!isFileUploaded" class="flex flex-col flex-grow justify-center items-center">
-            <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">Recorder Tool</p>
-                <p class="text-3xl">Record your voice over any song</p>
-            </div>
-            <UploadFile @file="getFile" />
-        </div>
+        <ToolsUploadScreen v-if="!isFileUploaded" title="Recorder Tool" description="Record your voice over any song"
+                           @file="getFile"/>
 
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>

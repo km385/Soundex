@@ -11,6 +11,7 @@ import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -162,13 +163,9 @@ function downloadFile() {
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <div class="my-10 flex flex-col flex-grow justify-center items-center" v-if="!isFileUploaded">
-            <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">Merge Tool</p>
-                <p class="text-3xl">Merge multiple songs into one</p>
-            </div>
-            <UploadFile @file="getFile"/>
-        </div>
+
+        <ToolsUploadScreen v-if="!isFileUploaded" title="Merge Tool" description="Merge multiple songs into one"
+                           @file="getFile"/>
 
         <div class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded && !fileToDownloadLink">
             <div class="mb-5">

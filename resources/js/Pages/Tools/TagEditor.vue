@@ -13,6 +13,7 @@ import LoadingScreen from "./Partials/LoadingScreen.vue";
 import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -148,13 +149,8 @@ const coverInput = ref()
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
-        <div v-if="!isFileUploaded" class="flex flex-col flex-grow justify-center items-center">
-            <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">Tag Editor</p>
-                <p class="text-3xl">Change information about your songs</p>
-            </div>
-            <UploadFile @file="getFile"/>
-        </div>
+        <ToolsUploadScreen v-if="!isFileUploaded" title="Tag Editor" description="Change information about your songs"
+                           @file="getFile"/>
 
         <!--    usunieto form.submit i dziala-->
 

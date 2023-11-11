@@ -12,6 +12,7 @@ import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import axios from "axios";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -103,14 +104,9 @@ const selectBitrate = (bitrate) => {
 <template>
     <loading-screen v-if="isLoading" />
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <div class="flex flex-col flex-grow justify-center items-center" v-if="!isFileUploaded">
-            <!-- Upload File Section -->
-            <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">Converter Tool</p>
-                <p class="text-3xl">Change your song extension</p>
-            </div>
-            <UploadFile @file="getFile" />
-        </div>
+
+      <ToolsUploadScreen v-if="!isFileUploaded" title="Converter Tool" description="Change your song extension"
+                         @file="getFile"/>
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->

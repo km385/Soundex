@@ -12,6 +12,7 @@ import {onMounted, ref} from "vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -91,13 +92,8 @@ function getFile(file) {
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
-        <div v-if="!isFileUploaded" class="flex flex-col flex-grow justify-center items-center">
-            <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">Video To Audio</p>
-                <p class="text-3xl">Extract audio from any video</p>
-            </div>
-            <UploadFile @file="getFile" :allow-video="true"/>
-        </div>
+        <ToolsUploadScreen v-if="!isFileUploaded" title="Video To Audio" description="Extract audio from any video"
+                           @file="getFile" :allow-video="true"/>
 
         <!--    usunieto form.submit i dziala-->
 

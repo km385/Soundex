@@ -13,6 +13,7 @@ import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -111,14 +112,9 @@ const percentageVolumeChange = computed(() => {
 
     <loading-screen v-if="isLoading" />
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <div class="flex flex-col flex-grow justify-center items-center" v-if="!isFileUploaded">
-            <!-- Upload File Section -->
-            <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">Volume Changer</p>
-                <p class="text-3xl">Change the volume of your songs</p>
-            </div>
-            <UploadFile @file="getFile" />
-        </div>
+        <ToolsUploadScreen v-if="!isFileUploaded" title="Volume Changer" description="Change the volume of your songs"
+                           @file="getFile"/>
+
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->

@@ -11,6 +11,7 @@ import Wavesurfer from "./Partials/Wavesurfer.vue";
 import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -128,13 +129,8 @@ function onDeleteClicked(name, array) {
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen">
-        <div class="flex flex-grow flex-col justify-center items-center" v-if="!isFileUploaded">
-            <div class="mb-5 text-center ">
-                <p class="text-5xl font-bold mb-2">Layer Mixer Tool</p>
-                <p class="text-3xl">Put two songs on top of each other</p>
-            </div>
-            <UploadFile @file="getFile" />
-        </div>
+        <ToolsUploadScreen v-if="!isFileUploaded" title="Layer Mixer Tool" description="Put two songs on top of each other"
+                           @file="getFile"/>
 
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <div class="mb-5">

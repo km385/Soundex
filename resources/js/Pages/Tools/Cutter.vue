@@ -7,9 +7,9 @@ import {subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import Wavesurfer from "./Partials/Wavesurfer.vue";
-import UploadFile from "./Partials/UploadFile.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function
@@ -44,7 +44,7 @@ watch(regionCheckboxValue, (value) => {
 })
 
 onMounted(() => {
-    if(page.props.auth.user){
+    if (page.props.auth.user) {
         subToPrivate(guestId, handleSubToPrivate)
     } else {
         subToChannel(guestId, handleSubToPublic)
@@ -55,7 +55,7 @@ function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
 
-    if(event.fileName === "ERROR") {
+    if (event.fileName === "ERROR") {
         error.value = "error has occurred"
         isError.value = true
     } else {
@@ -68,7 +68,7 @@ function handleSubToPrivate(event) {
     console.log("the event has been successfully captured")
     console.log(event)
 
-    if(event.fileName === "ERROR") {
+    if (event.fileName === "ERROR") {
         error.value = "error has occurred"
         isError.value = true
     } else {
@@ -77,7 +77,7 @@ function handleSubToPrivate(event) {
     isLoading.value = false
 }
 
-async function onCutClicked(){
+async function onCutClicked() {
     const start = mainRegionData.start
     const end = mainRegionData.end
     console.log(start)
@@ -90,7 +90,7 @@ async function onCutClicked(){
     const formData = new FormData();
     formData.append('start', start);
     formData.append('end', end);
-    if(secondaryRegionData.start != null && secondaryRegionData.end != null) {
+    if (secondaryRegionData.start != null && secondaryRegionData.end != null) {
         formData.append('start2', secondaryRegionData.start)
         formData.append('end2', secondaryRegionData.end)
     }
@@ -101,7 +101,7 @@ async function onCutClicked(){
         isLoading.value = true
         const res = await axios.post('/tools/cutFile', formData)
         console.log(res.data.message)
-    }catch (e) {
+    } catch (e) {
         console.log(e)
     }
 }
@@ -116,7 +116,7 @@ async function getFile(file) {
 }
 
 function getRegionData(data) {
-    switch (data.id){
+    switch (data.id) {
         case 0:
             mainRegionData.start = data.start
             mainRegionData.end = data.end
@@ -131,34 +131,32 @@ function getRegionData(data) {
 </script>
 
 <template>
-    <loading-screen v-if="isLoading" />
+    <loading-screen v-if="isLoading"/>
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <div class="flex flex-col flex-grow justify-center items-center" v-if="!isFileUploaded">
-            <!-- Upload File Section -->
-            <div class="mb-5 text-center">
-                <p class="text-5xl font-bold mb-2">{{ $t('cutter.title') }}</p>
-                <p class="text-3xl">{{ $t('cutter.description') }}</p>
-            </div>
-            <UploadFile @file="getFile"/>
-        </div>
-
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('cutter.title')" :description="$t('cutter.description')"
+                           @file="getFile"/>
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
-            <button type="button" @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File</button>
+            <button type="button" @click="isFileUploaded = false"
+                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File
+            </button>
 
-            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
-            <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true" :allow-second-region="true" @region-coords="getRegionData" />
+            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name"/>
+            <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true"
+                        :allow-second-region="true" @region-coords="getRegionData"/>
 
             <div class="mt-6">
-                <button type="button" @click="onCutClicked" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">Cut</button>
+                <button type="button" @click="onCutClicked"
+                        class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">Cut
+                </button>
             </div>
 
         </div>
 
         <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
-                             :file-to-download-link="fileToDownloadLink" :file-to-download-name="uploadedFile.name" />
+                             :file-to-download-link="fileToDownloadLink" :file-to-download-name="uploadedFile.name"/>
 
         <div v-if="isError" class="text-red-500">
             <!-- Error Handling Section -->

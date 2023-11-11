@@ -9,6 +9,7 @@ import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
+import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -100,13 +101,10 @@ function getFile(file) {
 <template>
     <loading-screen v-if="isLoading" />
     <div class="max-w-3xl mx-auto h-screen text-white flex flex-col" v-if="!isLoading">
-        <div v-if="!isFileUploaded" class="flex justify-center items-center flex-col flex-grow">
-            <div class="mb-5 text-center ">
-                <p class="text-5xl font-bold mb-2">BPM Finder Tool</p>
-                <p class="text-3xl">Find out what is the BPM of your songs</p>
-            </div>
-            <UploadFile @file="getFile" />
-        </div>
+
+        <ToolsUploadScreen v-if="!isFileUploaded" title="BPM Finder Tool" description="Find out what is the BPM of your songs"
+                           @file="getFile"/>
+
         <div v-if="isFileUploaded && !downloadLink">
             <button type="button" @click="onSubmit"
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
