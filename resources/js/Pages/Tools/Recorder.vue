@@ -10,6 +10,7 @@ import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
+import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -175,12 +176,8 @@ function getFile(file) {
             </div>
         </div>
 
-        <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
-            <p >You can now download your new file</p>
-            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = null">go back</button>
-            <DownloadTempFile :filename="'recording.mp3'" :token="downloadLink" :show-button="true"/>
-            <SaveToLibraryButton v-if=" page.props.auth.user" :file-link="downloadLink"/>
-        </div>
+        <ResultOptionsScreen v-if="downloadLink" @go-back="downloadLink = ''"
+                             :file-to-download-link="downloadLink" :file-to-download-name="'recording.mp3'"/>
 
         <div v-if="isError">
             <p>{{ error }}</p>

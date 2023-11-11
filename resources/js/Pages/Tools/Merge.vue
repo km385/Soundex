@@ -10,12 +10,13 @@ import UploadFile from "./Partials/UploadFile.vue";
 import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
+import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 defineOptions({
     layout: SidebarLayout
 })
 
 const isFileUploaded = ref(false)
-const fileToDownloadLink = ref(null)
+const fileToDownloadLink = ref("")
 const page = usePage()
 
 let guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -196,12 +197,8 @@ function downloadFile() {
 
         </div>
 
-        <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
-            <p >You can now download your new file</p>
-            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
-            <DownloadTempFile :filename="'merged.mp3'" :token="fileToDownloadLink"/>
-            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
-        </div>
+        <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
+                             :file-to-download-link="fileToDownloadLink" :file-to-download-name="'merged.mp3'"/>
 
         <div v-if="isError">
             <p>{{ error }}</p>

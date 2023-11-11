@@ -10,6 +10,7 @@ import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
+import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -123,8 +124,8 @@ function changeHandleStyles(region){
 
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
-            <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>
-            <div class="flex flex-col items-start mt-10">
+<!--            <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>-->
+            <div class="flex flex-col items-start">
                 <div class="w-auto mb-3 mt-3">
                     <label for="pitch" class="block font-medium text-sm mb-1" >Pitch</label>
                     <input type="text" id="pitch" placeholder="1.06" class="text-black bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="pitchValue">
@@ -140,14 +141,8 @@ function changeHandleStyles(region){
             </div>
         </div>
 
-        <div v-if="fileToDownloadLink" class="text-white flex flex-col justify-center items-center h-screen">
-            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
-                <p >You can now download your new file</p>
-                <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="fileToDownloadLink = null">go back</button>
-                <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink"/>
-                <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>
-            </div>
-        </div>
+        <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
+                             :file-to-download-link="fileToDownloadLink" :file-to-download-name="uploadedFile.name"/>
 
         <div v-if="isError">
             <p>{{ error }}</p>

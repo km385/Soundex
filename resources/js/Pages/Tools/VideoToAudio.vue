@@ -11,6 +11,7 @@ import {v4 as uuidv4} from "uuid";
 import {onMounted, ref} from "vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
+import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -108,12 +109,8 @@ function getFile(file) {
             </div>
         </div>
 
-        <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen">
-            <p >You can now download your new file</p>
-            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500" @click="downloadLink = ''; isFileUploaded = false">go back</button>
-            <DownloadTempFileButton :filename="fileUploaded.name" :token="downloadLink"/>
-            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="downloadLink"/>
-        </div>
+        <ResultOptionsScreen v-if="downloadLink" @go-back="downloadLink = ''; isFileUploaded = false"
+                             :file-to-download-link="downloadLink" :file-to-download-name="fileUploaded.name"/>
 
         <div v-if="isError">
             <p>{{ error }}</p>

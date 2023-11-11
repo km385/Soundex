@@ -12,6 +12,7 @@ import {computed, onMounted, reactive, ref, watch} from "vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
+import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -144,15 +145,8 @@ const percentageVolumeChange = computed(() => {
             <!--            </div>-->
         </div>
 
-        <div v-if="fileToDownloadLink" class="text-white flex flex-col flex-grow justify-center items-center">
-            <!-- File Download Section -->
-            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
-                <p>You can now download your new file</p>
-                <button class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="fileToDownloadLink = ''">Go Back</button>
-                <DownloadTempFile :filename="uploadedFile.name" :token="fileToDownloadLink" />
-                <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink" />
-            </div>
-        </div>
+        <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
+                             :file-to-download-link="fileToDownloadLink" :file-to-download-name="uploadedFile.name"/>
 
         <div v-if="isError" class="text-red-500">
             <!-- Error Handling Section -->

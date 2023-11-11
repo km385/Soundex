@@ -8,6 +8,7 @@ import UploadFile from "./Partials/UploadFile.vue";
 import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
+import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -113,14 +114,9 @@ function getFile(file) {
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
         </div>
 
-        <div v-if="downloadLink" class="text-white flex flex-col justify-center items-center h-screen w-full">
-            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
-<!--                go back here works as change file also-->
-                <button class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500"
-                        @click="downloadLink = ''; isFileUploaded = false">go back</button>
-                <DownloadTempFileButton :filename="fileUploaded.name" :token="downloadLink" :show-button="false" />
-            </div>
-        </div>
+        <ResultOptionsScreen v-if="downloadLink" @go-back="downloadLink = ''; isFileUploaded = false"
+                             :file-to-download-link="downloadLink" :file-to-download-name="fileUploaded.name"
+                             :show-button="false"/>
 
         <div v-if="isError">
             <p>{{ error }}</p>
