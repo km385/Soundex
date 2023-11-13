@@ -96,7 +96,9 @@ onMounted(() => {
             // keep cursor in the region while dragging it
             const region = regions.getRegions()[0]
             if (ws.currentTime >= region.end || ws.currentTime <= region.start) {
-                ws.wsInstance.setTime(region.start)
+                // +0.001 for firefox
+                ws.wsInstance.setTime(region.start + 0.001)
+                console.log(region.start)
             }
         }
     })
