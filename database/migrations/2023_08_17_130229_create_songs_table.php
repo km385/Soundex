@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('songs', function (Blueprint $table) {
             $table->id();
-            $table->string('originalName');
+            // no originalName
             $table->string('extension');
             // name of the song set by user/name of the file when uploaded
             $table->unsignedBigInteger('duration_sec')->nullable();

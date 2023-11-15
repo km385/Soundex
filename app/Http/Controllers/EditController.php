@@ -43,7 +43,7 @@ class EditController extends Controller
         }
         $file = TemporarySong::where('token', $token)->first();
         if($file) {
-            $filePath = $file->filePath;
+            $filePath = $file->song_path;
             error_log($filePath);
             return Storage::disk('')->download($filePath);
         }
@@ -55,7 +55,6 @@ class EditController extends Controller
 
     public function saveToLibrary(): JsonResponse
     {
-        // todo: check if already saved
         $user = Auth::user();
         if(!$user){
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -73,26 +72,35 @@ class EditController extends Controller
         $token = $parts[0];
         $file = TemporarySong::where('token', $token)->first();
 
-        $tags = FileService::extractMetadata($file->filePath);
+        if(Song::where('song_path', $file->song_path)->first()) {
+            error_log('already exist');
+            return response()->json(['message' => 'not valid'], 401);
+        }
+
+        try {
+            $song = new Song();
+            // TODO: path as file name or userId/path
+            $song->song_path = $file->song_path;
+            // todo: check title saving
+            // $song->title = $file->originalName;
+            $song->extension = $file->extension;
+            // todo: supports mp3 and flac
+            $song->title = $file->title;
+            $song->album = $file->album;
+            // todo: validate client side dateformat
+            $song->year = $file->year;
+            $song->artist = $file->artist;
+            $song->genre = $file->genre;
+
+            $user->songs()->save($song);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+        }
 
 
-        $song = new Song();
-        // TODO: path as file name or userId/path
-        $song->song_path = $file->filePath;
-        $song->originalName = $file->originalName;
-        $song->extension = $file->extension;
-        // todo: supports mp3 and flac
-        $song->title = $tags['tags']['title'] ?? null;
-        $song->album = $tags['tags']['album'] ?? null;
-        // todo: validate client side dateformat
-        $song->year = "2000-12-01" ?? null;
-        $song->artist = $tags['tags']['artist'] ?? null;
-        $song->genre = $tags['tags']['genre'] ?? null;
-
-        $user->songs()->save($song);
 
         $directory = "user_files" . DIRECTORY_SEPARATOR . $user->id. DIRECTORY_SEPARATOR;
-        Storage::copy($file->filePath, $directory . $file->filePath);
+        Storage::copy($file->song_path, $directory . $file->song_path);
 
         return response()->json(['message' => 'success']);
 

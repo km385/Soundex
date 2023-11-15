@@ -17,10 +17,19 @@ class FileService
     public static function createAndNotify($fileInfo, $isPrivate, $userId): void
     {
         error_log('createandnotify');
+        $tags = FileService::extractMetadata($fileInfo['path']);
         $tempFile = TemporarySong::create([
-            'filePath' => $fileInfo['path'],
-            'originalName' => $fileInfo['originalName'],
-            'extension' => $fileInfo['originalExt']]);
+            'song_path' => $fileInfo['path'],
+            'extension' => $fileInfo['originalExt'],
+
+            'title' => $tags['tags']['title'] ?? $fileInfo['originalName'],
+            'album' => $tags['tags']['album'] ?? null,
+            // todo: validate client side dateformat
+            'year' => "2000-12-01" ?? null,
+            'artist' => $tags['tags']['artist'] ?? null,
+            'genre' => $tags['tags']['genre'] ?? null,
+
+            ]);
 
         $temporaryUrl = URL::temporarySignedRoute(
             'downloadFile',

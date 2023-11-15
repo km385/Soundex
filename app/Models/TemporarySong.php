@@ -12,9 +12,22 @@ class TemporarySong extends Model
 
     protected $fillable = [
         'token',
-        'filePath',
-        'originalName',
-        'extension'
+        'song_path',
+        'extension',
+        'cover_path',
+        'song_status',
+        'duration_sec',
+        'title',
+        'artist',
+        'album',
+        'year',
+        'comment',
+        'composer',
+        'copyright_message',
+        'publisher',
+        'genre',
+        'lyrics',
+        'track_number',
     ];
 
     protected static function boot()

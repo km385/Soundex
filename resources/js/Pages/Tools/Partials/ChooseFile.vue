@@ -29,7 +29,7 @@ async function chooseSong(song) {
         responseType: "blob"
     })
 
-    const file = new File([new Blob([res.data])], song.originalName + '.' + song.extension)
+    const file = new File([new Blob([res.data])], song.title + '.' + song.extension)
     emits('fileChosen', file)
 
     console.log(file)
@@ -51,7 +51,7 @@ async function chooseSong(song) {
                 </div>
                 <div v-for="(song, index) in songs" :key="song.id" @click="chooseSong(song)" class="bg-red-500 flex justify-around cursor-pointer my-2 ">
                     <p>{{ song.id }}</p>
-                    <p>{{ song.originalName + '.' + song.extension }}</p>
+                    <p>{{ song.title + '.' + song.extension }}</p>
                     <p>{{ song.title }}</p>
                 </div>
                 <button @click="closePopup" class="mt-4 p-2 bg-red-500 text-white rounded-lg">Close</button>
