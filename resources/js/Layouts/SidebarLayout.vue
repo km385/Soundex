@@ -72,6 +72,21 @@ function setCookie(key, value, expiresInSeconds) {
     document.cookie = `${key}=${value};expires=${now.toUTCString()}`
 
 }
+
+const tools = [
+    { name: 'Cutter', component: 'Tools/Cutter', link: '/tools/cutter' },
+    { name: 'Tag Editor', component: 'Tools/TagEditor', link: '/tools/tageditor' },
+    { name: 'SpeedUp', component: 'Tools/SpeedUp', link: '/tools/speedup' },
+    { name: 'Merge', component: 'Tools/Merge', link: '/tools/merge' },
+    { name: 'Converter', component: 'Tools/Converter', link: '/tools/converter' },
+    { name: 'Video to Audio', component: 'Tools/VideoToAudio', link: '/tools/videotoaudio' },
+    { name: 'Volume Changer', component: 'Tools/VolumeChanger', link: '/tools/volumechanger' },
+    { name: 'Recorder', component: 'Tools/Recorder', link: '/tools/recorder' },
+    { name: 'LayerMix', component: 'Tools/LayerMixer', link: '/tools/layermixer' },
+    { name: 'BPM Finder', component: 'Tools/BPMFinder', link: '/tools/bpmFinder' }
+];
+
+const sortedTools = tools.sort((a, b) => a.name.localeCompare(b.name));
 </script>
 
 <template>
@@ -121,70 +136,18 @@ function setCookie(key, value, expiresInSeconds) {
                              @mouseenter="toolsMenu.mouseOverToolsEnter" @mouseleave="toolsMenu.mouseOverToolsLeave">
                             <!--            expanded tools-->
                             <ul>
-                                <Link href="/tools/cutter">
-                                    <li class="hover:bg-gray-500 cursor-pointer rounded-t-lg py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Cutter'}">
-                                        Cutter
+                                <Link v-for="(tool, index) in sortedTools" :key="tool.link" :href="tool.link">
+                                    <li
+                                        class="hover:bg-gray-500 cursor-pointer py-1"
+                                        :class="{
+                                            'bg-gray-500' : page.component === tool.component,
+                                            'rounded-t-lg': index === 0,
+                                            'rounded-b-lg': index === tools.length-1
+                                        }"
+                                    >
+                                        {{ tool.name }}
                                     </li>
                                 </Link>
-
-
-                                <Link href="/tools/tageditor">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/TagEditor'}">
-                                        Tag Editor
-                                    </li>
-                                </Link>
-
-
-                                <Link href="/tools/speedup">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/SpeedUp'}">
-                                        SpeedUp
-                                    </li>
-                                </Link>
-
-
-                                <Link href="/tools/merge">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Merge'}">
-                                        Merge
-                                    </li>
-                                </Link>
-
-                                <Link href="/tools/converter">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Converter'}">
-                                        Converter
-                                    </li>
-                                </Link>
-
-                                <Link href="/tools/videotoaudio">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/VideoToAudio'}">
-                                        Video to Audio
-                                    </li>
-                                </Link>
-
-                                <Link href="/tools/volumechanger">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/VolumeChanger'}">
-                                        Volume Changer
-                                    </li>
-                                </Link>
-
-                                <Link href="/tools/recorder">
-                                    <li class="hover:bg-gray-500 cursor-pointerpy-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Recorder'}">
-                                        Recorder
-                                    </li>
-                                </Link>
-
-
-                                <Link href="/tools/layermixer">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/LayerMixer'}">
-                                        LayerMix
-                                    </li>
-                                </Link>
-
-                                <Link href="/tools/bpmFinder">
-                                    <li class="hover:bg-gray-500 cursor-pointer rounded-b-lg py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/BPMFinder'}">
-                                        BPM Finder
-                                    </li>
-                                </Link>
-
                             </ul>
                         </div>
 
