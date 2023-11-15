@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref, provide} from "vue";
+import {ref, provide, onMounted} from "vue";
 import {Link, usePage} from '@inertiajs/vue3';
 import SidebarRow from "./Partials/SidebarRow.vue";
 import {useI18n} from "vue-i18n";
@@ -122,65 +122,65 @@ function setCookie(key, value, expiresInSeconds) {
                             <!--            expanded tools-->
                             <ul>
                                 <Link href="/tools/cutter">
-                                    <li class="hover:bg-gray-500 cursor-pointer rounded-t-lg py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer rounded-t-lg py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Cutter'}">
                                         Cutter
                                     </li>
                                 </Link>
 
 
                                 <Link href="/tools/tageditor">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/TagEditor'}">
                                         Tag Editor
                                     </li>
                                 </Link>
 
 
                                 <Link href="/tools/speedup">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/SpeedUp'}">
                                         SpeedUp
                                     </li>
                                 </Link>
 
 
                                 <Link href="/tools/merge">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Merge'}">
                                         Merge
                                     </li>
                                 </Link>
 
                                 <Link href="/tools/converter">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Converter'}">
                                         Converter
                                     </li>
                                 </Link>
 
                                 <Link href="/tools/videotoaudio">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/VideoToAudio'}">
                                         Video to Audio
                                     </li>
                                 </Link>
 
                                 <Link href="/tools/volumechanger">
-                                    <li class="hover:bg-gray-500 cursor-pointer py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/VolumeChanger'}">
                                         Volume Changer
                                     </li>
                                 </Link>
 
                                 <Link href="/tools/recorder">
-                                    <li class="hover:bg-gray-500 cursor-pointerpy-1">
+                                    <li class="hover:bg-gray-500 cursor-pointerpy-1" :class="{ 'bg-gray-500' : page.component === 'Tools/Recorder'}">
                                         Recorder
                                     </li>
                                 </Link>
 
 
                                 <Link href="/tools/layermixer">
-                                    <li class="hover:bg-gray-500 cursor-pointer rounded-b-lg py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/LayerMixer'}">
                                         LayerMix
                                     </li>
                                 </Link>
 
                                 <Link href="/tools/bpmFinder">
-                                    <li class="hover:bg-gray-500 cursor-pointer rounded-b-lg py-1">
+                                    <li class="hover:bg-gray-500 cursor-pointer rounded-b-lg py-1" :class="{ 'bg-gray-500' : page.component === 'Tools/BPMFinder'}">
                                         BPM Finder
                                     </li>
                                 </Link>
@@ -229,12 +229,11 @@ function setCookie(key, value, expiresInSeconds) {
                              @mouseenter="langMenu.mouseOverLangEnter" @mouseleave="langMenu.mouseOverLangLeave">
                             <!--            expanded tools-->
                             <ul>
-                                <li @click="setLang('en')" class="hover:bg-gray-500 cursor-pointer rounded-t-lg">
+                                <li @click="setLang('en')" class="hover:bg-gray-500 cursor-pointer rounded-t-lg" :class="{ 'bg-gray-500' : i18.locale.value === 'en'}">
                                     English
                                 </li>
 
-
-                                <li @click="setLang('pl')" class="hover:bg-gray-500 cursor-pointer rounded-b-lg">
+                                <li @click="setLang('pl')" class="hover:bg-gray-500 cursor-pointer rounded-b-lg" :class="{ 'bg-gray-500' : i18.locale.value === 'pl'}">
                                     Polish
                                 </li>
                             </ul>
