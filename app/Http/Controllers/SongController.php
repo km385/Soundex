@@ -33,7 +33,6 @@ class SongController extends Controller
 
     public function getSongById($songId) {
 
-        error_log('haha');
         $user = auth()->user();
         $song = $user->songs()->where('id', $songId)->first();
         error_log($song->song_path);

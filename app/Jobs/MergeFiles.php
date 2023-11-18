@@ -69,7 +69,7 @@ class MergeFiles implements ShouldQueue
         error_log('final file created: '.$finalPath);
 
         $fileInfo = [
-            'title' => 'merge',
+            'originalName' => 'merge',
             'originalExt' => 'mp3',
             'path' => $finalPath,
         ];
