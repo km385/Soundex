@@ -4,6 +4,7 @@ namespace App\Http\UtilityClasses;
 
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
+use App\Jobs\DeleteTempFileJob;
 use App\Models\TemporarySong;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -49,6 +50,13 @@ class FileService
             error_log('creating public event');
             event(new FileReadyToDownload($extractedUrl, $userId));
         }
+        error_log($tempFile->id);
+        self::scheduleFileDeletion($tempFile->id);
+    }
+
+    public static function scheduleFileDeletion($tempFileId): void
+    {
+        DeleteTempFileJob::dispatch($tempFileId)->delay(now()->addHour());
     }
 
     public static function bpmNotify($bpm, $isPrivate, $userId): void
