@@ -106,12 +106,18 @@ function record(){
 
 const sleep = time => new Promise(resolve => setTimeout(resolve, time));
 async function startRecording(){
+    // use exposed method to control wavesurfer component
+    wave.value.onPlayClicked()
+
     const recorder = await record()
     recorder.start()
     document.getElementById('stopButton').addEventListener('click', () => stopRecording(recorder));
 }
 
 async function stopRecording(recorder){
+    // use exposed method to control wavesurfer component
+    wave.value.onStopClicked()
+
     const audio = await recorder.stop()
 
     recordingFile.value = new File([audio.audioBlob], "recording.webm")
@@ -139,6 +145,8 @@ function getFile(file) {
     isFileUploaded.value = true
 }
 
+const wave = ref(null)
+
 </script>
 
 <template>
@@ -152,7 +160,7 @@ function getFile(file) {
             <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
             <FileInfo :file-size="backgroundFile.size" :file-name="backgroundFile.name" />
 
-            <Wavesurfer v-if="isFileUploaded" :file="backgroundFile" :show-controls="true" :id="'background'" />
+            <Wavesurfer v-if="isFileUploaded" :file="backgroundFile" :show-controls="true" :id="'background'" ref="wave"/>
 
             <div v-if="isRecorded">
                 <hr class="mt-10 border-blue-600">

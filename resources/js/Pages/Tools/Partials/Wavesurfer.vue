@@ -13,7 +13,9 @@ let regions = reactive({})
 
 // expose set volume to parent component
 defineExpose({
-    changeVolume
+    changeVolume,
+    onPlayClicked,
+    onStopClicked
 })
 
 function changeVolume(value) {
