@@ -74,7 +74,7 @@ class EditController extends Controller
 
         if(Song::where('song_path', $file->song_path)->first()) {
             error_log('already exist');
-            return response()->json(['message' => 'not valid'], 401);
+            return response()->json(['message' => 'already saved'], 401);
         }
 
         try {
@@ -100,6 +100,10 @@ class EditController extends Controller
 
 
         $directory = "user_files" . DIRECTORY_SEPARATOR . $user->id. DIRECTORY_SEPARATOR;
+        if(Storage::exists($directory)) {
+            Storage::makeDirectory($directory);
+        }
+
         Storage::copy($file->song_path, $directory . $file->song_path);
 
         return response()->json(['message' => 'success']);
