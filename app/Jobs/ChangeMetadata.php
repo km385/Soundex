@@ -31,6 +31,9 @@ class ChangeMetadata implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
+
         try {
             $this->fileInfo['path'] = FileService::convertFile($this->fileInfo['path'], $this->newExtension);
         }catch (\Exception $e) {
@@ -78,7 +81,9 @@ class ChangeMetadata implements ShouldQueue
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('ChangeMetadata');
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('ChangeMetadata', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 

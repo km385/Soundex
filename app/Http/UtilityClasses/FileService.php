@@ -17,14 +17,20 @@ use function Laravel\Prompts\error;
 
 class FileService
 {
-    public static function logSuccess($toolName) {
-        SuccessfulJobs::updateOrCreate(
-            ['tool_name' => $toolName],
-            [
-                'success_count' => DB::raw('success_count + 1')
-            ]
-        );
-        \Laravel\Prompts\info("job $toolName completed successfully");
+    public static function logSuccess($toolName, $userId, $time, $isPrivate): void
+    {
+        try {
+
+            SuccessfulJobs::create([
+                'tool_name' => $toolName,
+                'is_guest' => !$isPrivate,
+                'time' => $time,
+                'user_id' => $isPrivate ? $userId : null
+            ]);
+            \Laravel\Prompts\info("job $toolName completed successfully");
+        } catch (\Exception $e) {
+            error_log($e);
+        }
     }
     public static function createAndNotify($fileInfo, $isPrivate, $userId): void
     {

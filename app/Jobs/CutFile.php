@@ -29,6 +29,9 @@ class CutFile implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
+
         $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
         $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
         // TODO: either combine 2 try/catch block together or give them different messages
@@ -61,7 +64,10 @@ class CutFile implements ShouldQueue
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('CutFile');
+
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('CutFile', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 

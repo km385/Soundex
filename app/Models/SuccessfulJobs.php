@@ -11,7 +11,9 @@ class SuccessfulJobs extends Model
 
     protected  $fillable = [
         'tool_name',
-        'success_count'
+        'user_id',
+        'time',
+        'is_guest'
     ];
 
 }

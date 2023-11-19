@@ -172,6 +172,9 @@ class BPMFinder implements ShouldQueue
 
     public function handle()
     {
+        $startTime = now();
+
+
         $name = pathinfo($this->path, PATHINFO_FILENAME);
         $outputFilePath = $name . 'temp.' . 'wav';
         try {
@@ -264,7 +267,8 @@ class BPMFinder implements ShouldQueue
         unlink(Storage::Path($outputFilePath));
         FileService::bpmNotify($bpm, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('BPMFinder');
-
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('BPMFinder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

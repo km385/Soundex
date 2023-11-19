@@ -29,6 +29,8 @@ class MixFile implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
         try{
             FFMpeg::fromDisk('')
                 ->open($this->pathBg)
@@ -58,7 +60,9 @@ class MixFile implements ShouldQueue
 
         FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('MixFile');
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('MixFile', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 }

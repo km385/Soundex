@@ -29,6 +29,8 @@ class ChangeVolume implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
 
         $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
         $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
@@ -62,7 +64,9 @@ class ChangeVolume implements ShouldQueue
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('ChangeVolume');
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('ChangeVolume', $this->guestId, $executionTime, $this->isPrivate);
 
 
     }

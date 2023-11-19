@@ -29,6 +29,8 @@ class SpeedUpFile implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
         try {
             $currentCoverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
@@ -86,8 +88,9 @@ class SpeedUpFile implements ShouldQueue
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId);
 
-        FileService::logSuccess('SpeedUpFile');
-
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('SpeedUpFile', $this->userId, $executionTime, $this->isPrivate);
 
     }
 }

@@ -29,6 +29,8 @@ class Recorder implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
         try{
             FFMpeg::fromDisk('')
                 ->open($this->path)
@@ -58,7 +60,8 @@ class Recorder implements ShouldQueue
 
         FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('Recorder');
-
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('Recorder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

@@ -29,6 +29,8 @@ class VideoToAudio implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
         $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
         try {
             FFMpeg::fromDisk('')
@@ -48,7 +50,9 @@ class VideoToAudio implements ShouldQueue
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('VideoToAudio');
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('VideoToAudio', $this->guestId, $executionTime, $this->isPrivate);
 
 
     }

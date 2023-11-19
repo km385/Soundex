@@ -31,6 +31,8 @@ class MergeFiles implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
         $filter_complex_value = $this->get_filter_complex_value();
 
         try {
@@ -76,7 +78,10 @@ class MergeFiles implements ShouldQueue
 
         FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
 
-        FileService::logSuccess('MergeFiles');
+
+        $endTime = now();
+        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        FileService::logSuccess('MergeFiles', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 

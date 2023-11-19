@@ -29,6 +29,8 @@ class ConvertFile implements ShouldQueue
      */
     public function handle(): void
     {
+        $startTime = now();
+
 
         try {
             $coverPath = FileService::extractCover($this->fileInfo['path']);
@@ -58,7 +60,11 @@ class ConvertFile implements ShouldQueue
 
             $this->fileInfo['path'] = $filename.'.'.$ext;
             FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
-            FileService::logSuccess('ConvertFile');
+
+
+            $endTime = now();
+            $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+            FileService::logSuccess('ConvertFile', $this->guestId, $executionTime, $this->isPrivate);
 
         } catch (\Exception $e) {
             error_log('exception caught');
