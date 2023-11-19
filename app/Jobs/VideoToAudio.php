@@ -48,5 +48,8 @@ class VideoToAudio implements ShouldQueue
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
+        FileService::logSuccess('VideoToAudio');
+
+
     }
 }

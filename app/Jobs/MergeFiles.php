@@ -75,6 +75,9 @@ class MergeFiles implements ShouldQueue
         ];
 
         FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
+
+        FileService::logSuccess('MergeFiles');
+
     }
 
     /**

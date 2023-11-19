@@ -86,5 +86,8 @@ class SpeedUpFile implements ShouldQueue
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId);
 
+        FileService::logSuccess('SpeedUpFile');
+
+
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Http\UtilityClasses\FileService;
+use App\Models\SuccessfulJobs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -59,6 +60,8 @@ class CutFile implements ShouldQueue
         FileService::addCover($this->fileInfo['path'], $coverPath);
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+
+        FileService::logSuccess('CutFile');
 
     }
 

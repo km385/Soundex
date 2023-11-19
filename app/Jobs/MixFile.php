@@ -57,5 +57,8 @@ class MixFile implements ShouldQueue
         ];
 
         FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
+
+        FileService::logSuccess('MixFile');
+
     }
 }

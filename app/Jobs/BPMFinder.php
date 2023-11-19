@@ -259,9 +259,12 @@ class BPMFinder implements ShouldQueue
         // foreach ($bpmCounted as $bpmValue => $count) {
         //     $bpm .= "BPM: $bpmValue, Count: $count |||";
         // }
-            
+
         $bpm = array_key_first($bpmCounted);
         unlink(Storage::Path($outputFilePath));
         FileService::bpmNotify($bpm, $this->isPrivate, $this->guestId);
+
+        FileService::logSuccess('BPMFinder');
+
     }
 }

@@ -77,6 +77,9 @@ class ChangeMetadata implements ShouldQueue
         error_log("cover added");
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+
+        FileService::logSuccess('ChangeMetadata');
+
     }
 
 }

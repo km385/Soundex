@@ -5,7 +5,9 @@ namespace App\Http\UtilityClasses;
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
 use App\Jobs\DeleteTempFileJob;
+use App\Models\SuccessfulJobs;
 use App\Models\TemporarySong;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -15,6 +17,15 @@ use function Laravel\Prompts\error;
 
 class FileService
 {
+    public static function logSuccess($toolName) {
+        SuccessfulJobs::updateOrCreate(
+            ['tool_name' => $toolName],
+            [
+                'success_count' => DB::raw('success_count + 1')
+            ]
+        );
+        \Laravel\Prompts\info("job $toolName completed successfully");
+    }
     public static function createAndNotify($fileInfo, $isPrivate, $userId): void
     {
         error_log('createandnotify');

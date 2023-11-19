@@ -58,6 +58,8 @@ class ConvertFile implements ShouldQueue
 
             $this->fileInfo['path'] = $filename.'.'.$ext;
             FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+            FileService::logSuccess('ConvertFile');
+
         } catch (\Exception $e) {
             error_log('exception caught');
             error_log($e);
