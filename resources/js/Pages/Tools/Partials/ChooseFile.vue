@@ -31,8 +31,6 @@ async function chooseSong(song) {
 
     const file = new File([new Blob([res.data])], song.title + '.' + song.extension)
     emits('fileChosen', file)
-
-    console.log(file)
 }
 </script>
 

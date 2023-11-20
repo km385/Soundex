@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use App\Models\Song;
+use function Laravel\Prompts\error;
 
 class SongController extends Controller
 {
@@ -35,8 +36,14 @@ class SongController extends Controller
 
         $user = auth()->user();
         $song = $user->songs()->where('id', $songId)->first();
-        error_log($song->song_path);
-        return Storage::disk('')->download($song->song_path);
+
+        if(!$song) {
+            abort(404);
+        }
+
+        $file_path = 'user_files'. DIRECTORY_SEPARATOR .  $user->id . DIRECTORY_SEPARATOR . $song->song_path;
+
+        return Storage::download($file_path);
     }
 
     public function destroy(Song $song)
