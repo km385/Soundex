@@ -5,6 +5,11 @@ const props = defineProps({
     label: {
         type: String,
         required: true
+    },
+    type: {
+        type: String,
+        required: false,
+        default: "text"
     }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -20,7 +25,7 @@ const input = ref(null)
         <input :id="label"
                class="bg-gray-500 text-white border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500 w-full"
                name="title"
-               type="text"
+               :type="type"
                ref="input"
                @input="emit('update:modelValue', $event.target.value)"
         >
