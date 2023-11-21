@@ -36,18 +36,29 @@ class FileService
     {
         error_log('createandnotify');
         $tags = FileService::extractMetadata($fileInfo['path']);
-        $tempFile = TemporarySong::create([
-            'song_path' => $fileInfo['path'],
-            'extension' => $fileInfo['originalExt'],
+        try{
+            $tempFile = TemporarySong::create([
+                'song_path' => $fileInfo['path'],
+                'extension' => $fileInfo['originalExt'],
 
-            'title' => $tags['tags']['title'] ?? $fileInfo['originalName'],
-            'album' => $tags['tags']['album'] ?? null,
-            // todo: validate client side dateformat
-            'year' => "2000-12-01" ?? null,
-            'artist' => $tags['tags']['artist'] ?? null,
-            'genre' => $tags['tags']['genre'] ?? null,
+                'title' => $tags['tags']['title'] ?? $fileInfo['originalName'],
+                'album' => $tags['tags']['album'] ?? null,
+                'year' => $tags['tags']['year'] ?? null,
+                'artist' => $tags['tags']['artist'] ?? null,
+                'genre' => $tags['tags']['genre'] ?? null,
+
+                'composer' => $tags['tags']['composer'] ?? null,
+                'comment' => $tags['tags']['comment'] ?? null,
+                'copyright_message' => $tags['tags']['copyrightMessage'] ?? null,
+                'publisher' => $tags['tags']['publisher'] ?? null,
+                'track_number' => $tags['tags']['trackNumber'] ?? null,
+                'lyrics' => $tags['tags']['lyrics'] ?? null,
 
             ]);
+
+        } catch (\Exception $e) {
+            error($e);
+        }
 
         $temporaryUrl = URL::temporarySignedRoute(
             'downloadFile',

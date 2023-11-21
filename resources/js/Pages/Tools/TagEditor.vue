@@ -74,14 +74,21 @@ const form = ref({
     title: '',
     genre: '',
     year: '',
-    date: '',
     album: '',
+    composer: '',
+    comment: '',
+    copyrightMessage: '',
+    publisher: '',
+    trackNumber: '',
+    lyrics: '',
     coverRef: File,
     fileRef: File,
     extension: ''
 })
 
 async function onSubmit() {
+    if(!validateTrackNumber()) return;
+
     const isAllFieldsEmpty = Object.values(form.value).slice(0, -3).every(value => value === '');
     if(isAllFieldsEmpty && isCoverUploaded.value === false) {
         error.value = "fill at least 1 field"
@@ -144,6 +151,22 @@ function getExtension(ext) {
 
 const coverInput = ref()
 
+const isSmallInt = (value) => {
+    if(value === null) return true
+
+    const intValue = parseInt(value)
+    return Number.isInteger(intValue) && intValue >= 0 && intValue <= 65535
+};
+
+const validateTrackNumber = () => {
+    if (form.value.trackNumber !== '' && !isSmallInt(form.value.trackNumber)) {
+        error.value = 'TrackNumber must have values between 0 and 65535'
+        isError.value = true
+        return false
+    }
+    return true
+};
+
 </script>
 <template>
     <loading-screen v-if="isLoading" />
@@ -154,17 +177,23 @@ const coverInput = ref()
 
         <!--    usunieto form.submit i dziala-->
 
-        <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-2 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
-            <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name" />
+        <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-3 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
+        <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name" class="col-span-3" />
 
             <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
             <InputFieldWithLabel label="Artist" @update:model-value="form.artist = $event"/>
             <InputFieldWithLabel label="Genre" @update:model-value="form.genre = $event"/>
-            <InputFieldWithLabel label="Year" @update:model-value="form.year = $event"/>
-            <InputFieldWithLabel label="Date" @update:model-value="form.date = $event"/>
+            <InputFieldWithLabel label="Year" type="date" @update:model-value="form.year = $event"/>
             <InputFieldWithLabel label="Album" @update:model-value="form.album = $event"/>
 
-            <div class="mb-6 lg:col-span-2">
+            <InputFieldWithLabel label="Composer" @update:model-value="form.composer = $event"/>
+            <InputFieldWithLabel label="Comment" @update:model-value="form.comment = $event"/>
+            <InputFieldWithLabel label="CopyrightMessage" @update:model-value="form.copyrightMessage = $event"/>
+            <InputFieldWithLabel label="Publisher" @update:model-value="form.publisher = $event"/>
+            <InputFieldWithLabel label="TrackNumber" type="number" @update:model-value="form.trackNumber = $event"/>
+            <InputFieldWithLabel label="Lyrics" @update:model-value="form.lyrics = $event"/>
+
+            <div class="mb-6 lg:col-span-3">
                 <label for="cover" class="block mb-2 uppercase font-bold text-xs text-white">
                     Cover
                 </label>
@@ -177,10 +206,12 @@ const coverInput = ref()
                 >
                 <!--@input="file = $event.target.files[0].name" -->
 
-                <div v-if="isCoverUploaded" class="w-[200px] h-[200px] ml-[10px] mt-2 ">
+                <div v-if="isCoverUploaded" class="w-[200px] h-[200px] ml-[10px] mt-2">
                     <img :src="coverUrl" alt="Cover Image" class="w-full h-full object-cover"/>
                 </div>
-                <select-extension @extension="getExtension"/>
+                <div class="mt-2">
+                    <select-extension @extension="getExtension"/>
+                </div>
                 <!--            </div>-->
             </div>
 

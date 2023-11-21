@@ -27,6 +27,9 @@ class SongController extends Controller
 
     public function getSongs() {
         $user = auth()->user();
+        if(!$user) {
+            abort(404);
+        }
         $songs = $user->songs;
 
         return response()->json(['songs' => $songs]);
