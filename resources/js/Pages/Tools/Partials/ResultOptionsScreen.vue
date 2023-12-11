@@ -37,12 +37,12 @@ const showAudioTag = ref(false)
                    :src="'/files/' + fileToDownloadLink"></audio>
             <button @click="showAudioTag = true"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500">
-                Hear the audio
+                {{ $t("resultOptionsScreen.hearAudio") }}
             </button>
 
-            <p>You can now download your new file</p>
+            <p>{{ $t("resultOptionsScreen.downloadInfo") }}</p>
             <button class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="emits('goBack')">
-                Go Back
+                {{ $t("resultOptionsScreen.goBack") }}
             </button>
             <DownloadTempFileButton :filename="fileToDownloadName" :token="fileToDownloadLink" :show-button="showButton"/>
             <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink"/>

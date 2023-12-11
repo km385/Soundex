@@ -112,26 +112,26 @@ function changeHandleStyles(region){
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <ToolsUploadScreen v-if="!isUploaded" title="Speed Up Tool" description="Speed up any song"
+        <ToolsUploadScreen v-if="!isUploaded" :title="$t('speedUp.title')" :description="$t('speedUp.description')"
                            @file="getFile"/>
 
         <div v-if="isUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-            <button type="button"  @click="isUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+            <button type="button"  @click="isUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
 
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
 <!--            <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>-->
             <div class="flex flex-col items-start">
                 <div class="w-auto mb-3 mt-3">
-                    <label for="pitch" class="block font-medium text-sm mb-1" >Pitch</label>
+                    <label for="pitch" class="block font-medium text-sm mb-1" >{{ $t("speedUp.pitch") }}</label>
                     <input type="text" id="pitch" placeholder="1.06" class="text-black bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="pitchValue">
                 </div>
                 <div class="w-auto">
-                    <label for="speed" class="block font-medium text-sm mb-1" >Speed</label>
+                    <label for="speed" class="block font-medium text-sm mb-1" >{{ $t("speedUp.speed") }}</label>
                     <input type="text" id="speed" placeholder="1.20" class="text-black bg-gray-50 border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500" v-model="speedValue">
                 </div>
                 <button @click="onUploadButtonClick" class="bg-blue-400 text-white rounded-lg py-2 px-4 mt-5 mr-3 hover:bg-blue-500 mb-3">
-                    Upload
+                    {{ $t("tools.submit") }}
                 </button>
 
             </div>

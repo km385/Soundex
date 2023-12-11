@@ -28,20 +28,7 @@ const fileToDownloadLink = ref("")
 const isError = ref(false)
 const error = ref("")
 
-const mainRegionData = reactive({
-    start: 0,
-    end: 0
-})
 
-const secondaryRegionData = reactive({
-    start: null,
-    end: null
-})
-
-const regionCheckboxValue = ref(false)
-watch(regionCheckboxValue, (value) => {
-    console.log(`check ${value}`)
-})
 
 onMounted(() => {
     if (page.props.auth.user) {
@@ -78,28 +65,16 @@ function handleSubToPrivate(event) {
 }
 
 async function onCutClicked() {
-    const start = mainRegionData.start
-    const end = mainRegionData.end
-    console.log(start)
-    console.log(end)
-    axios.interceptors.request.use(req => {
-        console.log(req)
-        return req
-    })
+
 
     const formData = new FormData();
-    formData.append('start', start);
-    formData.append('end', end);
-    if (secondaryRegionData.start != null && secondaryRegionData.end != null) {
-        formData.append('start2', secondaryRegionData.start)
-        formData.append('end2', secondaryRegionData.end)
-    }
+
     formData.append('file', uploadedFile.value)
     formData.append('guestId', guestId)
 
     try {
         isLoading.value = true
-        const res = await axios.post('/tools/cutFile', formData)
+        const res = await axios.post('/tools/diagnosis', formData)
         console.log(res.data.message)
     } catch (e) {
         console.log(e)
@@ -108,48 +83,34 @@ async function onCutClicked() {
 
 async function getFile(file) {
     console.log('get file')
-    // reset checkbox upon change of files, keep for reference
-    // regionCheckboxValue.value = false
-    // await nextTick()
+
     uploadedFile.value = file;
     isFileUploaded.value = true
 }
 
-function getRegionData(data) {
-    switch (data.id) {
-        case 0:
-            mainRegionData.start = data.start
-            mainRegionData.end = data.end
-            break
-        case 1:
-            secondaryRegionData.start = data.start
-            secondaryRegionData.end = data.end
-            break
-    }
-}
+
 
 </script>
 
 <template>
     <loading-screen v-if="isLoading"/>
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('cutter.title')" :description="$t('cutter.description')"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('diagnosis.title')" :description="$t('diagnosis.description')"
                            @file="getFile"/>
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false"
-                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t("tools.changeFile") }}
+                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File
             </button>
 
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name"/>
-            <Wavesurfer v-if="isFileUploaded" :file="uploadedFile" :show-region="true" :show-controls="true"
-                        :allow-second-region="true" @region-coords="getRegionData"/>
+
 
             <div class="mt-6">
                 <button type="button" @click="onCutClicked"
-                        class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t("tools.submit") }}
+                        class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">Submit
                 </button>
             </div>
 

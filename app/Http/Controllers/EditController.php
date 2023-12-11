@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EditController extends Controller
@@ -108,6 +109,32 @@ class EditController extends Controller
 
         return response()->json(['message' => 'success']);
 
+    }
+
+    public function diagnosis() {
+        error_log("siema");
+        $file = Request::file("file");
+        $path = Storage::putFile($file);
+        error_log('lol');
+
+        try {
+            $output = FFMpeg::fromDisk('')
+                ->open($path)
+                ->export()
+                ->addFilter('-v', "error")
+                ->addFilter(['-filter:a', 'volumedetect', '-f', 'null'])
+                ->getProcessOutput();
+            error_log('kek');
+
+            $mess = print_r($output->all(), true);
+            return response()->json(['message' => $mess]);
+
+
+        } catch (\Exception $e) {
+            error_log("hahah");
+//            error_log($e);
+            return;
+        }
     }
 
     public function volumeChanger(): JsonResponse

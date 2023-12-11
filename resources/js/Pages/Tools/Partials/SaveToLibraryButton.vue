@@ -36,7 +36,7 @@ async function onClick() {
     <button type="button" id="saveButton" ref="but" @click="onClick"
             class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500"
             :class="{ 'bg-blue-400': !isError, 'bg-red-400 hover:bg-red-400': isError }">
-        Save to Library
+        {{ $t("resultOptionsScreen.saveToLibrary") }}
     </button>
     <div v-if="error" :class="{ 'text-green-500': !isError, 'text-red-500': isError }">
         {{ error }}

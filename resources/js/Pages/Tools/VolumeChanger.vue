@@ -112,14 +112,14 @@ const percentageVolumeChange = computed(() => {
 
     <loading-screen v-if="isLoading" />
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <ToolsUploadScreen v-if="!isFileUploaded" title="Volume Changer" description="Change the volume of your songs"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('volumeChanger.title')" :description="$t('volumeChanger.description')"
                            @file="getFile"/>
 
 
         <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
-            <button type="button" @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File</button>
+            <button type="button" @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t("tools.changeFile") }}</button>
 
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
@@ -135,7 +135,7 @@ const percentageVolumeChange = computed(() => {
 
 
             <div class="mt-6">
-                <button type="button" @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">Submit</button>
+                <button type="button" @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
             </div>
 
             <!--            </div>-->

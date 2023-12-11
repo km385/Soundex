@@ -247,7 +247,7 @@ function formatTime(time) {
                 <div class="inline" v-if="allowSecondRegion">
                     <input id="regionCheckBox" type="checkbox" v-model="regionCheckboxValue"
                            class="ml-2 form-checkbox accent-blue-600 transition duration-150 ease-in-out focus:ring focus:ring-blue-400" />
-                    <label class="ml-2" for="regionCheckBox">Second Region</label>
+                    <label class="ml-2" for="regionCheckBox">{{ $t("wavesurfer.secondRegion") }}</label>
                 </div>
             </div>
 

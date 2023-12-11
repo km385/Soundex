@@ -164,7 +164,7 @@ function downloadFile() {
 
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
 
-        <ToolsUploadScreen v-if="!isFileUploaded" title="Merge Tool" description="Merge multiple songs into one"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('merge.title')" :description="$t('merge.description')"
                            @file="getFile"/>
 
         <div class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded && !fileToDownloadLink">
@@ -180,15 +180,15 @@ function downloadFile() {
                     </div>
                     <div
                         class="flex flex-col justify-between opacity-30 group-hover:opacity-100 transition-opacity duration-300">
-                        <button @click="onUpClicked(file.name)">up</button>
-                        <button @click="onDeleteClicked(file.name)">delete</button>
-                        <button @click="onDownClicked(file.name)">down</button>
+                        <button @click="onUpClicked(file.name)">{{ $t("tools.upSong") }}</button>
+                        <button @click="onDeleteClicked(file.name)">{{ $t("tools.deleteSong") }}</button>
+                        <button @click="onDownClicked(file.name)">{{ $t("tools.downSong") }}</button>
                     </div>
                 </div>
             </div>
             <div v-if="isFileUploaded">
                 <button type="button" @click="onMergeClicked"
-                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}
                 </button>
             </div>
 

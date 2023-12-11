@@ -14,7 +14,7 @@ import {onMounted, ref, watch} from "vue";
 </script>
 
 <template>
-    <label for="selectExtension" class="text-white">Choose a output extension</label>
+    <label for="selectExtension" class="text-white">{{ $t('converter.changeExtension') }}</label>
     <select id="selectExtension" required class="text-black ml-2" v-model="extension">
         <option selected value="mp3">Mp3</option>
         <option value="flac">Flac</option>

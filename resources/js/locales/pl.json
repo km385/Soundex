@@ -1,7 +1,64 @@
 {
     "cutter": {
-        "title": "Przycinarka",
-        "description": "Przytnij piosenki pod siebie"
+        "title": "Narzędzie do cięcia",
+        "description": "Przytnij swoją piosenkę według własnych preferencji"
+    },
+    "bpmFinder": {
+        "title": "Narzędzie do znajdowania BPM",
+        "description": "Dowiedz się, jakie jest BPM twoich piosenek"
+    },
+    "converter": {
+        "title": "Narzędzie do konwersji",
+        "description": "Zmień rozszerzenie swojej piosenki",
+        "changeExtension": "Wybierz format wyjściowy"
+    },
+    "diagnosis": {
+        "title": "Narzędzie do diagnozowania",
+        "description": "Sprawdź, czy plik nie ma żadnych problemów"
+    },
+    "layerMixer": {
+        "title": "Narzędzie do mieszania warstw",
+        "description": "Umieść dwie piosenki na sobie",
+        "foreground": "pierwszy plan",
+        "background": "tło - wyznaczy długość piosenki"
+    },
+    "merge": {
+        "title": "Narzędzie do łączenia",
+        "description": "Połącz kilka piosenek w jedną"
+    },
+    "recorder": {
+        "title": "Narzędzie do nagrywania",
+        "description": "Nagrywaj swojego głosu na dowolną piosenkę"
+    },
+    "speedUp": {
+        "title": "Narzędzie do przyspieszania",
+        "description": "Przyspiesz dowolną piosenkę",
+        "pitch": "tonacja",
+        "speed": "tempo"
+    },
+    "tagEditor": {
+        "title": "Edytor tagów",
+        "description": "Zmień informacje o swoich piosenkach",
+        "titleL": "Tytuł",
+        "artist": "Artysta",
+        "genre": "Gatunek",
+        "year": "Rok",
+        "album": "Album",
+        "composer": "Kompozytor",
+        "comment": "Komentarz",
+        "copyrightMessage": "prawa autorskie",
+        "publisher": "Wydawca",
+        "trackNumber": "Numer utworu",
+        "lyrics": "Tekst piosenki",
+        "cover": "Okładka"
+    },
+    "videoToAudio": {
+        "title": "Zdjęcie dźwięku z wideo",
+        "description": "Wydobyj dźwięk z dowolnego wideo"
+    },
+    "volumeChanger": {
+        "title": "Zmieniacz głośności",
+        "description": "Zmień głośność swoich piosenek"
     },
     "sidebar": {
         "home": "główna",
@@ -17,6 +74,25 @@
     },
     "tools": {
         "fileName": "Nazwa pliku:",
-        "fileSize": "Rozmiar pliku:"
+        "fileSize": "Rozmiar pliku:",
+        "changeFile": "Zmień plik",
+        "addNewSong": "Dodaj nową piosenkę",
+        "submit": "Zastosuj",
+        "upSong": "w górę",
+        "deleteSong": "usuń",
+        "downSong": "w dół"
+
+    },
+    "wavesurfer": {
+        "secondRegion": "Drugi Region"
+    },
+    "resultOptionsScreen": {
+        "hearAudio": "Posłuchaj dźwięku",
+        "downloadInfo": "Teraz możesz pobrać swój nowy plik",
+        "goBack": "Wróć",
+        "downloadFile": "Pobierz plik",
+        "bpmFound": "Znalezione BPM w twojej piosence:",
+        "saveToLibrary": "Zapisz do biblioteki"
     }
+
 }

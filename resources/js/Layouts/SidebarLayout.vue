@@ -83,7 +83,8 @@ const tools = [
     { name: 'Volume Changer', component: 'Tools/VolumeChanger', link: '/tools/volumechanger' },
     { name: 'Recorder', component: 'Tools/Recorder', link: '/tools/recorder' },
     { name: 'LayerMix', component: 'Tools/LayerMixer', link: '/tools/layermixer' },
-    { name: 'BPM Finder', component: 'Tools/BPMFinder', link: '/tools/bpmFinder' }
+    { name: 'BPM Finder', component: 'Tools/BPMFinder', link: '/tools/bpmFinder' },
+    { name: 'Diagnosis', component: 'Tools/Diagnosis', link: '/tools/diagnosis' }
 ];
 
 const sortedTools = tools.sort((a, b) => a.name.localeCompare(b.name));

@@ -153,11 +153,11 @@ const wave = ref(null)
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
-        <ToolsUploadScreen v-if="!isFileUploaded" title="Recorder Tool" description="Record your voice over any song"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('recorder.title')" :description="$t('recorder.description')"
                            @file="getFile"/>
 
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-            <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+            <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
             <FileInfo :file-size="backgroundFile.size" :file-name="backgroundFile.name" />
 
             <Wavesurfer v-if="isFileUploaded" :file="backgroundFile" :show-controls="true" :id="'background'" ref="wave"/>
@@ -176,7 +176,7 @@ const wave = ref(null)
                 <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
             </div>
             <div v-if="isRecorded && isFileUploaded">
-                <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Send</button>
+                <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
             </div>
         </div>
 

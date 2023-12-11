@@ -81,6 +81,11 @@ Route::prefix('tools')->name('tools.')->group(function () {
     })->name('BPM Finder');
     Route::post('/bpmFinder', [EditController::class, 'bpmFinder']);
 
+    Route::get('/diagnosis', function () {
+        return Inertia::render('Tools/Diagnosis');
+    })->name('BPM Finder');
+    Route::post('/diagnosis', [EditController::class, 'diagnosis']);
+
     Route::get('/videotoaudio', function () {
         return Inertia::render('Tools/VideoToAudio');
     })->name('videotoaudio');

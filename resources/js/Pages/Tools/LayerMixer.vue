@@ -129,7 +129,7 @@ function onDeleteClicked(name, array) {
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto text-white flex flex-col h-screen">
-        <ToolsUploadScreen v-if="!isFileUploaded" title="Layer Mixer Tool" description="Put two songs on top of each other"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('layerMixer.title')" :description="$t('layerMixer.description')"
                            @file="getFile"/>
 
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
@@ -139,15 +139,15 @@ function onDeleteClicked(name, array) {
             <div v-for="(file, index) in uploadedFiles" :key="file.name">
                 <div class="flex group mb-10">
                     <div style="width: 100%">
-                        <p v-if="index === 0">foreground</p>
-                        <p v-else-if="index === 1">background - will determine the duration of the final song</p>
+                        <p v-if="index === 0">{{ $t("layerMixer.foreground") }}</p>
+                        <p v-else-if="index === 1">{{ $t("layerMixer.background") }} </p>
                         <Wavesurfer v-if="isFileUploaded" :file="file" :id="getWaveformId(file.name)" />
                     </div>
                     <div
                         class="flex flex-col justify-between opacity-30 group-hover:opacity-100 transition-opacity duration-300">
-                        <button @click="onUpClicked(file.name, uploadedFiles)">up</button>
-                        <button @click="onDeleteClicked(file.name, uploadedFiles)">delete</button>
-                        <button @click="onDownClicked(file.name, uploadedFiles)">down</button>
+                        <button @click="onUpClicked(file.name, uploadedFiles)">{{ $t("tools.upSong") }}</button>
+                        <button @click="onDeleteClicked(file.name, uploadedFiles)">{{ $t("tools.deleteSong") }}</button>
+                        <button @click="onDownClicked(file.name, uploadedFiles)">{{ $t("tools.downSong") }}</button>
                     </div>
 
                 </div>
@@ -155,7 +155,7 @@ function onDeleteClicked(name, array) {
 
             <div v-if="isFileUploaded">
                 <button type="button" @click="onMergeClicked"
-                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Merge
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}
                 </button>
             </div>
         </div>

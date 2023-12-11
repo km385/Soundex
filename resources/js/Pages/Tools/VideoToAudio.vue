@@ -92,7 +92,7 @@ function getFile(file) {
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
-        <ToolsUploadScreen v-if="!isFileUploaded" title="Video To Audio" description="Extract audio from any video"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('videoToAudio.title')" :description="$t('videoToAudio.description')"
                            @file="getFile" :allow-video="true"/>
 
         <!--    usunieto form.submit i dziala-->

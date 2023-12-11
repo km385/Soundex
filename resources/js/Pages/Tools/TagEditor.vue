@@ -172,7 +172,7 @@ const validateTrackNumber = () => {
     <loading-screen v-if="isLoading" />
 
     <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
-        <ToolsUploadScreen v-if="!isFileUploaded" title="Tag Editor" description="Change information about your songs"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('tagEditor.title')" :description="$t('tagEditor.description')"
                            @file="getFile"/>
 
         <!--    usunieto form.submit i dziala-->
@@ -180,22 +180,21 @@ const validateTrackNumber = () => {
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-3 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
         <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name" class="col-span-3" />
 
-            <InputFieldWithLabel label="Title" @update:model-value="form.title = $event"/>
-            <InputFieldWithLabel label="Artist" @update:model-value="form.artist = $event"/>
-            <InputFieldWithLabel label="Genre" @update:model-value="form.genre = $event"/>
-            <InputFieldWithLabel label="Year" type="date" @update:model-value="form.year = $event"/>
-            <InputFieldWithLabel label="Album" @update:model-value="form.album = $event"/>
-
-            <InputFieldWithLabel label="Composer" @update:model-value="form.composer = $event"/>
-            <InputFieldWithLabel label="Comment" @update:model-value="form.comment = $event"/>
-            <InputFieldWithLabel label="CopyrightMessage" @update:model-value="form.copyrightMessage = $event"/>
-            <InputFieldWithLabel label="Publisher" @update:model-value="form.publisher = $event"/>
-            <InputFieldWithLabel label="TrackNumber" type="number" @update:model-value="form.trackNumber = $event"/>
-            <InputFieldWithLabel label="Lyrics" @update:model-value="form.lyrics = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.titleL')" @update:model-value="form.title = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.artist')" @update:model-value="form.artist = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.genre')"  @update:model-value="form.genre = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.year')" type="date" @update:model-value="form.year = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.album')" @update:model-value="form.album = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.composer')" @update:model-value="form.composer = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.comment')" @update:model-value="form.comment = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.copyrightMessage')" @update:model-value="form.copyrightMessage = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.publisher')" @update:model-value="form.publisher = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.trackNumber')" type="number" @update:model-value="form.trackNumber = $event"/>
+            <InputFieldWithLabel :label="$t('tagEditor.lyrics')" @update:model-value="form.lyrics = $event"/>
 
             <div class="mb-6 lg:col-span-3">
                 <label for="cover" class="block mb-2 uppercase font-bold text-xs text-white">
-                    Cover
+                    {{ $t("tagEditor.cover") }}
                 </label>
                 <!--            <div class="image-container">-->
                 <input id="cover"
@@ -216,8 +215,8 @@ const validateTrackNumber = () => {
             </div>
 
             <div v-if="isFileUploaded && !downloadLink">
-                <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
-                <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+                <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
+                <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
             </div>
         </div>
 

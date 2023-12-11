@@ -1,7 +1,7 @@
 <template>
     <div v-if="showButton" class="mt-6 flex items-center">
         <a class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 whitespace-nowrap" href="#"
-            @click="downloadFile">Download file</a>
+            @click="downloadFile">{{ $t("resultOptionsScreen.downloadFile") }}</a>
         <input type="text" id="textToCopy" class="w-full ml-3 cursor-pointer text-black bg-blue-400 rounded-lg" @click="copyToClipboard" :value="'localhost:8000/files/'+ token">
         <svg xmlns="http://www.w3.org/2000/svg" height="58" viewBox="0 -960 960 960" width="58" @click="copyToClipboard" class="cursor-pointer">
             <path
@@ -10,7 +10,7 @@
     </div>
 
     <div v-else class="mt-6 flex items-center">
-        <p class="w-full ml-3">BPM found in your song:{{ token }}</p>
+        <p class="w-full ml-3">{{ $t("resultOptionsScreen.bpmFound") }} {{ token }}</p>
     </div>
 </template>
 

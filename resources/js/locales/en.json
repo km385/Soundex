@@ -3,6 +3,64 @@
         "title": "Cutting Tool",
         "description": "Cut your song to your liking"
     },
+    "bpmFinder": {
+        "title": "BPM Finder Tool",
+        "description": "Find out what is the BPM of your songs"
+    },
+    "converter": {
+        "title": "Converter Tool",
+        "description": "Change your song extension",
+        "changeExtension": "Choose an output extension"
+    },
+    "diagnosis": {
+        "title": "Diagnosis Tool",
+        "description": "Check if your file has any problems"
+    },
+    "layerMixer": {
+        "title": "Layer Mixer Tool",
+        "description": "Put two songs on top of each other",
+        "foreground": "foreground",
+        "background": "background - will determine the duration of the final song"
+    },
+    "merge": {
+        "title": "Merge Tool",
+        "description": "Merge multiple songs into one"
+    },
+    "recorder": {
+        "title": "Recorder Tool",
+        "description": "Record your voice over any song"
+    },
+    "speedUp": {
+        "title": "Speed Up Tool",
+        "description": "Speed up any song",
+        "pitch": "pitch",
+        "speed": "speed"
+    },
+    "tagEditor": {
+        "title": "Tag Editor",
+        "description": "Change information about your songs",
+        "titleL": "Title",
+        "artist": "Artist",
+        "genre": "Genre",
+        "year": "Year",
+        "album": "Album",
+        "composer": "Composer",
+        "comment": "Comment",
+        "copyrightMessage": "CopyrightMessage",
+        "publisher": "Publisher",
+        "trackNumber": "TrackNumber",
+        "lyrics": "Lyrics",
+        "cover": "Cover"
+
+    },
+    "videoToAudio": {
+        "title": "Video To Audio",
+        "description": "Extract audio from any video"
+    },
+    "volumeChanger": {
+        "title": "Volume Changer",
+        "description": "Change the volume of your songs"
+    },
     "sidebar": {
         "home": "home",
         "tools": "tools",
@@ -17,6 +75,23 @@
     },
     "tools": {
         "fileName": "File Name:",
-        "fileSize": "File Size:"
+        "fileSize": "File Size:",
+        "changeFile": "Change File",
+        "addNewSong": "Add new song",
+        "submit": "Submit",
+        "upSong": "up",
+        "deleteSong": "delete",
+        "downSong": "down"
+    },
+    "wavesurfer": {
+        "secondRegion": "Second Region"
+    },
+    "resultOptionsScreen": {
+        "hearAudio": "Hear the audio",
+        "downloadInfo": "You can now download your new file",
+        "goBack": "Go Back",
+        "downloadFile": "Download file",
+        "bpmFound": "BPM found in your song:",
+        "saveToLibrary": "Save to Library"
     }
 }

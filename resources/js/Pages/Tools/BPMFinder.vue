@@ -102,7 +102,7 @@ function getFile(file) {
     <loading-screen v-if="isLoading" />
     <div class="max-w-3xl mx-auto h-screen text-white flex flex-col" v-if="!isLoading">
 
-        <ToolsUploadScreen v-if="!isFileUploaded" title="BPM Finder Tool" description="Find out what is the BPM of your songs"
+        <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('bpmFinder.title')" :description="$t('bpmFinder.description')"
                            @file="getFile"/>
 
         <div v-if="isFileUploaded && !downloadLink">
