@@ -4,6 +4,7 @@ import {ref, provide, onMounted} from "vue";
 import {Link, usePage} from '@inertiajs/vue3';
 import SidebarRow from "./Partials/SidebarRow.vue";
 import {useI18n} from "vue-i18n";
+import {useStore} from "vuex";
 
 const page = usePage()
 const isSidebarCollapsed = ref(false);
@@ -88,10 +89,18 @@ const tools = [
 ];
 
 const sortedTools = tools.sort((a, b) => a.name.localeCompare(b.name));
+
+const store = useStore()
+function changeContrast() {
+    store.commit("change")
+}
+
+
 </script>
 
 <template>
-    <div class="divide-x divide-slate-700">
+    <div
+        class="divide-x divide-slate-700">
         <div
             :class="{ 'w-48 transition-w duration-500 z-30': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed }"
             class="bg-[#2B2B2B] text-white flex flex-col fixed h-full select-none">
@@ -212,7 +221,7 @@ const sortedTools = tools.sort((a, b) => a.name.localeCompare(b.name));
             <div id="bottom" class="flex-none">
                 <!--                user links section-->
                 <SidebarRow icon="contrast_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.contrast')"
-                            :show-text="isSidebarCollapsed">
+                            :show-text="isSidebarCollapsed" @click="changeContrast">
                     <template v-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
                              :width="iconSize.width">

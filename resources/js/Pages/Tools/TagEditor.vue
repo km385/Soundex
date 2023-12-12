@@ -14,6 +14,7 @@ import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
+import {useStore} from "vuex";
 
 defineOptions({
     layout: SidebarLayout
@@ -34,6 +35,8 @@ const downloadLink = ref("")
 
 const isError = ref(false)
 const error = ref("")
+
+const store = useStore()
 
 onMounted(() => {
     console.log(guestId)
@@ -167,6 +170,7 @@ const validateTrackNumber = () => {
     return true
 };
 
+
 </script>
 <template>
     <loading-screen v-if="isLoading" />
@@ -177,8 +181,11 @@ const validateTrackNumber = () => {
 
         <!--    usunieto form.submit i dziala-->
 
-        <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-3 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
-        <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name" class="col-span-3" />
+        <div v-if="isFileUploaded && !downloadLink"
+             :class="{'high-contrast-label': store.state.highContrast}"
+             class="mt-10 grid lg:grid-cols-3 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
+        <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name"
+                  class="col-span-3" />
 
             <InputFieldWithLabel :label="$t('tagEditor.titleL')" @update:model-value="form.title = $event"/>
             <InputFieldWithLabel :label="$t('tagEditor.artist')" @update:model-value="form.artist = $event"/>
@@ -193,12 +200,15 @@ const validateTrackNumber = () => {
             <InputFieldWithLabel :label="$t('tagEditor.lyrics')" @update:model-value="form.lyrics = $event"/>
 
             <div class="mb-6 lg:col-span-3">
-                <label for="cover" class="block mb-2 uppercase font-bold text-xs text-white">
-                    {{ $t("tagEditor.cover") }}
+                <label for="cover"
+                       :class="{ 'high-contrast-input': store.state.highContrast }"
+                       class="cursor-pointer border-2 border-gray-400 inline-block p-2 mb-2 uppercase font-bold text-xs text-white rounded-lg">
+<!--                    {{ $t("tagEditor.cover") }}-->
+                    upload cover
                 </label>
                 <!--            <div class="image-container">-->
                 <input id="cover"
-                       class="border border-gray-400 p-2 w-full text-white border-none rounded-lg bg-gray-500"
+                       class="hidden border border-gray-400 p-2 w-full text-white border-none rounded-lg bg-gray-500"
                        name="cover"
                        type="file"
                        @change="onCoverUpload"
@@ -214,9 +224,13 @@ const validateTrackNumber = () => {
                 <!--            </div>-->
             </div>
 
-            <div v-if="isFileUploaded && !downloadLink">
-                <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
-                <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
+            <div v-if="isFileUploaded && !downloadLink" class="">
+                <button type="button"  @click="onSubmit"
+                        :class="{'high-contrast-input': store.state.highContrast }"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
+                <button type="button"  @click="isFileUploaded = false"
+                        :class="{'high-contrast-input': store.state.highContrast }"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
             </div>
         </div>
 
@@ -232,5 +246,29 @@ const validateTrackNumber = () => {
 
 
 <style scoped>
+
+.high-contrast-label {
+    background-color: black;
+    border: 1px solid yellow;
+    color: yellow;
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem; /* 24px */
+}
+
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+
+.high-contrast-input:focus {
+    --tw-ring-color: yellow;
+    border: 2px solid yellow;
+
+}
+
+.high-contrast-input:hover {
+    //--tw-ring-color: yellow;
+    border: 1px solid yellow;
+    background-color: black;
+}
 
 </style>
