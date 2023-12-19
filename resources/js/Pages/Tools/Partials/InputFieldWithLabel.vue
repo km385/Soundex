@@ -1,6 +1,5 @@
 <script setup>
-import {ref} from "vue";
-import {useStore} from "vuex";
+import {inject, ref} from "vue";
 
 const props = defineProps({
     label: {
@@ -16,7 +15,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 const input = ref(null)
 
-const store = useStore()
+const highContrast = inject('highContrast')
 
 </script>
 
@@ -24,12 +23,12 @@ const store = useStore()
     <div class="mb-6">
         <label :for="label"
                :class="{
-               'high-contrast-label': store.state.highContrast }"
+               'high-contrast-label': highContrast }"
                class="block mb-2 uppercase font-bold  text-xs text-white ">
             {{ label }}
         </label>
         <input :id="label"
-               :class="{ 'high-contrast-input': store.state.highContrast }"
+               :class="{ 'high-contrast-input': highContrast }"
                class="bg-gray-500 text-white border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500 w-full"
                name="title"
                :type="type"

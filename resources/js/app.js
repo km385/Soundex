@@ -1,58 +1,18 @@
 import './bootstrap';
 import '../css/app.css';
 
-import { createSSRApp, h } from 'vue';
+import {createSSRApp, h, ref} from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { Link } from "@inertiajs/vue3";
 import { createI18n } from "vue-i18n";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import { createStore } from "vuex";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 import en from '@/locales/en.json'
 import pl from '@/locales/pl.json'
-
-
-const store = createStore({
-    state() {
-        return {
-            highContrast: false
-        }
-    },
-    mutations: {
-        change(state) {
-            console.log("change mutation")
-            state.highContrast = !state.highContrast
-            document.cookie = `highContrast=${state.highContrast}; expires=${getCookieExpirationDate()}; path=/`
-        },
-        init(state) {
-            console.log("init mutation")
-            const cookieValue = getCookieValue("highContrast")
-
-            if(cookieValue !== undefined) {
-                console.log("has value")
-                state.highContrast = cookieValue
-            } else {
-                console.log("doesn't have value")
-
-                state.highContrast = false;
-                document.cookie = `highContrast=false; expires=${getCookieExpirationDate()}; path=/`
-            }
-
-        }
-    },
-    actions: {
-        init({ commit }){
-            console.log("init action")
-            commit("init")
-        }
-    }
-})
-
-store.dispatch("init")
 
 function getCookieValue(cookieName) {
     const name = `${cookieName}=`;
@@ -84,7 +44,6 @@ createInertiaApp({
     },
     // resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-
         const i18n = createI18n({
             locale: props.initialPage.props.locale,
             legacy: false, // allow for composition api
@@ -95,9 +54,9 @@ createInertiaApp({
         return createSSRApp({ render: () => h(App, props) })
             .use(plugin)
             .use(i18n)
-            .use(store)
             .use(ZiggyVue, Ziggy)
             .component('Link', Link)
+            .provide('highContrast', ref(getCookieValue("highContrast") === "true"))
             .mount(el);
     },
     progress: {

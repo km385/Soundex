@@ -1,10 +1,9 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
-import {useStore} from "vuex";
+import {inject, onMounted, ref, watch} from "vue";
 
 const extension = ref("mp3")
 const emit = defineEmits(['extension'])
-const store = useStore()
+const highContrast = inject('highContrast')
 
 watch(extension, () => {
     emit('extension', extension.value)
@@ -17,9 +16,9 @@ onMounted(() => {
 
 <template>
     <label for="selectExtension"
-           :class="{'text-[#ffff00]': store.state.highContrast }">{{ $t('converter.changeExtension') }}</label>
+           :class="{'text-[#ffff00]': highContrast }">{{ $t('converter.changeExtension') }}</label>
     <select id="selectExtension" required
-            :class="{'high-contrast-select': store.state.highContrast }"
+            :class="{'high-contrast-select': highContrast }"
             class="text-black ml-2" v-model="extension">
         <option selected value="mp3">Mp3</option>
         <option value="flac">Flac</option>

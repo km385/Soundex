@@ -2,19 +2,15 @@
 import {subToPrivate, subToChannel} from "@/Subscriptions/subs.js";
 import {v4 as uuidv4} from "uuid";
 import {usePage} from "@inertiajs/vue3";
-import {onMounted, ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import axios from "axios";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import UploadFile from "./Partials/UploadFile.vue";
-import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import InputFieldWithLabel from "./Partials/InputFieldWithLabel.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
-import {useStore} from "vuex";
 
 defineOptions({
     layout: SidebarLayout
@@ -36,8 +32,7 @@ const downloadLink = ref("")
 const isError = ref(false)
 const error = ref("")
 
-const store = useStore()
-
+const highContrast = inject('highContrast')
 onMounted(() => {
     console.log(guestId)
     if(page.props.auth.user){
@@ -171,18 +166,17 @@ const validateTrackNumber = () => {
 };
 
 
+
 </script>
 <template>
     <loading-screen v-if="isLoading" />
-
     <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('tagEditor.title')" :description="$t('tagEditor.description')"
                            @file="getFile"/>
 
         <!--    usunieto form.submit i dziala-->
-
         <div v-if="isFileUploaded && !downloadLink"
-             :class="{'high-contrast-label': store.state.highContrast}"
+             :class="{'high-contrast-label': highContrast}"
              class="mt-10 grid lg:grid-cols-3 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
         <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name"
                   class="col-span-3" />
@@ -201,7 +195,7 @@ const validateTrackNumber = () => {
 
             <div class="mb-6 lg:col-span-3">
                 <label for="cover"
-                       :class="{ 'high-contrast-input': store.state.highContrast }"
+                       :class="{ 'high-contrast-input': highContrast }"
                        class="cursor-pointer border-2 border-gray-400 inline-block p-2 mb-2 uppercase font-bold text-xs text-white rounded-lg">
 <!--                    {{ $t("tagEditor.cover") }}-->
                     upload cover
@@ -226,10 +220,10 @@ const validateTrackNumber = () => {
 
             <div v-if="isFileUploaded && !downloadLink" class="">
                 <button type="button"  @click="onSubmit"
-                        :class="{'high-contrast-input': store.state.highContrast }"
+                        :class="{'high-contrast-input': highContrast }"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
                 <button type="button"  @click="isFileUploaded = false"
-                        :class="{'high-contrast-input': store.state.highContrast }"
+                        :class="{'high-contrast-input': highContrast }"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
             </div>
         </div>

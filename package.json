@@ -23,7 +23,6 @@
     "dependencies": {
         "uuid": "^9.0.0",
         "vue-i18n": "^9.6.2",
-        "vuex": "^4.0.2",
         "wavesurfer.js": "^7.1.4"
     }
 }

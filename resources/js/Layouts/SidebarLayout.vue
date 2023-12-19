@@ -1,10 +1,9 @@
 <script setup>
 
-import {ref, provide, onMounted} from "vue";
+import {ref, provide, inject} from "vue";
 import {Link, usePage} from '@inertiajs/vue3';
 import SidebarRow from "./Partials/SidebarRow.vue";
 import {useI18n} from "vue-i18n";
-import {useStore} from "vuex";
 
 const page = usePage()
 const isSidebarCollapsed = ref(false);
@@ -90,10 +89,41 @@ const tools = [
 
 const sortedTools = tools.sort((a, b) => a.name.localeCompare(b.name));
 
-const store = useStore()
-function changeContrast() {
-    store.commit("change")
+function toggleCookieValue(cookieName) {
+    const currentValue = getCookieValue(cookieName);
+    const booleanValue = currentValue === 'true';
+    const newValue = !booleanValue;
+    document.cookie = `${cookieName}=${newValue}; expires=${getCookieExpirationDate()}; path=/`;
+    return newValue;
 }
+const highContrast = inject('highContrast')
+
+function changeContrast() {
+    const newContrastValue = toggleCookieValue("highContrast");
+    highContrast.value = newContrastValue
+    console.log(`High Contrast is now ${newContrastValue ? 'enabled' : 'disabled'}`);
+}
+
+function getCookieExpirationDate() {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 1);
+    return date.toUTCString();
+}
+
+
+function getCookieValue(cookieName) {
+    const name = `${cookieName}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return undefined;
+}
+
 
 
 </script>
@@ -102,7 +132,9 @@ function changeContrast() {
     <div
         class="divide-x divide-slate-700">
         <div
-            :class="{ 'w-48 transition-w duration-500 z-30': !isSidebarCollapsed, 'w-20 transition-w duration-500': isSidebarCollapsed }"
+            :class="{
+            'w-48 transition-w duration-500 z-30': !isSidebarCollapsed,
+            'w-20 transition-w duration-500': isSidebarCollapsed }"
             class="bg-[#2B2B2B] text-white flex flex-col fixed h-full select-none">
             <div class="flex mr-2 flex-none"
                  :class="{ 'justify-center': isSidebarCollapsed, 'justify-end ': !isSidebarCollapsed }">

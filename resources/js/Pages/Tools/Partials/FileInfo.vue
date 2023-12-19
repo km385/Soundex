@@ -1,6 +1,5 @@
 <script setup>
-    import {usePage} from "@inertiajs/vue3";
-    import {useStore} from "vuex";
+    import {inject} from "vue";
 
     const props = defineProps({
         fileName: {
@@ -13,16 +12,16 @@
         }
     })
 
-    const store = useStore()
+    const highContrast = inject('highContrast')
 </script>
 
 <template>
     <div class="my-4">
         <p
-            :class="{'high-contrast1': store.state.highContrast }"
+            :class="{'high-contrast1': highContrast }"
             class="text-lg">{{ $t("tools.fileName") }} {{ fileName }}</p>
         <p
-            :class="{'high-contrast2': store.state.highContrast }"
+            :class="{'high-contrast2': highContrast }"
             class="text-sm">{{ $t("tools.fileSize") }} {{ (fileSize / 1024 / 1024).toFixed(2) }} MB</p>
     </div>
 </template>
