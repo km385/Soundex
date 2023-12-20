@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import axios from "axios";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
@@ -156,6 +156,7 @@ function downloadFile() {
             console.log(error);
         });
 }
+const highContrast = inject('highContrast')
 
 </script>
 
@@ -167,7 +168,9 @@ function downloadFile() {
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('merge.title')" :description="$t('merge.description')"
                            @file="getFile"/>
 
-        <div class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded && !fileToDownloadLink">
+        <div
+            :class="{'high-contrast-input':highContrast}"
+            class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg" v-if="isFileUploaded && !fileToDownloadLink">
             <div class="mb-5">
                 <upload-file @file="getFile" :is-button="true" />
             </div>
@@ -188,6 +191,7 @@ function downloadFile() {
             </div>
             <div v-if="isFileUploaded">
                 <button type="button" @click="onMergeClicked"
+                        :class="{'high-contrast-button': highContrast}"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}
                 </button>
             </div>
@@ -205,6 +209,12 @@ function downloadFile() {
 </template>
 
 <style scoped>
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
 
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
 </style>
 

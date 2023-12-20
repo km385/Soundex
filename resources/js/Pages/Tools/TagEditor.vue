@@ -195,7 +195,7 @@ const validateTrackNumber = () => {
 
             <div class="mb-6 lg:col-span-3">
                 <label for="cover"
-                       :class="{ 'high-contrast-input': highContrast }"
+                       :class="{ 'high-contrast-button': highContrast }"
                        class="cursor-pointer border-2 border-gray-400 inline-block p-2 mb-2 uppercase font-bold text-xs text-white rounded-lg">
 <!--                    {{ $t("tagEditor.cover") }}-->
                     upload cover
@@ -220,10 +220,10 @@ const validateTrackNumber = () => {
 
             <div v-if="isFileUploaded && !downloadLink" class="">
                 <button type="button"  @click="onSubmit"
-                        :class="{'high-contrast-input': highContrast }"
+                        :class="{'high-contrast-button': highContrast }"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
                 <button type="button"  @click="isFileUploaded = false"
-                        :class="{'high-contrast-input': highContrast }"
+                        :class="{'high-contrast-button': highContrast }"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
             </div>
         </div>
@@ -251,6 +251,10 @@ const validateTrackNumber = () => {
 
 .high-contrast-input {
     @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
 }
 
 .high-contrast-input:focus {

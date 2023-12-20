@@ -2,7 +2,7 @@
 import DownloadTempFileButton from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import {usePage} from "@inertiajs/vue3";
-import {ref} from "vue";
+import {inject, ref} from "vue";
 
 const page = usePage()
 
@@ -26,22 +26,29 @@ const emits = defineEmits(['goBack'])
 
 const showAudioTag = ref(false)
 
+const highContrast = inject('highContrast')
+
 </script>
 
 <template>
     <div class="text-white flex flex-col flex-grow justify-center items-center">
 
         <!-- File Download Section -->
-        <div class="p-6 bg-gray-800 rounded-lg shadow-lg">
+        <div
+            :class="{'high-contrast-input':highContrast}"
+            class="p-6 bg-gray-800 rounded-lg shadow-lg">
             <audio controls v-if="showAudioTag"
                    :src="'/files/' + fileToDownloadLink"></audio>
             <button @click="showAudioTag = true"
+                    :class="{'high-contrast-button':highContrast}"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500">
                 {{ $t("resultOptionsScreen.hearAudio") }}
             </button>
 
             <p>{{ $t("resultOptionsScreen.downloadInfo") }}</p>
-            <button class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="emits('goBack')">
+            <button
+                :class="{'high-contrast-button':highContrast}"
+                class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="emits('goBack')">
                 {{ $t("resultOptionsScreen.goBack") }}
             </button>
             <DownloadTempFileButton :filename="fileToDownloadName" :token="fileToDownloadLink" :show-button="showButton"/>
@@ -49,3 +56,13 @@ const showAudioTag = ref(false)
         </div>
     </div>
 </template>
+
+<style scoped>
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
+
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+</style>

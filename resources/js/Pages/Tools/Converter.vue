@@ -1,7 +1,7 @@
 <script setup>
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
-import {onMounted, ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
@@ -99,6 +99,8 @@ const selectBitrate = (bitrate) => {
     console.log(selectedBitrate.value)
 };
 
+const highContrast = inject('highContrast')
+
 </script>
 
 <template>
@@ -108,10 +110,14 @@ const selectBitrate = (bitrate) => {
       <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('converter.title')" :description="$t('converter.description')"
                          @file="getFile"/>
 
-        <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+        <div v-if="isFileUploaded && !fileToDownloadLink"
+             :class="{'high-contrast-input':highContrast}"
+             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
-            <button type="button" @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t('tools.changeFile') }}</button>
+            <button type="button" @click="isFileUploaded = false"
+                    :class="{'high-contrast-button':highContrast}"
+                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t('tools.changeFile') }}</button>
 
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
@@ -122,13 +128,17 @@ const selectBitrate = (bitrate) => {
                     :key="bitrate"
                     @click="selectBitrate(bitrate)"
                     class="bg-blue-400 text-white rounded py-2 px-2 mr-2 hover:bg-blue-500"
-                    :class="{ 'bg-green-800 hover:bg-green-800 drop-shadow-lg':selectedBitrate === bitrate }"
+                    :class="{ 'bg-green-800 hover:bg-green-800 drop-shadow-lg':selectedBitrate === bitrate,
+                     'high-contrast-button': highContrast,
+                     'high-contrast-button-selected': highContrast && selectedBitrate === bitrate}"
                 >
                     {{ bitrate }} Kbps
                 </button>
             </div>
             <div class="mt-6">
-                <button type="button" @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t('tools.submit') }}</button>
+                <button type="button" @click="onSubmit"
+                        :class="{'high-contrast-button':highContrast}"
+                        class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t('tools.submit') }}</button>
             </div>
             <select-extension @extension="getExtension"/>
             <!--            </div>-->
@@ -145,5 +155,15 @@ const selectBitrate = (bitrate) => {
 </template>
 
 <style scoped>
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
 
+.high-contrast-button-selected {
+    @apply bg-yellow-300 text-black
+}
+
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
 </style>

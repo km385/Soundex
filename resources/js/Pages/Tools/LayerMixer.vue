@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import axios from "axios";
 import {subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
 import {usePage} from "@inertiajs/vue3";
@@ -123,6 +123,8 @@ function onDeleteClicked(name, array) {
     array.splice(index, 1); // Remove the file from the current position
 
 }
+
+const highContrast = inject('highContrast')
 </script>
 
 <template>
@@ -132,7 +134,9 @@ function onDeleteClicked(name, array) {
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('layerMixer.title')" :description="$t('layerMixer.description')"
                            @file="getFile"/>
 
-        <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+        <div v-if="isFileUploaded && !downloadLink"
+             :class="{'high-contrast-input':highContrast}"
+             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <div class="mb-5">
                 <upload-file @file="getFile" :is-button="true" />
             </div>
@@ -155,6 +159,7 @@ function onDeleteClicked(name, array) {
 
             <div v-if="isFileUploaded">
                 <button type="button" @click="onMergeClicked"
+                        :class="{'high-contrast-button': highContrast}"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}
                 </button>
             </div>
@@ -171,5 +176,11 @@ function onDeleteClicked(name, array) {
 </template>
 
 <style scoped>
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
 
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
 </style>

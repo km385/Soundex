@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import {subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
 import {v4 as uuidv4} from "uuid";
 import {usePage} from "@inertiajs/vue3";
@@ -147,6 +147,8 @@ function getFile(file) {
 
 const wave = ref(null)
 
+const highContrast = inject('highContrast')
+
 </script>
 
 <template>
@@ -156,27 +158,41 @@ const wave = ref(null)
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('recorder.title')" :description="$t('recorder.description')"
                            @file="getFile"/>
 
-        <div v-if="isFileUploaded && !downloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-            <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
+        <div v-if="isFileUploaded && !downloadLink"
+             :class="{'high-contrast-input':highContrast}"
+             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+            <button type="button"  @click="isFileUploaded = false"
+                    :class="{'high-contrast-button':highContrast}"
+                    class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
             <FileInfo :file-size="backgroundFile.size" :file-name="backgroundFile.name" />
 
             <Wavesurfer v-if="isFileUploaded" :file="backgroundFile" :show-controls="true" :id="'background'" ref="wave"/>
 
             <div v-if="isRecorded">
-                <hr class="mt-10 border-blue-600">
+                <hr
+                    :class="{'high-contrast-input':highContrast}"
+                    class="mt-10 border-blue-600">
                 <FileInfo :file-size="recordingFile.size" :file-name="recordingFile.name" />
 
                 <Wavesurfer v-if="isRecorded" :file="recordingFile" :show-controls="true" :id="'recording'" />
             </div>
-            <hr class="mt-10 border-blue-600">
+            <hr
+                :class="{'high-contrast-input': highContrast}"
+                class="mt-10 border-blue-600">
 
 
             <div>
-                <button @click="startRecording" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
-                <button id="stopButton" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
+                <button @click="startRecording"
+                        :class="{'high-contrast-button':highContrast}"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">start</button>
+                <button id="stopButton"
+                        :class="{'high-contrast-button':highContrast}"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">stop</button>
             </div>
             <div v-if="isRecorded && isFileUploaded">
-                <button @click="onSend" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
+                <button @click="onSend"
+                        :class="{'high-contrast-button':highContrast}"
+                        class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
             </div>
         </div>
 
@@ -189,3 +205,13 @@ const wave = ref(null)
 
     </div>
 </template>
+
+<style scoped>
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
+</style>

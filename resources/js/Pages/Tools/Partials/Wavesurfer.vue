@@ -1,6 +1,6 @@
 <script setup>
 import WaveSurfer from "wavesurfer.js";
-import { nextTick, onMounted, reactive, ref, watch } from "vue";
+import {inject, nextTick, onMounted, reactive, ref, watch} from "vue";
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
 
 const ws = reactive({
@@ -8,6 +8,8 @@ const ws = reactive({
     durationTime: 0,
     currentTime: 0,
 })
+
+const highContrast = inject('highContrast')
 
 let regions = reactive({})
 
@@ -52,6 +54,13 @@ const props = defineProps({
 })
 const emit = defineEmits(['regionCoords'])
 
+watch(highContrast, (newValue) => {
+    console.log(newValue)
+    ws.wsInstance.setOptions({
+        waveColor: newValue ? '#FFFF00FF' : '#FECEAB',
+    })
+})
+
 onMounted(() => {
     console.log('on mounted')
     console.log(props.id)
@@ -59,7 +68,7 @@ onMounted(() => {
 
     ws.wsInstance = WaveSurfer.create({
         container: `#${props.id}`,
-        waveColor: '#FECEAB',
+        waveColor: highContrast.value ? '#FFFF00FF' : '#FECEAB',
         progressColor: '#383351',
         cursorColor: 'black',
         normalize: true,
@@ -228,25 +237,28 @@ function formatTime(time) {
             <div class="flex items-center mt-5">
 <!--                TODO: add style when button pressed-->
                 <button type="button" v-if="!isPlaying" @click="onPlayClicked"
+                        :class="{ 'high-contrast-button' : highContrast }"
                         class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
-                        <path fill="#F2F3F5"
+                        <path :fill="highContrast ? '#FFFF00FF' : '#F2F3F5'"
                               d="M381-239q-20 13-40.5 1.5T320-273v-414q0-24 20.5-35.5T381-721l326 207q18 12 18 34t-18 34L381-239Zm19-241Zm0 134 210-134-210-134v268Z"/>
                     </svg>
 
                 </button>
                 <button type="button" v-if="isPlaying" @click="onStopClicked"
+                        :class="{ 'high-contrast-button' : highContrast }"
                         class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
-                        <path fill="#F2F3F5"
+                        <path :fill="highContrast ? '#FFFF00FF' : '#F2F3F5'"
                               d="M600-200q-33 0-56.5-23.5T520-280v-400q0-33 23.5-56.5T600-760h80q33 0 56.5 23.5T760-680v400q0 33-23.5 56.5T680-200h-80Zm-320 0q-33 0-56.5-23.5T200-280v-400q0-33 23.5-56.5T280-760h80q33 0 56.5 23.5T440-680v400q0 33-23.5 56.5T360-200h-80Zm320-80h80v-400h-80v400Zm-320 0h80v-400h-80v400Zm0-400v400-400Zm320 0v400-400Z"/>
                     </svg>
 
                 </button>
-                <input v-if="allowVolumeControl" type="range" min="0" max="1" step="0.01" class="slider" id="myRange" v-model="volumeValue">
+                <input v-if="allowVolumeControl" type="range" min="0" max="1" step="0.01" :class="{ 'range1' : highContrast}" class="slider" id="myRange" v-model="volumeValue">
                 <div class="inline" v-if="allowSecondRegion">
                     <input id="regionCheckBox" type="checkbox" v-model="regionCheckboxValue"
-                           class="ml-2 form-checkbox accent-blue-600 transition duration-150 ease-in-out focus:ring focus:ring-blue-400" />
+                           :class="{'high-contrast-checkbox' : highContrast}"
+                           class=" ml-2 form-checkbox accent-blue-600 transition duration-150 ease-in-out focus:ring focus:ring-blue-400" />
                     <label class="ml-2" for="regionCheckBox">{{ $t("wavesurfer.secondRegion") }}</label>
                 </div>
             </div>
@@ -256,5 +268,57 @@ function formatTime(time) {
 </template>
 
 <style scoped>
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+
+.high-contrast-checkbox {
+    @apply border border-[#FFFF00FF] text-[#FFFF00FF] focus:ring-0 focus:ring-offset-0 bg-black checked:text-black checked:border-[#FFFF00FF]
+}
+
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
+
+.range1 {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.range1::-webkit-slider-runnable-track {
+    height: 15px;
+    background: yellow;
+    border-radius: 16px;
+}
+
+.range1::-moz-range-track {
+    height: 15px;
+    background: yellow;
+    border-radius: 16px;
+}
+
+.range1::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 15px;
+    width: 15px;
+    background-color: black;
+    border-radius: 50%;
+    border: 2px solid #f50;
+    box-shadow: -407px 0 0 400px #f50;
+}
+
+.range1::-moz-range-thumb {
+    height: 15px;
+    width: 15px;
+    background-color: black;
+    border-radius: 50%;
+    border: 1px solid #f50;
+    box-shadow: -407px 0 0 400px #f50;
+}
 
 </style>

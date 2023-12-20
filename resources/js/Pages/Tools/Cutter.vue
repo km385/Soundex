@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, reactive, ref, watch} from "vue";
+import {inject, onMounted, reactive, ref, watch} from "vue";
 import axios from "axios";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from 'uuid';
@@ -19,6 +19,8 @@ defineOptions({
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
 const isLoading = ref(false)
+
+const highContrast = inject('highContrast')
 
 
 const uploadedFile = ref({})
@@ -136,10 +138,13 @@ function getRegionData(data) {
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('cutter.title')" :description="$t('cutter.description')"
                            @file="getFile"/>
 
-        <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+        <div v-if="isFileUploaded && !fileToDownloadLink"
+             :class="{ 'high-contrast-input' : highContrast }"
+             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false"
+                    :class="{ 'high-contrast-button' : highContrast }"
                     class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t("tools.changeFile") }}
             </button>
 
@@ -149,6 +154,7 @@ function getRegionData(data) {
 
             <div class="mt-6">
                 <button type="button" @click="onCutClicked"
+                        :class="{'high-contrast-button': highContrast }"
                         class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t("tools.submit") }}
                 </button>
             </div>
@@ -167,3 +173,11 @@ function getRegionData(data) {
 
 </template>
 
+<style scoped>
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
+</style>

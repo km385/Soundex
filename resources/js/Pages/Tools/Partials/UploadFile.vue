@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {inject, onMounted, ref, watch} from "vue";
 import ChooseFile from "@/Pages/Tools/Partials/ChooseFile.vue";
 import {usePage} from "@inertiajs/vue3";
 
@@ -88,13 +88,18 @@ function getUsersFile(file) {
 watch(uploadedFile, (value) => {
     emit('file', uploadedFile.value)
 })
+
+const highContrast = inject('highContrast')
 </script>
 
 <template>
     <div v-if="isButton">
         <label for="fileInput"
+               :class="{'high-contrast-button': highContrast}"
                class="cursor-pointer inline-flex bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">
-            <svg class="-ml-1 mr-2 h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+                :class="{ 'text-yellow-300': highContrast }"
+                class="-ml-1 mr-2 h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
@@ -126,5 +131,11 @@ watch(uploadedFile, (value) => {
 </template>
 
 <style scoped>
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
 
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
 </style>
