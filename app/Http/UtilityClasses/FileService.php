@@ -4,6 +4,7 @@ namespace App\Http\UtilityClasses;
 
 use App\Events\FileReadyToDownload;
 use App\Events\PrivateFileReadyToDownload;
+use App\Jobs\DeleteErrorFileJob;
 use App\Jobs\DeleteTempFileJob;
 use App\Models\SuccessfulJobs;
 use App\Models\TemporarySong;
@@ -97,6 +98,34 @@ class FileService
             event(new FileReadyToDownload($bpm, $userId));
         }
     }
+
+    public static function diagnoseNotify($data, $pathToSavedFile, $isPrivate, $userId): void
+    {
+        error_log("notify");
+        $temporaryUrl = URL::temporarySignedRoute(
+            'downloadDiagnoseFile',
+            // Route name
+            now()->addHours(1),
+            // Expiration time
+            ['fileName' => $pathToSavedFile],
+            false
+        );
+        $parts = explode('/file/', $temporaryUrl);
+        $extractedUrl = end($parts);
+        $data['path_to_saved_file'] = $extractedUrl;
+        $jsonData = json_encode($data);
+
+        if ($isPrivate) {
+            error_log('creating private event');
+            event(new PrivateFileReadyToDownload($jsonData, $userId));
+        } else {
+            error_log('creating public event');
+            event(new FileReadyToDownload($jsonData, $userId));
+        }
+        DeleteErrorFileJob::dispatch($pathToSavedFile)->delay(now()->addMinute());
+    }
+
+
 
     public static function errorNotify($error, $isPrivate, $userId): void
     {

@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, reactive, ref, watch} from "vue";
+import {inject, onMounted, reactive, ref, watch} from "vue";
 import axios from "axios";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from 'uuid';
@@ -23,12 +23,12 @@ const isLoading = ref(false)
 
 const uploadedFile = ref({})
 const isFileUploaded = ref(false)
-const fileToDownloadLink = ref("")
+const isFileReceived = ref(false)
 
 const isError = ref(false)
 const error = ref("")
 
-
+const numberOfErrors = ref(null)
 
 onMounted(() => {
     if (page.props.auth.user) {
@@ -38,15 +38,59 @@ onMounted(() => {
     }
 })
 
+const linkToFile = ref("")
+const fileInfo = ref({
+
+})
+
+function setFileInfo(data) {
+    const propertiesToAssign = [
+        'name',
+        'extension',
+        'bitrate',
+        'duration',
+        'sample_rate',
+        'title',
+        'artist',
+        'genre',
+        'album'
+    ];
+
+// Access the properties in a loop
+    for (const property of propertiesToAssign) {
+        fileInfo.value[property] = data[property];
+    }
+    let originalDurationNumber = parseFloat(fileInfo.value['duration']);
+
+// Check if the conversion is successful and it's a number
+    if (!isNaN(originalDurationNumber)) {
+        // Round to 2 decimal places
+        let roundedDuration = originalDurationNumber.toFixed(2);
+
+        // Convert back to string if needed
+        fileInfo.value.duration = roundedDuration.toString();
+
+    } else {
+        console.error('Duration is not a valid number.');
+    }
+}
+
 function handleSubToPublic(event) {
     console.log("the event has been successfully captured")
     console.log(event)
-
     if (event.fileName === "ERROR") {
         error.value = "error has occurred"
         isError.value = true
     } else {
-        fileToDownloadLink.value = event.fileName
+
+        let jsonData = JSON.parse(event.fileName);
+        setFileInfo(jsonData)
+
+        linkToFile.value = jsonData.path_to_saved_file
+        numberOfErrors.value = jsonData.numberOfErrors
+        isFileReceived.value = true
+
+
     }
     isLoading.value = false
 }
@@ -59,12 +103,17 @@ function handleSubToPrivate(event) {
         error.value = "error has occurred"
         isError.value = true
     } else {
-        fileToDownloadLink.value = event.fileName
+        let jsonData = JSON.parse(event.fileName);
+        setFileInfo(jsonData)
+
+        linkToFile.value = jsonData.path_to_saved_file
+        numberOfErrors.value = jsonData.numberOfErrors
+        isFileReceived.value = true
     }
     isLoading.value = false
 }
 
-async function onCutClicked() {
+async function onSubmitClicked() {
 
 
     const formData = new FormData();
@@ -86,9 +135,32 @@ async function getFile(file) {
 
     uploadedFile.value = file;
     isFileUploaded.value = true
+
+    await onSubmitClicked()
 }
 
+function downloadFile() {
+    console.log('pobieranie')
+    axios
+        .get(`/file/${linkToFile.value}`, {
+            responseType: 'blob',
+        })
+        .then((response) => {
 
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', "errors.txt");
+            document.body.appendChild(link);
+            link.click();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+const highContrast = inject('highContrast')
 
 </script>
 
@@ -98,26 +170,49 @@ async function getFile(file) {
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('diagnosis.title')" :description="$t('diagnosis.description')"
                            @file="getFile"/>
 
-        <div v-if="isFileUploaded && !fileToDownloadLink" class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-            <!-- File Information Section -->
-            <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
-            <button type="button" @click="isFileUploaded = false"
-                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">Change File
-            </button>
-
-            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name"/>
+        <div v-if="isFileReceived"
+             :class="{'high-contrast-input': highContrast}"
+             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
 
 
-            <div class="mt-6">
-                <button type="button" @click="onCutClicked"
-                        class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">Submit
-                </button>
+            <div
+
+                class="grid grid-cols-3 gap-4 my-5 text-black">
+                <div v-for="(value, key) in fileInfo" :key="key"
+                     :class="{'high-contrast-input':highContrast}"
+                     class="p-4 bg-gray-600 rounded-md shadow-md">
+                    <p class="text-lg font-semibold mb-2">{{ key }}</p>
+                    <p>{{ value }}</p>
+                </div>
             </div>
 
-        </div>
+            <div v-if="numberOfErrors > 0"
+                 class="bg-red-700 w-full h-32 flex justify-center items-center content-center">
+                Znaleziono {{ numberOfErrors }} błędów
+            </div>
+            <div v-if="numberOfErrors === 0"
+                 class="bg-green-700 w-full h-32 flex justify-center items-center content-center">
+                twoj plik jest zdrowy
+            </div>
 
-        <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
-                             :file-to-download-link="fileToDownloadLink" :file-to-download-name="uploadedFile.name"/>
+            <div
+
+                class="flex items-center justify-between mb-4 mt-4">
+                <h2
+                    :class="{'text-yellow-300':highContrast}"
+                    class="text-xl font-semibold text-white">Detailed info about errors</h2>
+                <a
+                    :class="{'high-contrast-button': highContrast}"
+                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 whitespace-nowrap"
+                    href="#"
+                    @click="downloadFile"
+                >
+                    {{ $t("resultOptionsScreen.downloadFile") }}
+                </a>
+            </div>
+        </div>
+<!--        <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"-->
+<!--                             :file-to-download-link="fileToDownloadLink" :file-to-download-name="uploadedFile.name"/>-->
 
         <div v-if="isError" class="text-red-500">
             <!-- Error Handling Section -->
@@ -128,3 +223,11 @@ async function getFile(file) {
 
 </template>
 
+<style scoped>
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
+</style>

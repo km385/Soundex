@@ -7,6 +7,7 @@ use App\Jobs\ChangeMetadata;
 use App\Jobs\ChangeVolume;
 use App\Jobs\ConvertFile;
 use App\Jobs\CutFile;
+use App\Jobs\DiagnoseFile;
 use App\Jobs\MergeFiles;
 use App\Jobs\MixFile;
 use App\Jobs\Recorder;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use function Laravel\Prompts\error;
 
 class EditController extends Controller
 {
@@ -51,6 +53,22 @@ class EditController extends Controller
         error_log('no file');
 
         return response()->json(['message' => 'no file']);
+
+    }
+
+    public function downloadDiagnosticFile($path): StreamedResponse|JsonResponse
+    {
+        if(!Request::hasValidSignature(false)){
+            error_log('expired url');
+            return response()->json(['message' => 'expired url'], 500);
+        }
+
+        if(Storage::exists("/diagnose_files/".$path)) {
+            return Storage::disk('')->download('diagnose_files'.DIRECTORY_SEPARATOR.$path);
+        } else {
+            error("plik nie istnieje");
+            return response()->json(['message' => 'no file']);
+        }
 
     }
 
@@ -111,30 +129,25 @@ class EditController extends Controller
 
     }
 
-    public function diagnosis() {
-        error_log("siema");
-        $file = Request::file("file");
-        $path = Storage::putFile($file);
-        error_log('lol');
+    public function diagnosis(): JsonResponse
+    {
+        $user = Request::user();
 
-        try {
-            $output = FFMpeg::fromDisk('')
-                ->open($path)
-                ->export()
-                ->addFilter('-v', "error")
-                ->addFilter(['-filter:a', 'volumedetect', '-f', 'null'])
-                ->getProcessOutput();
-            error_log('kek');
-
-            $mess = print_r($output->all(), true);
-            return response()->json(['message' => $mess]);
-
-
-        } catch (\Exception $e) {
-            error_log("hahah");
-//            error_log($e);
-            return;
+        if(!$user){
+            $isPrivate = false;
+        } else {
+            $isPrivate = true;
         }
+
+        $file = Request::file('file');
+        $guestId = Request::input('guestId');
+
+        $file = Request::file("file");
+        $fileInfo = $this->getFileInfo($file);
+
+        DiagnoseFile::dispatch($fileInfo, $guestId, $isPrivate);
+        return response()->json(['message' => 'success']);
+
     }
 
     public function volumeChanger(): JsonResponse
