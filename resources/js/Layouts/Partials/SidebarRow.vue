@@ -15,7 +15,7 @@
         showText: {
             type: Boolean,
             required: true
-        }
+        },
     })
 
     const url = computed(() => {
@@ -32,7 +32,7 @@
 
             <transition name="slide-fade">
 
-                <div v-if="!showText" class="flex-grow text-2xl ">
+                <div v-if="showText" class="flex-grow text-2xl ">
                     <p>{{text}}</p>
                 </div></transition>
 
