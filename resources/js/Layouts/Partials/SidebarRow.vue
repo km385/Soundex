@@ -1,5 +1,5 @@
 <script setup>
-    import {computed} from "vue";
+import {computed, inject} from "vue";
     import { Link } from '@inertiajs/vue3';
 
 
@@ -22,10 +22,14 @@
         return new URL(`../../../images/${props.icon}`, import.meta.url)
     })
 
+    const highContrast = inject('highContrast')
+
 </script>
 
 <template>
-        <div class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative rounded-lg">
+        <div
+            :class="{'high-contrast-button':highContrast}"
+            class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative rounded-lg">
             <div class="h-full mr-5 ml-2 flex items-center">
                 <slot name="icon"/>
             </div>
@@ -56,5 +60,16 @@
 .slide-fade-leave-to {
     transform: translateX(-20px);
     opacity: 0;
+}
+
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
+
+.high-contrast-button-selected {
+    @apply bg-yellow-300 text-black
 }
 </style>
