@@ -10,6 +10,7 @@ import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
+import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -100,7 +101,7 @@ function getFile(file) {
 </script>
 <template>
     <loading-screen v-if="isLoading" />
-    <div class="max-w-3xl mx-auto h-screen text-white flex flex-col" v-if="!isLoading">
+    <MainToolsWindow v-if="!isLoading">
 
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('bpmFinder.title')" :description="$t('bpmFinder.description')"
                            @file="getFile"/>
@@ -120,7 +121,7 @@ function getFile(file) {
             <p>{{ error }}</p>
         </div>
 
-    </div>
+    </MainToolsWindow>
 </template>
 
 

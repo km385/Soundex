@@ -10,6 +10,7 @@ import Wavesurfer from "./Partials/Wavesurfer.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
+import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function
@@ -134,13 +135,13 @@ function getRegionData(data) {
 
 <template>
     <loading-screen v-if="isLoading"/>
-    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
+    <MainToolsWindow v-if="!isLoading">
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('cutter.title')" :description="$t('cutter.description')"
                            @file="getFile"/>
 
         <div v-if="isFileUploaded && !fileToDownloadLink"
              :class="{ 'high-contrast-input' : highContrast }"
-             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+             class="mt-20 pt-6 p-6 bg-gray-800 rounded-lg shadow-lg lg:mt-10 ">
             <!-- File Information Section -->
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false"
@@ -168,7 +169,7 @@ function getRegionData(data) {
             <!-- Error Handling Section -->
             <p class="p-6 bg-gray-800 rounded-lg shadow-lg">{{ error }}</p>
         </div>
-    </div>
+    </MainToolsWindow>
 
 
 </template>

@@ -12,6 +12,7 @@ import LoadingScreen from "./Partials/LoadingScreen.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
+import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -154,7 +155,7 @@ const highContrast = inject('highContrast')
 <template>
     <loading-screen v-if="isLoading" />
 
-    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
+    <MainToolsWindow v-if="!isLoading">
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('recorder.title')" :description="$t('recorder.description')"
                            @file="getFile"/>
 
@@ -203,7 +204,7 @@ const highContrast = inject('highContrast')
             <p>{{ error }}</p>
         </div>
 
-    </div>
+    </MainToolsWindow>
 </template>
 
 <style scoped>

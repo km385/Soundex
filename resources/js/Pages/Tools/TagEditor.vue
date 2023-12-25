@@ -11,6 +11,7 @@ import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
+import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 
 defineOptions({
     layout: SidebarLayout
@@ -170,16 +171,15 @@ const validateTrackNumber = () => {
 </script>
 <template>
     <loading-screen v-if="isLoading" />
-    <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
+    <MainToolsWindow v-if="!isLoading">
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('tagEditor.title')" :description="$t('tagEditor.description')"
                            @file="getFile"/>
 
-        <!--    usunieto form.submit i dziala-->
         <div v-if="isFileUploaded && !downloadLink"
              :class="{'high-contrast-label': highContrast}"
-             class="mt-10 grid lg:grid-cols-3 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
+             class="mt-20 grid grid-cols-1 lg:grid-cols-3 gap-4  sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
         <FileInfo :file-size="fileUploaded.size" :file-name="fileUploaded.name"
-                  class="col-span-3" />
+                  class="lg:col-span-3" />
 
             <InputFieldWithLabel :label="$t('tagEditor.titleL')" @update:model-value="form.title = $event"/>
             <InputFieldWithLabel :label="$t('tagEditor.artist')" @update:model-value="form.artist = $event"/>
@@ -197,17 +197,14 @@ const validateTrackNumber = () => {
                 <label for="cover"
                        :class="{ 'high-contrast-button': highContrast }"
                        class="cursor-pointer border-2 border-gray-400 inline-block p-2 mb-2 uppercase font-bold text-xs text-white rounded-lg">
-<!--                    {{ $t("tagEditor.cover") }}-->
-                    upload cover
+                    {{ $t("tagEditor.cover") }}
                 </label>
-                <!--            <div class="image-container">-->
                 <input id="cover"
                        class="hidden border border-gray-400 p-2 w-full text-white border-none rounded-lg bg-gray-500"
                        name="cover"
                        type="file"
                        @change="onCoverUpload"
                 >
-                <!--@input="file = $event.target.files[0].name" -->
 
                 <div v-if="isCoverUploaded" class="w-[200px] h-[200px] ml-[10px] mt-2">
                     <img :src="coverUrl" alt="Cover Image" class="w-full h-full object-cover"/>
@@ -215,7 +212,6 @@ const validateTrackNumber = () => {
                 <div class="mt-2">
                     <select-extension @extension="getExtension"/>
                 </div>
-                <!--            </div>-->
             </div>
 
             <div v-if="isFileUploaded && !downloadLink" class="">
@@ -235,7 +231,7 @@ const validateTrackNumber = () => {
             <p>{{ error }}</p>
         </div>
 
-    </div>
+    </MainToolsWindow>
 </template>
 
 

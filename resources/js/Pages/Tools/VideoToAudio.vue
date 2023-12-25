@@ -13,6 +13,7 @@ import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
+import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -91,7 +92,7 @@ function getFile(file) {
 
     <loading-screen v-if="isLoading" />
 
-    <div class="max-w-3xl mx-auto flex flex-col h-screen text-white" v-if="!isLoading">
+    <MainToolsWindow v-if="!isLoading">
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('videoToAudio.title')" :description="$t('videoToAudio.description')"
                            @file="getFile" :allow-video="true"/>
 
@@ -112,7 +113,7 @@ function getFile(file) {
             <p>{{ error }}</p>
         </div>
 
-    </div>
+    </MainToolsWindow>
 
 </template>
 

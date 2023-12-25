@@ -12,6 +12,7 @@ import LoadingScreen from "./Partials/LoadingScreen.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
+import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 defineOptions({
     layout: SidebarLayout
 })
@@ -112,7 +113,7 @@ function changeHandleStyles(region){
 <template>
     <loading-screen v-if="isLoading" />
 
-    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" v-if="!isLoading">
+    <MainToolsWindow v-if="!isLoading">
         <ToolsUploadScreen v-if="!isUploaded" :title="$t('speedUp.title')" :description="$t('speedUp.description')"
                            @file="getFile"/>
 
@@ -155,7 +156,7 @@ function changeHandleStyles(region){
             <p>{{ error }}</p>
         </div>
 
-    </div>
+    </MainToolsWindow>
 </template>
 
 <style scoped>

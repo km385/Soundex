@@ -156,6 +156,7 @@ function getCookieValue(cookieName) {
                     <ul v-if="isToolsMenuOpen" class="w-[80%]">
                         <Link v-for="(tool, index) in sortedTools" :key="tool.link" :href="tool.link">
                             <li
+                                @click="isSmall ? isSidebarOpen = false : ''"
                                 class="hover:bg-gray-500 cursor-pointer py-1 pl-2 rounded-md"
                                 :class="{
                                             'bg-gray-500' : page.component === tool.component,
