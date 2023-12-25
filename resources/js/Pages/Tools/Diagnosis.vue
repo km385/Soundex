@@ -54,23 +54,21 @@ function setFileInfo(data) {
         'title',
         'artist',
         'genre',
-        'album'
+        'album',
+        'numberOfErrors',
+        'state'
     ];
 
-// Access the properties in a loop
     for (const property of propertiesToAssign) {
         fileInfo.value[property] = data[property];
     }
+    fileInfo.value['numberOfErrors'] = data.numberOfErrors
+    data.numberOfErrors > 0 ? fileInfo.value['state'] = "Bad" : fileInfo.value['state'] = "Good"
     let originalDurationNumber = parseFloat(fileInfo.value['duration']);
 
-// Check if the conversion is successful and it's a number
     if (!isNaN(originalDurationNumber)) {
-        // Round to 2 decimal places
         let roundedDuration = originalDurationNumber.toFixed(2);
-
-        // Convert back to string if needed
         fileInfo.value.duration = roundedDuration.toString();
-
     } else {
         console.error('Duration is not a valid number.');
     }
@@ -179,22 +177,20 @@ const highContrast = inject('highContrast')
             <div
 
                 class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-5 text-black">
-                <div v-for="(value, key) in fileInfo" :key="key"
-                     :class="{'high-contrast-input':highContrast}"
-                     class="p-4 bg-gray-600 rounded-md shadow-md">
-                    <p class="text-lg font-semibold mb-2">{{ key }}</p>
+                <div v-for="(value, key, index) in fileInfo" :key="key"
+                     :class="{
+                        'high-contrast-input':highContrast,
+                        'lg:col-span-3': index >= Object.keys(fileInfo).length - 2,
+                        'bg-red-700': numberOfErrors > 0 && key === 'state',
+                        'bg-green-700': numberOfErrors === 0 && key === 'state'
+                     }"
+                     class="p-4 bg-gray-300 rounded-md shadow-md">
+                    <p class="text-lg font-semibold mb-2 capitalize">{{ key }}</p>
                     <p>{{ value }}</p>
                 </div>
             </div>
 
-            <div v-if="numberOfErrors > 0"
-                 class="bg-red-700 w-full h-32 flex justify-center items-center content-center">
-                Znaleziono {{ numberOfErrors }} błędów
-            </div>
-            <div v-if="numberOfErrors === 0"
-                 class="bg-green-700 w-full h-32 flex justify-center items-center content-center">
-                twoj plik jest zdrowy
-            </div>
+
 
             <div
 
@@ -208,7 +204,7 @@ const highContrast = inject('highContrast')
                     href="#"
                     @click="downloadFile"
                 >
-                    {{ $t("resultOptionsScreen.downloadFile") }}
+                    <b>Error reports</b> <br> {{ $t("resultOptionsScreen.downloadFile") }}
                 </a>
             </div>
         </div>
