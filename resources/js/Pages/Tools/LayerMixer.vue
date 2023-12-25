@@ -137,7 +137,7 @@ const highContrast = inject('highContrast')
 
         <div v-if="isFileUploaded && !downloadLink"
              :class="{'high-contrast-input':highContrast}"
-             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+             class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <div class="mb-5">
                 <upload-file @file="getFile" :is-button="true" />
             </div>

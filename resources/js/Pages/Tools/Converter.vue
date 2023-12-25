@@ -113,7 +113,7 @@ const highContrast = inject('highContrast')
 
         <div v-if="isFileUploaded && !fileToDownloadLink"
              :class="{'high-contrast-input':highContrast}"
-             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+             class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->
             <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false"
@@ -123,12 +123,12 @@ const highContrast = inject('highContrast')
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
             <!--            nice info here :)-->
-            <div id="app">
+            <div id="app" class="flex flex-col lg:flex-row">
                 <button
                     v-for="bitrate in bitrates"
                     :key="bitrate"
                     @click="selectBitrate(bitrate)"
-                    class="bg-blue-400 text-white rounded py-2 px-2 mr-2 hover:bg-blue-500"
+                    class="bg-blue-400 text-white rounded py-2 px-2 mr-2 hover:bg-blue-500 mt-2 lg:mt-0"
                     :class="{ 'bg-green-800 hover:bg-green-800 drop-shadow-lg':selectedBitrate === bitrate,
                      'high-contrast-button': highContrast,
                      'high-contrast-button-selected': highContrast && selectedBitrate === bitrate}"

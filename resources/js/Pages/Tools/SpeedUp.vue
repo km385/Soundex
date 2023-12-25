@@ -119,7 +119,7 @@ function changeHandleStyles(region){
 
         <div v-if="isUploaded && !fileToDownloadLink"
              :class="{'high-contrast-input':highContrast}"
-             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+             class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <button type="button"  @click="isUploaded = false"
                     :class="{'high-contrast-button':highContrast}"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>

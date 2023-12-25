@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="max-w-3xl mx-auto text-white flex flex-col h-screen" >
+    <div class="w-[90%] max-w-3xl w mx-auto text-white flex flex-col h-screen" >
         <slot />
     </div>
 </template>

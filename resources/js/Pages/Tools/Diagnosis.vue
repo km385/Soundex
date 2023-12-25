@@ -173,12 +173,12 @@ const highContrast = inject('highContrast')
 
         <div v-if="isFileReceived"
              :class="{'high-contrast-input': highContrast}"
-             class="mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+             class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
 
 
             <div
 
-                class="grid grid-cols-3 gap-4 my-5 text-black">
+                class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-5 text-black">
                 <div v-for="(value, key) in fileInfo" :key="key"
                      :class="{'high-contrast-input':highContrast}"
                      class="p-4 bg-gray-600 rounded-md shadow-md">
@@ -204,7 +204,7 @@ const highContrast = inject('highContrast')
                     class="text-xl font-semibold text-white">Detailed info about errors</h2>
                 <a
                     :class="{'high-contrast-button': highContrast}"
-                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 whitespace-nowrap"
+                    class="ml-3 bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 whitespace-nowrap"
                     href="#"
                     @click="downloadFile"
                 >
