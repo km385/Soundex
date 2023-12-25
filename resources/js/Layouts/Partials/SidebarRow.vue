@@ -40,8 +40,6 @@ import {computed, inject} from "vue";
                     <p>{{text}}</p>
                 </div></transition>
 
-<!--            use this to add expanded menu for a row-->
-            <slot name="expanded_menu" />
         </div>
 </template>
 
