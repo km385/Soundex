@@ -291,12 +291,16 @@ const sidelang = ref(false)
                     <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg" v-if="userDropDown"
                          @click="userDropDown = !userDropDown">
                         <Link href="/dashboard">
-                            <div class="border-b py-2 hover:bg-red-500 rounded-t-lg">
+                            <div
+                                :class="{'high-contrast-button': highContrast}"
+                                class="border-b py-2 hover:bg-red-500 rounded-t-lg">
                                 <p class="pl-2">Profile</p>
                             </div>
                         </Link>
                         <Link href="/logout" method="post">
-                            <div class="py-2 hover:bg-red-500 rounded-b-lg">
+                            <div
+                                :class="{'high-contrast-button': highContrast}"
+                                class="py-2 hover:bg-red-500 rounded-b-lg">
                                 <p class="pl-2">Log out</p>
                             </div>
                         </Link>
@@ -320,13 +324,17 @@ const sidelang = ref(false)
                          @click="userDropDown = !userDropDown">
 
                         <Link href="/register">
-                            <div class="border-b py-2 hover:bg-red-500 rounded-t-lg">
+                            <div
+                                :class="{'high-contrast-button': highContrast}"
+                                class="border-b py-2 hover:bg-red-500 rounded-t-lg">
                                 <p class="pl-2">Register</p>
                             </div>
                         </Link>
 
                         <Link href="/login">
-                            <div class="py-2 hover:bg-red-500 rounded-b-lg">
+                            <div
+                                :class="{'high-contrast-button': highContrast}"
+                                class="py-2 hover:bg-red-500 rounded-b-lg">
                                 <p class="pl-2">Login</p>
                             </div>
                         </Link>
