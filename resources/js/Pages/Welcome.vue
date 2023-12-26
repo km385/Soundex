@@ -32,7 +32,7 @@ const tools = [
 
         <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mt-5 px-5 lg:px-0 w-4/5">
             <div v-for="tool in tools">
-                <div class="flex w-full py-5 px-2 rounded-lg shadow-lg shadow-cyan-500 border border-white h-full">
+                <div class="flex w-full py-5 px-2 rounded-lg shadow-lg shadow-cyan-500 border border-white h-full hover:scale-105">
                     <div id="icon" class=" flex items-center text-white">
                         <SvgComp :name="tool.svg" class="w-[100px] h-[100px]"/>
                     </div>
@@ -41,13 +41,13 @@ const tools = [
                     <div class="flex flex-col px-4">
                         <div id="title">
                             <Link :href="tool.link">
-                                <p class="text-3xl font-bold underline cursor-pointer w-fit">
+                                <p class="text-3xl font-bold underline cursor-pointer w-fit hover:text-[#FECEAB]">
                                     {{ $t(`welcome.${tool.name}.title`) }}
                                 </p>
                             </Link>
 
                         </div>
-                        <div id="desc" class="overflow-y-auto max-h-[200px] scrollbar">
+                        <div id="desc" class="overflow-y-auto max-h-[200px] scrollbar text-justify">
                             <p>
                                 {{ $t(`welcome.${tool.name}.description`) }}
 
