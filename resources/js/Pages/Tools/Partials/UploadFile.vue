@@ -1,5 +1,5 @@
 <script setup>
-import {inject, onMounted, ref, watch} from "vue";
+import {inject, ref, watch} from "vue";
 import ChooseFile from "@/Pages/Tools/Partials/ChooseFile.vue";
 import {usePage} from "@inertiajs/vue3";
 
@@ -107,7 +107,7 @@ const highContrast = inject('highContrast')
         </label>
         <input ref="fileInput" type="file" class="hidden" name="fileInput" id="fileInput" @change="handleFileChange">
     </div>
-    <div id="dragZone" class="p-6 bg-gray-800 rounded-3xl shadow-lg cursor-pointer hover:brightness-125" v-if="!isButton"
+    <div id="dragZone" class="p-6 bg-gray-800 rounded-3xl shadow-lg cursor-pointer hover:brightness-125 hover:scale-105" v-if="!isButton"
          @click="onClick" @dragover="onDragOver" @dragleave.self="onDragLeave" @drop="onDrop">
 
         <div
