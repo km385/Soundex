@@ -52,7 +52,7 @@ class DiagnoseFile implements ShouldQueue
             return;
         }
 
-        $data = $this->getMetadataValues($this->fileInfo['path'], sizeof($output->all()), $pathToSavedFile);
+        $data = $this->getMetadataValues($this->fileInfo, sizeof($output->all()), $pathToSavedFile);
 
         Storage::delete($this->fileInfo['path']);
 
@@ -64,7 +64,7 @@ class DiagnoseFile implements ShouldQueue
 
     }
 
-    private function getMetadataValues($path, $numberOfErrors, $pathToErrors): array
+    private function getMetadataValues($fileInfo, $numberOfErrors, $pathToErrors): array
     {
         try{
 
@@ -73,7 +73,7 @@ class DiagnoseFile implements ShouldQueue
                 ->command(['-v', 'quiet',
                     '-print_format', 'json',
                     '-show_format',
-                    '-show_streams', Storage::path($path)]);
+                    '-show_streams', Storage::path($fileInfo['path'])]);
             error_log($values);
             $json = json_decode($values, true);
             $sample_rate = $json['streams'][0]['sample_rate' ?? ""];
@@ -90,8 +90,8 @@ class DiagnoseFile implements ShouldQueue
         return [
             'numberOfErrors' => $numberOfErrors,
             'path_to_saved_file' => $pathToErrors,
-            'name' => 'nazwaPliku',
-            'extension' => 'mp3',
+            'name' => $fileInfo['originalName'],
+            'extension' => $fileInfo['originalExt'],
             'bitrate' => $bitrate ?? "",
             'duration' => $duration ?? "",
             'sample_rate' => $sample_rate ?? "",
