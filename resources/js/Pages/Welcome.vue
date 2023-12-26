@@ -47,7 +47,7 @@ const tools = [
                             </Link>
 
                         </div>
-                        <div id="desc" class="overflow-y-auto max-h-[200px]">
+                        <div id="desc" class="overflow-y-auto max-h-[200px] scrollbar">
                             <p>
                                 {{ $t(`welcome.${tool.name}.description`) }}
 
@@ -71,5 +71,16 @@ const tools = [
 
 <style>
 
+.scrollbar::-webkit-scrollbar {
+    @apply w-2
+}
+
+.scrollbar::-webkit-scrollbar-track {
+
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded-lg
+}
 
 </style>
