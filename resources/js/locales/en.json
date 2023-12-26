@@ -110,5 +110,51 @@
         "downloadFile": "Download file",
         "bpmFound": "BPM found in your song:",
         "saveToLibrary": "Save to Library"
+    },
+    "welcome": {
+        "Cutter": {
+            "title": "Cutting Tool",
+            "description": "Cut your song to your liking with precision and ease. Customize your favorite tracks by removing unwanted portions and keeping only the best parts. Tailor your music experience to perfection."
+        },
+        "Tag Editor": {
+            "title": "Tag Editor",
+            "description": "Enhance your music library with the Tag Editor tool. Edit and organize song tags effortlessly. Customize metadata such as artist names, album titles, and genres. Keep your music collection neat and well-organized."
+        },
+        "SpeedUp": {
+            "title": "SpeedUp",
+            "description": "Accelerate your music with the SpeedUp tool. Increase the tempo of your favorite songs for a faster and more energetic listening experience. Transform your music library with just a few clicks."
+        },
+        "Merge": {
+            "title": "Merge",
+            "description": "Combine and merge your favorite songs seamlessly with the Merge tool. Create seamless transitions between tracks and craft unique playlists. Blend different musical elements together to compose a harmonious mix."
+        },
+        "Converter": {
+            "title": "Converter",
+            "description": "Convert your music effortlessly with the Converter tool. Change audio file formats with ease, ensuring compatibility across devices. Enjoy your favorite songs in the format that suits your preferences."
+        },
+        "Video to Audio": {
+            "title": "Video to Audio",
+            "description": "Extract high-quality audio from videos using the Video to Audio tool. Convert video soundtracks to standalone audio files. Preserve the audio essence of your favorite videos in a format ideal for your music library."
+        },
+        "Volume Changer": {
+            "title": "Volume Changer",
+            "description": "Take control of your music's dynamics with the Volume Changer tool. Adjust volume levels for individual tracks to create the perfect balance. Fine-tune your audio experience to suit any listening environment."
+        },
+        "Recorder": {
+            "title": "Recorder",
+            "description": "Capture the moment with the Recorder tool. Record high-quality audio effortlessly and save your musical ideas on the fly. Whether it's a melody, voice memo, or ambient sound, the Recorder is your versatile audio companion."
+        },
+        "LayerMix": {
+            "title": "LayerMix",
+            "description": "Immerse yourself in creative audio mixing with the LayerMix tool. Combine and layer different audio elements to craft unique soundscapes. Experiment with textures, tones, and rhythms to express your musical vision."
+        },
+        "BPM Finder": {
+            "title": "BPM Finder",
+            "description": "Discover the beats per minute (BPM) of your songs with the BPM Finder tool. Analyze and understand the tempo of your music for precise mixing and syncing. Unlock the rhythmic secrets of your favorite tracks."
+        },
+        "Diagnosis": {
+            "title": "Diagnosis",
+            "description": "Diagnose and enhance your audio with the Diagnosis tool. Identify and address audio issues with detailed analysis and diagnostic tools. Elevate the quality of your music by resolving imperfections and optimizing sound."
+        }
     }
 }
