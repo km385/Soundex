@@ -124,7 +124,7 @@ function getCookieValue(cookieName) {
             <!-- main options-->
             <div id="tools" class="flex flex-col items-center grow overflow-y-auto overflow-x-hidden ">
                 <Link href="/" class="flex items-center w-full">
-                    <SidebarRow class="group" icon="home_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.home')"
+                    <SidebarRow @click="isSmall ? isSidebarOpen = false : ''" class="group" icon="home_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.home')"
                                 :show-text="isSidebarOpen">
                         <template v-slot:icon>
                             <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
@@ -171,7 +171,7 @@ function getCookieValue(cookieName) {
                         </Link>
                     </ul>
                 <Link href="/database" class="flex items-center w-full">
-                    <SidebarRow icon="folder_open_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.files')"
+                    <SidebarRow @click="isSmall ? isSidebarOpen = false : ''" icon="folder_open_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.files')"
                                 :show-text="isSidebarOpen" class="group">
                         <template v-slot:icon>
                             <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
@@ -183,7 +183,7 @@ function getCookieValue(cookieName) {
                     </SidebarRow>
                 </Link>
 
-                <SidebarRow class="group" icon="help_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.help')" :show-text="isSidebarOpen">
+                <SidebarRow @click="isSmall ? isSidebarOpen = false : ''" class="group" icon="help_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.help')" :show-text="isSidebarOpen">
                     <template v-slot:icon>
                         <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
                              :width="iconSize.width">
@@ -318,7 +318,7 @@ function getCookieValue(cookieName) {
                     </svg>
         </span>
         <!-- main content -->
-        <div
+        <div @click="isSmall ? isSidebarOpen = false : ''"
             :class="{'bg-black': highContrast}"
             class="flex-1 overflow-y-auto">
             <div class="flex justify-center h-screen">

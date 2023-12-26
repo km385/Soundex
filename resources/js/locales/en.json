@@ -14,7 +14,24 @@
     },
     "diagnosis": {
         "title": "Diagnosis Tool",
-        "description": "Check if your file has any problems"
+        "description": "Check if your file has any problems",
+        "data": {
+            "name": "name",
+            "extension":"format",
+            "bitrate": "bitrate",
+            "duration":"duration",
+            "sample_rate": "sample_rate",
+            "title":"title",
+            "artist": "artist",
+            "genre":"genre",
+            "album": "album",
+            "numberOfErrors":"numberOfErrors",
+            "state": "state"
+        },
+        "good": "Good",
+        "bad": "Bad",
+        "download": "Error reports",
+        "downloadText": "Detailed info about errors"
     },
     "layerMixer": {
         "title": "Layer Mixer Tool",

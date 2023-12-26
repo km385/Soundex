@@ -11,6 +11,7 @@ import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
+import {useI18n} from "vue-i18n";
 // component data => layout props
 // choose manually persistent layout and give it its props and children
 // use h(type, props, children) render function
@@ -63,7 +64,7 @@ function setFileInfo(data) {
         fileInfo.value[property] = data[property];
     }
     fileInfo.value['numberOfErrors'] = data.numberOfErrors
-    data.numberOfErrors > 0 ? fileInfo.value['state'] = "Bad" : fileInfo.value['state'] = "Good"
+    data.numberOfErrors > 0 ? fileInfo.value['state'] = "bad" : fileInfo.value['state'] = "good"
     let originalDurationNumber = parseFloat(fileInfo.value['duration']);
 
     if (!isNaN(originalDurationNumber)) {
@@ -185,8 +186,11 @@ const highContrast = inject('highContrast')
                         'bg-green-700': numberOfErrors === 0 && key === 'state'
                      }"
                      class="p-4 bg-gray-300 rounded-md shadow-md">
-                    <p class="text-lg font-semibold mb-2 capitalize">{{ key }}</p>
-                    <p>{{ value }}</p>
+                    <p class="text-lg font-semibold mb-2 capitalize">{{
+                            $t(`diagnosis.data.${key}`)
+                        }}</p>
+                    <p v-if="key !== 'state'">{{ value }}</p>
+                    <p v-else>{{ $t(`diagnosis.${value}`) }}</p>
                 </div>
             </div>
 
@@ -197,14 +201,14 @@ const highContrast = inject('highContrast')
                 class="flex items-center justify-between mb-4 mt-4">
                 <h2
                     :class="{'text-yellow-300':highContrast}"
-                    class="text-xl font-semibold text-white">Detailed info about errors</h2>
+                    class="text-xl font-semibold text-white">{{ $t('diagnosis.downloadText') }}</h2>
                 <a
                     :class="{'high-contrast-button': highContrast}"
                     class="ml-3 bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 whitespace-nowrap"
                     href="#"
                     @click="downloadFile"
                 >
-                    <b>Error reports</b> <br> {{ $t("resultOptionsScreen.downloadFile") }}
+                    <b>{{ $t('diagnosis.download') }}</b> <br> {{ $t("resultOptionsScreen.downloadFile") }}
                 </a>
             </div>
         </div>

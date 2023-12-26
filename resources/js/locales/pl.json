@@ -14,7 +14,24 @@
     },
     "diagnosis": {
         "title": "Narzędzie do diagnozowania",
-        "description": "Sprawdź, czy plik nie ma żadnych problemów"
+        "description": "Sprawdź, czy plik nie ma żadnych problemów",
+        "data": {
+            "name": "nazwa",
+            "extension": "format",
+            "bitrate": "przepływność bitów",
+            "duration": "czas trwania",
+            "sample_rate": "częstotliwość próbkowania",
+            "title": "tytuł",
+            "artist": "artysta",
+            "genre": "gatunek",
+            "album": "album",
+            "numberOfErrors": "liczba błędów",
+            "state": "stan"
+        },
+        "good": "Dobry",
+        "bad": "Zły",
+        "download": "Raport błędów",
+        "downloadText": "Szczegółowe informacje o błędach"
     },
     "layerMixer": {
         "title": "Narzędzie do mieszania warstw",
