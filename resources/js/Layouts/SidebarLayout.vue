@@ -152,24 +152,26 @@ function getCookieValue(cookieName) {
                     </template>
 
                 </SidebarRow>
-
-                    <ul v-if="isToolsMenuOpen" class="w-[80%]">
-                        <Link v-for="(tool, index) in sortedTools" :key="tool.link" :href="tool.link">
-                            <li
-                                @click="isSmall ? isSidebarOpen = false : ''"
-                                class="hover:bg-gray-500 cursor-pointer py-1 pl-2 rounded-md"
-                                :class="{
+                    <Transition name="slide-fade">
+                        <ul v-if="isToolsMenuOpen" class="w-[80%]">
+                            <Link v-for="(tool, index) in sortedTools" :key="tool.link" :href="tool.link">
+                                <li
+                                    @click="isSmall ? isSidebarOpen = false : ''"
+                                    class="hover:bg-gray-500 cursor-pointer py-1 pl-2 rounded-md"
+                                    :class="{
                                             'bg-gray-500' : page.component === tool.component,
                                             'rounded-t-lg': index === 0,
                                             'rounded-b-lg': index === tools.length-1,
                                             'high-contrast-button':highContrast,
                                             'high-contrast-button-selected':page.component === tool.component && highContrast
                                         }"
-                            >
-                                {{ tool.name }}
-                            </li>
-                        </Link>
-                    </ul>
+                                >
+                                    {{ tool.name }}
+                                </li>
+                            </Link>
+                        </ul>
+                    </Transition>
+
                 <Link href="/database" class="flex items-center w-full">
                     <SidebarRow @click="isSmall ? isSidebarOpen = false : ''" icon="folder_open_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.files')"
                                 :show-text="isSidebarOpen" class="group">
@@ -183,15 +185,18 @@ function getCookieValue(cookieName) {
                     </SidebarRow>
                 </Link>
 
-                <SidebarRow @click="isSmall ? isSidebarOpen = false : ''" class="group" icon="help_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.help')" :show-text="isSidebarOpen">
-                    <template v-slot:icon>
-                        <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
-                             :width="iconSize.width">
-                            <path :fill="highContrast ? '#FFFF00FF' : iconColor" :class="{'group-hover:fill-black':highContrast}"
-                                  d="M478-240q21 0 35.5-14.5T528-290q0-21-14.5-35.5T478-340q-21 0-35.5 14.5T428-290q0 21 14.5 35.5T478-240Zm2 160q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Zm4-172q25 0 43.5 16t18.5 40q0 22-13.5 39T502-525q-23 20-40.5 44T444-427q0 14 10.5 23.5T479-394q15 0 25.5-10t13.5-25q4-21 18-37.5t30-31.5q23-22 39.5-48t16.5-58q0-51-41.5-83.5T484-720q-38 0-72.5 16T359-655q-7 12-4.5 25.5T368-609q14 8 29 5t25-17q11-15 27.5-23t34.5-8Z"/>
-                        </svg>
-                    </template>
-                </SidebarRow>
+                <Link href="/help" class="flex items-center w-full">
+                    <SidebarRow @click="isSmall ? isSidebarOpen = false : ''" class="group" icon="help_FILL0_wght400_GRAD0_opsz24.png" :text="$t('sidebar.help')" :show-text="isSidebarOpen">
+                        <template v-slot:icon>
+                            <svg xmlns="http://www.w3.org/2000/svg" :height="iconSize.height" viewBox="0 -960 960 960"
+                                 :width="iconSize.width">
+                                <path :fill="highContrast ? '#FFFF00FF' : iconColor" :class="{'group-hover:fill-black':highContrast}"
+                                      d="M478-240q21 0 35.5-14.5T528-290q0-21-14.5-35.5T478-340q-21 0-35.5 14.5T428-290q0 21 14.5 35.5T478-240Zm2 160q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Zm4-172q25 0 43.5 16t18.5 40q0 22-13.5 39T502-525q-23 20-40.5 44T444-427q0 14 10.5 23.5T479-394q15 0 25.5-10t13.5-25q4-21 18-37.5t30-31.5q23-22 39.5-48t16.5-58q0-51-41.5-83.5T484-720q-38 0-72.5 16T359-655q-7 12-4.5 25.5T368-609q14 8 29 5t25-17q11-15 27.5-23t34.5-8Z"/>
+                            </svg>
+                        </template>
+                    </SidebarRow>
+                </Link>
+
 
                 <SidebarRow
                     @click="isLangMenuOpen = !isLangMenuOpen; isSidebarOpen = true" class="group"
@@ -206,23 +211,26 @@ function getCookieValue(cookieName) {
                     </template>
 
                 </SidebarRow>
-                <ul v-if="isLangMenuOpen" class="w-[80%]">
-                    <li @click="setLang('en')" class="hover:bg-gray-500 cursor-pointer rounded-md py-1 pl-2"
-                        :class="{ 'bg-gray-500' : i18.locale.value === 'en',
+                <Transition name="slide-fade">
+                    <ul v-if="isLangMenuOpen" class="w-[80%]">
+                        <li @click="setLang('en')" class="hover:bg-gray-500 cursor-pointer rounded-md py-1 pl-2"
+                            :class="{ 'bg-gray-500' : i18.locale.value === 'en',
                                         'high-contrast-button':highContrast,
                                         'high-contrast-button-selected':i18.locale.value === 'en' && highContrast
                                     }">
-                        English
-                    </li>
+                            English
+                        </li>
 
-                    <li @click="setLang('pl')" class="hover:bg-gray-500 cursor-pointer rounded-md py-1 pl-2"
-                        :class="{
+                        <li @click="setLang('pl')" class="hover:bg-gray-500 cursor-pointer rounded-md py-1 pl-2"
+                            :class="{
                                     'bg-gray-500' : i18.locale.value === 'pl',
                                     'high-contrast-button-selected' : i18.locale.value === 'pl' && highContrast,
                                     'high-contrast-button':highContrast}">
-                        Polish
-                    </li>
-                </ul>
+                            Polish
+                        </li>
+                    </ul>
+                </Transition>
+
             </div>
 
             <hr
@@ -341,6 +349,17 @@ function getCookieValue(cookieName) {
 
 .high-contrast-button-selected {
     @apply bg-yellow-300 text-black
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+    transition: opacity 0.3s, transform 0.3s
+}
+
+
+.slide-fade-enter-from, .slide-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
 }
 
 </style>

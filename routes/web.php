@@ -25,6 +25,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/help', function () {
+    return Inertia::render('Help');
+});
+
 Route::get('/files/{fileName}', [EditController::class, 'downloadFile'])->name('downloadFile');
 Route::get('/file/{fileName}', [EditController::class, 'downloadDiagnosticFile'])->name('downloadDiagnoseFile');
 

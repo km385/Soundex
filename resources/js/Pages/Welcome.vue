@@ -1,6 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import SvgComp from "@/Components/SvgComp.vue";
+import {inject} from "vue";
 
 
 const tools = [
@@ -17,24 +18,33 @@ const tools = [
     { svg: 'hammer', name: 'Diagnosis', link: '/tools/diagnosis' }
 ];
 
+const highContrast = inject('highContrast')
+
 </script>
 
 <template>
 
     <Head title="Welcome" />
     <div class="text-white flex flex-col items-center mt-20">
-        <div class="px-20 text-center">
+        <div
+            :class="{'text-yellow-300':highContrast}"
+            class="px-20 text-center">
             <p class="text-5xl">Welcome to Soundex!</p>
             <p class="text-4xl mt-2">Thanks to our tools, you can quickly and easily edit your audio
                 files.</p>
             <p class="text-2xl mt-4">You can also save your files on the cloud to have access to them everywhere.</p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mt-5 px-5 lg:px-0 w-4/5">
+        <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mt-5 px-5 lg:px-0 w-4/5 mb-10">
             <div v-for="tool in tools">
-                <div class="flex w-full py-5 px-2 rounded-lg shadow-lg shadow-cyan-500 border border-white h-full hover:scale-105">
+                <div
+
+                    class="flex w-full py-5 px-2 rounded-lg shadow-lg shadow-cyan-500 border border-white h-full hover:scale-105"
+                    :class="{'high-contrast-input': highContrast}">
                     <div id="icon" class=" flex items-center text-white">
-                        <SvgComp :name="tool.svg" class="w-[100px] h-[100px]"/>
+                        <SvgComp :name="tool.svg"
+                                 :class="{'text-[#FFFF00FF]':highContrast}"
+                                 class="w-[100px] h-[100px]"/>
                     </div>
 
 
@@ -81,6 +91,17 @@ const tools = [
 
 .scrollbar::-webkit-scrollbar-thumb {
     @apply bg-gray-700 rounded-lg
+}
+
+.high-contrast-input {
+    @apply text-xl border !border-[#FFFF00FF] bg-black text-[#FFFF00FF] !shadow-yellow-300
+}
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
+
+.high-contrast-button-selected {
+    @apply bg-yellow-300 text-black
 }
 
 </style>
