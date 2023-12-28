@@ -8,6 +8,7 @@ use App\Jobs\DeleteErrorFileJob;
 use App\Jobs\DeleteTempFileJob;
 use App\Models\SuccessfulJobs;
 use App\Models\TemporarySong;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -36,7 +37,14 @@ class FileService
     public static function createAndNotify($fileInfo, $isPrivate, $userId): void
     {
         error_log('createandnotify');
-        $tags = FileService::extractMetadata($fileInfo['path']);
+        try {
+            $tags = FileService::extractMetadata($fileInfo['path']);
+            if (!DateTime::createFromFormat('Y-m-d', $tags['tags']['year']) !== false) {
+                $tags['tags']['year'] = null;
+            }
+        } catch (\Exception $e) {
+            error($e->getMessage());
+        }
         try{
             $tempFile = TemporarySong::create([
                 'song_path' => $fileInfo['path'],
