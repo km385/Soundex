@@ -29,9 +29,9 @@ function toggleQuestion(index) {
     <div class="mt-20 lg:mt-10">
         <p class="text-5xl text-white">FAQ</p>
     </div>
-    <div class="mt-10 mx-10 text-white">
+    <div class="my-10 mx-10 text-white">
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-            <div v-for="(question, index) in questions" class="max-w-lg">
+            <div v-for="(question, index) in questions" class="max-w-lg sm:w-[512px]">
 
                 <div @click="toggleQuestion(index)" class="bg-gray-400 flex items-center px-4 cursor-pointer">
                     <div class="mr-2 grow">
