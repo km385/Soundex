@@ -1,6 +1,6 @@
 <script setup>
 import {computed, inject} from "vue";
-    import { Link } from '@inertiajs/vue3';
+import SvgComp from "@/Components/SvgComp.vue";
 
 
     const props = defineProps({
@@ -18,9 +18,7 @@ import {computed, inject} from "vue";
         },
     })
 
-    const url = computed(() => {
-        return new URL(`../../../images/${props.icon}`, import.meta.url)
-    })
+
 
     const highContrast = inject('highContrast')
 
@@ -31,7 +29,7 @@ import {computed, inject} from "vue";
             :class="{'high-contrast-button':highContrast}"
             class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative rounded-lg">
             <div class="h-full mr-5 ml-2 flex items-center">
-                <slot name="icon"/>
+                <SvgComp :name="icon" class="w-12" />
             </div>
 
             <transition name="slide-fade">
