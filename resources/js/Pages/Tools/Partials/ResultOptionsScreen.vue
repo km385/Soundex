@@ -30,8 +30,11 @@ const showAudioTag = ref(false)
 
 const highContrast = inject('highContrast')
 
-const file = ref({})
+const file = ref(null)
 async function makeFile() {
+    if(file.value !== null) {
+        return
+    }
     const response = await axios.get(`/files/${props.fileToDownloadLink}`, {
         responseType: 'blob',
     })
