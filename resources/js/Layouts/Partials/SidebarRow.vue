@@ -16,6 +16,16 @@ import SvgComp from "@/Components/SvgComp.vue";
             type: Boolean,
             required: true
         },
+        hasMenu: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        rotateIcon: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     })
 
 
@@ -25,20 +35,27 @@ import SvgComp from "@/Components/SvgComp.vue";
 </script>
 
 <template>
-        <div
-            :class="{'high-contrast-button':highContrast}"
-            class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative rounded-lg">
-            <div class="h-full mr-5 ml-2 flex items-center">
-                <SvgComp :name="icon" class="w-12" />
-            </div>
-
-            <transition name="slide-fade">
-
-                <div v-if="showText" class="flex-grow text-2xl ">
-                    <p>{{text}}</p>
-                </div></transition>
-
+    <div
+        :class="{'high-contrast-button':highContrast}"
+        class="flex items-center h-14 w-full duration-200 hover:bg-gray-500 cursor-pointer relative rounded-lg"
+    >
+        <div class="h-full mr-5 ml-2 flex items-center">
+            <SvgComp :name="icon" class="w-12" />
         </div>
+
+        <transition name="slide-fade">
+            <div v-if="showText" class="grow text-2xl">
+                <p>{{ text }}</p>
+            </div>
+        </transition>
+
+        <SvgComp v-if="props.hasMenu && showText"
+                 name="expand"
+                 :class="{'rotate-180':props.rotateIcon}"
+                 class="w-8 duration-300 mr-8"
+        />
+
+    </div>
 </template>
 
 <style scoped>

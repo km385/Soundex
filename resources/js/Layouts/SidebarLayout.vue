@@ -128,6 +128,8 @@ function getCookieValue(cookieName) {
                 <SidebarRow @click="isToolsMenuOpen = !isToolsMenuOpen; isSidebarOpen = true"
                             :text="$t('sidebar.tools')"
                             :show-text="isSidebarOpen"
+                            :has-menu="true"
+                            :rotate-icon="isToolsMenuOpen"
                             icon="tool"
                             class="group"
                 >
@@ -168,7 +170,8 @@ function getCookieValue(cookieName) {
 
                 <SidebarRow
                     @click="isLangMenuOpen = !isLangMenuOpen; isSidebarOpen = true" class="group"
-                    icon="lang" :text="$t('sidebar.lang')" :show-text="isSidebarOpen"
+                    icon="lang" :text="$t('sidebar.lang')" :show-text="isSidebarOpen" :has-menu="true"
+                    :rotate-icon="isLangMenuOpen"
                 />
 
 
@@ -202,19 +205,19 @@ function getCookieValue(cookieName) {
                 <SidebarRow icon="contrast" :text="$t('sidebar.contrast')"
                             :show-text="isSidebarOpen" @click="changeContrast" class="group" />
                 <div class="relative flex justify-center" v-if="page.props.auth.user">
-                    <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg" v-if="isUserMenuOpen"
+                    <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg border border-gray-500" v-if="isUserMenuOpen"
                          @click="isUserMenuOpen = !isUserMenuOpen">
                         <Link href="/dashboard">
                             <div
                                 :class="{'high-contrast-button': highContrast}"
-                                class="border-b py-2 hover:bg-red-500 rounded-t-lg">
+                                class="border-b py-2 hover:bg-gray-500 rounded-t-lg">
                                 <p class="pl-2">Profile</p>
                             </div>
                         </Link>
-                        <Link href="/logout" method="post">
+                        <Link href="/logout" method="post" as="button" class="w-full text-left">
                             <div
                                 :class="{'high-contrast-button': highContrast}"
-                                class="py-2 hover:bg-red-500 rounded-b-lg">
+                                class="py-2 hover:bg-gray-500 rounded-b-lg">
                                 <p class="pl-2">Log out</p>
                             </div>
                         </Link>
@@ -227,13 +230,13 @@ function getCookieValue(cookieName) {
 
                 <div
                     class="relative flex justify-center" v-else>
-                    <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg" v-if="isUserMenuOpen"
+                    <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg border border-gray-500" v-if="isUserMenuOpen"
                          @click="isUserMenuOpen = !isUserMenuOpen">
 
                         <Link href="/register">
                             <div
                                 :class="{'high-contrast-button': highContrast}"
-                                class="border-b py-2 hover:bg-red-500 rounded-t-lg">
+                                class="border-b py-2 hover:bg-gray-500 rounded-t-lg">
                                 <p class="pl-2">Register</p>
                             </div>
                         </Link>
@@ -241,7 +244,7 @@ function getCookieValue(cookieName) {
                         <Link href="/login">
                             <div
                                 :class="{'high-contrast-button': highContrast}"
-                                class="py-2 hover:bg-red-500 rounded-b-lg">
+                                class="py-2 hover:bg-gray-500 rounded-b-lg">
                                 <p class="pl-2">Login</p>
                             </div>
                         </Link>
