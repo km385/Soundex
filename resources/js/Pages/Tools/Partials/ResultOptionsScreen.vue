@@ -48,7 +48,7 @@ async function makeFile() {
         <!-- File Download Section -->
         <div
             :class="{'high-contrast-input':highContrast}"
-            class="p-6 bg-gray-800 rounded-lg shadow-lg">
+            class="p-6 bg-gray-800 rounded-lg shadow-lg w-full">
 
             <Wavesurfer v-if="showAudioTag" :file="file" :show-controls="true" />
             <button @click="makeFile"
