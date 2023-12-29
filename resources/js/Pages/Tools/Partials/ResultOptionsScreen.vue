@@ -3,6 +3,8 @@ import DownloadTempFileButton from "@/Pages/Tools/Partials/DownloadTempFileButto
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import {usePage} from "@inertiajs/vue3";
 import {inject, ref} from "vue";
+import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
+import axios from "axios";
 
 const page = usePage()
 
@@ -28,6 +30,16 @@ const showAudioTag = ref(false)
 
 const highContrast = inject('highContrast')
 
+const file = ref({})
+async function makeFile() {
+    const response = await axios.get(`/files/${props.fileToDownloadLink}`, {
+        responseType: 'blob',
+    })
+
+    file.value = new File([response.data], '')
+    showAudioTag.value = true
+}
+
 </script>
 
 <template>
@@ -37,11 +49,11 @@ const highContrast = inject('highContrast')
         <div
             :class="{'high-contrast-input':highContrast}"
             class="p-6 bg-gray-800 rounded-lg shadow-lg">
-            <audio controls v-if="showAudioTag"
-                   :src="'/files/' + fileToDownloadLink"></audio>
-            <button @click="showAudioTag = true"
+
+            <Wavesurfer v-if="showAudioTag" :file="file" :show-controls="true" />
+            <button @click="makeFile"
                     :class="{'high-contrast-button':highContrast}"
-                    class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500">
+                    class="bg-blue-400 text-white rounded py-2 px-4 mt-10 hover:bg-blue-500 ">
                 {{ $t("resultOptionsScreen.hearAudio") }}
             </button>
 
