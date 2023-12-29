@@ -38,7 +38,9 @@ const highContrast = inject('highContrast')
 
 <template>
     <div class="">
-        <button @click="showSongList" class="bg-blue-500 text-white rounded-lg p-2">Show Song List</button>
+        <button @click="showSongList"
+                :class="{'high-contrast-button':highContrast}"
+                class="bg-blue-500 text-white rounded-lg p-2">Show Song List</button>
 
         <div v-if="showPopup"
              class="fixed inset-0 justify-center items-center z-10 flex flex-col bg-black bg-opacity-40 ">
@@ -88,7 +90,19 @@ const highContrast = inject('highContrast')
     @apply bg-gray-700 rounded-lg
 }
 
+.high-contrast-border {
+    @apply border-[#FFFF00FF]
+}
+
+.high-contrast-text {
+    @apply text-[#FFFF00FF]
+}
+
 .high-contrast-input {
     @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
 }
 </style>
