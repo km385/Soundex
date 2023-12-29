@@ -82,7 +82,6 @@ function toggleCookieValue(cookieName) {
 function changeContrast() {
     const newContrastValue = toggleCookieValue("highContrast");
     highContrast.value = newContrastValue
-    console.log(`High Contrast is now ${newContrastValue ? 'enabled' : 'disabled'}`);
 }
 
 function getCookieExpirationDate() {
