@@ -114,7 +114,7 @@ function getCookieValue(cookieName) {
         >
             <!--  burger icon  -->
             <div class="flex justify-end mr-5">
-                <SvgComp name="burger" class="w-12 cursor-pointer" @click="openSidebar"/>
+                <SvgComp name="burger" class="w-12 cursor-pointer hover:bg-gray-500 duration-300 p-1 rounded-full" @click="openSidebar"/>
             </div>
             <!-- main options-->
             <div id="tools" class="flex flex-col items-center grow overflow-y-auto overflow-x-hidden ">
