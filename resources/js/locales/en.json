@@ -156,5 +156,48 @@
             "title": "Diagnosis",
             "description": "Diagnose and enhance your audio with the Diagnosis tool. Identify and address audio issues with detailed analysis and diagnostic tools. Elevate the quality of your music by resolving imperfections and optimizing sound."
         }
-    }
+    },
+    "help": [
+        {
+            "question": "Is this website free?",
+            "answer": "Yes, our website is free to use."
+        },
+        {
+            "question": "What file formats do you support?",
+            "answer": "We support a variety of file formats; please check our documentation for the complete list."
+        },
+        {
+            "question": "Do you have any premium services?",
+            "answer": "Yes, we offer premium services with additional features; explore our subscription plans for more details."
+        },
+        {
+            "question": "How much storage do I have?",
+            "answer": "Your storage capacity depends on your subscription plan; refer to your account settings for details."
+        },
+        {
+            "question": "Do you support high contrast mode?",
+            "answer": "Yes, our website supports high contrast mode for improved accessibility."
+        },
+        {
+            "question": "Do you plan on adding support for more languages?",
+            "answer": "Yes, we are actively working on adding support for additional languages in the near future."
+        },
+        {
+            "question": "Do you plan to add new tools?",
+            "answer": "Indeed, we have plans to introduce new tools to enhance user experience; stay tuned for updates."
+        },
+        {
+            "question": "How do I save my files?",
+            "answer": "To save your files, use the 'Save' or 'Download' option available in the file menu."
+        },
+        {
+            "question": "How much time is the file available for download?",
+            "answer": "The availability of your downloaded file is unlimited unless specified otherwise in your account settings."
+        },
+        {
+            "question": "Is this website safe?",
+            "answer": "Yes, we prioritize the security of your data, implementing robust measures to ensure a safe user experience."
+        }
+    ]
 }
+

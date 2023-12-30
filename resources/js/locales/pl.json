@@ -156,6 +156,47 @@
             "title": "Diagnoza",
             "description": "Diagnozuj i ulepszaj swój dźwięk dzięki narzędziu Diagnosis. Identyfikuj i rozwiązuj problemy dźwiękowe za pomocą szczegółowej analizy i narzędzi diagnostycznych. Podnieś jakość swojej muzyki, eliminując niedoskonałości i optymalizując dźwięk."
         }
-    }
-
+    },
+    "help": [
+        {
+            "question": "Czy ta strona jest darmowa?",
+            "answer": "Tak, nasza strona jest darmowa do użytku."
+        },
+        {
+            "question": "Jakie formaty plików obsługujecie?",
+            "answer": "Obsługujemy różne formaty plików; sprawdź naszą dokumentację, aby uzyskać pełną listę."
+        },
+        {
+            "question": "Czy oferujecie jakieś usługi premium?",
+            "answer": "Tak, oferujemy usługi premium z dodatkowymi funkcjami; zapoznaj się z naszymi planami abonamentowymi, aby uzyskać więcej informacji."
+        },
+        {
+            "question": "Ile miejsca mam na przechowywanie?",
+            "answer": "Twoja pojemność przechowywania zależy od planu abonamentowego; sprawdź ustawienia konta, aby uzyskać szczegóły."
+        },
+        {
+            "question": "Czy obsługujecie tryb wysokiego kontrastu?",
+            "answer": "Tak, nasza strona obsługuje tryb wysokiego kontrastu dla lepszej dostępności."
+        },
+        {
+            "question": "Czy planujecie dodanie obsługi więcej języków?",
+            "answer": "Tak, aktywnie pracujemy nad dodaniem obsługi dodatkowych języków w najbliższej przyszłości."
+        },
+        {
+            "question": "Czy planujecie dodanie nowych narzędzi?",
+            "answer": "Tak, mamy plany wprowadzenia nowych narzędzi, aby zwiększyć komfort użytkowników; śledź nasze aktualizacje."
+        },
+        {
+            "question": "Jak zapisać moje pliki?",
+            "answer": "Aby zapisać pliki, skorzystaj z opcji „Zapisz” lub „Pobierz” dostępnej w menu pliku."
+        },
+        {
+            "question": "Ile czasu plik jest dostępny do pobrania?",
+            "answer": "Dostępność pobranego pliku jest nieograniczona, chyba że określono inaczej w ustawieniach konta."
+        },
+        {
+            "question": "Czy ta strona jest bezpieczna?",
+            "answer": "Tak, priorytetem naszej firmy jest bezpieczeństwo Twoich danych; stosujemy solidne środki zapewniające bezpieczne doświadczenie użytkownika."
+        }
+    ]
 }
