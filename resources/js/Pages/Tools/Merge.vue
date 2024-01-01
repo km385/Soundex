@@ -67,10 +67,14 @@ function handleSubToPrivate(event) {
 }
 
 function getFile(file) {
-    form.value.files.push(file);
+    for (const existingFile of form.value.files) {
+        if (existingFile.name === file.name) {
+            return
+        }
+    }
 
+    form.value.files.push(file);
     isFileUploaded.value = true
-    console.log(file)
 }
 
 function getWaveformId(fileName) {
