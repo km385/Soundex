@@ -22,6 +22,8 @@ async function onClick() {
     } catch (e) {
         if (e.response.data.message === "already saved") {
             error.value = "the file is already saved"
+        } else if(e.response.data.message === "no space left") {
+            error.value = "error - no space left"
         } else {
             error.value = "an error occurred"
         }

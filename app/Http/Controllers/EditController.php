@@ -78,6 +78,9 @@ class EditController extends Controller
         if(!$user){
             return response()->json(['message' => 'Unauthorized'], 401);
         }
+        if($user->files_stored >= 50) {
+            return response()->json(['message' => 'number of files limit reached'], 401);
+        }
         $link = Request::input('token');
 
         $fullLink = "http://localhost/files/".$link;
@@ -94,6 +97,11 @@ class EditController extends Controller
         if(Song::where('song_path', $file->song_path)->first()) {
             error_log('already exist');
             return response()->json(['message' => 'already saved'], 401);
+        }
+
+        if(234800 - $user->storage_used <= $file->size_kb) {
+            error('no storage left');
+            return response()->json(['message' => 'no space left'], 401);
         }
 
         try {
@@ -113,6 +121,9 @@ class EditController extends Controller
             $song->genre = $file->genre;
 
             $user->songs()->save($song);
+            $user->storage_used = $user->storage_used + $file->size_kb;
+            $user->files_stored = $user->files_stored + 1;
+            $user->save();
         } catch (\Exception $e) {
             error_log($e->getMessage());
         }

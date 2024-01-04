@@ -44,6 +44,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'country_code' => $request->country_code,
             'storage_used' => 0,
+            'files_stored' => 0,
             'is_admin' => false,
 
         ]);

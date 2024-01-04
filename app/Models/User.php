@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'is_admin',
         'storage_used',
+        'files_stored',
         'country_code',
         'password',
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('country_code');
             $table->boolean('is_admin');
             $table->unsignedInteger('storage_used');
+            $table->unsignedInteger('files_stored');
             $table->enum('status', ['active', 'inactive','banned'])->default('active');
 
             $table->rememberToken();
