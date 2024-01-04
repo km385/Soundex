@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             // no originalName
             $table->string('extension');
+            $table->unsignedInteger('size_kb');
             // name of the song set by user/name of the file when uploaded
             $table->unsignedBigInteger('duration_sec')->nullable();
             $table->unsignedBigInteger('user_id');

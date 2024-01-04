@@ -103,6 +103,7 @@ class EditController extends Controller
             // todo: check title saving
             // $song->title = $file->originalName;
             $song->extension = $file->extension;
+            $song->size_kb = $file->size_kb;
             // todo: supports mp3 and flac
             $song->title = $file->title;
             $song->album = $file->album;

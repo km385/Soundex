@@ -39,11 +39,18 @@ class FileService
         error_log('createandnotify');
         try {
             $tags = FileService::extractMetadata($fileInfo['path']);
-            if (!DateTime::createFromFormat('Y-m-d', $tags['tags']['year']) !== false) {
+            if (!isset($tags['tags']['year']) || !DateTime::createFromFormat('Y-m-d', $tags['tags']['year']) !== false) {
                 $tags['tags']['year'] = null;
+            }
+
+            if(!isset($tags['size'])) {
+                error('no size info');
+                throw new \Exception();
             }
         } catch (\Exception $e) {
             error($e->getMessage());
+            self::errorNotify('error', $isPrivate, $userId);
+            return;
         }
         try{
             $tempFile = TemporarySong::create([
@@ -55,7 +62,7 @@ class FileService
                 'year' => $tags['tags']['year'] ?? null,
                 'artist' => $tags['tags']['artist'] ?? null,
                 'genre' => $tags['tags']['genre'] ?? null,
-
+                'size_kb' => $tags['size'] / 1024,
                 'composer' => $tags['tags']['composer'] ?? null,
                 'comment' => $tags['tags']['comment'] ?? null,
                 'copyright_message' => $tags['tags']['copyrightMessage'] ?? null,

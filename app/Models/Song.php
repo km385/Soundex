@@ -15,6 +15,7 @@ class Song extends Model
         'user_id',
         'disk',
         'song_path',
+        'size_kb',
         'cover_path',
         'song_status',
         'title',

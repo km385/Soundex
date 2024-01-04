@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('temporary_songs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+
             // no originalName
             $table->string('token');
             $table->string('song_path'); // filePath earlier
             $table->string('extension');
+            $table->unsignedInteger('size_kb');
 
             $table->string('cover_path')->nullable();
             $table->enum('song_status', ['banned', 'published', 'waiting'])->default('published');
@@ -38,6 +41,8 @@ return new class extends Migration
             $table->unsignedSmallInteger('track_number')->nullable();
 
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
