@@ -160,43 +160,41 @@
     "help": [
         {
             "question": "Czy ta strona jest darmowa?",
-            "answer": "Tak, nasza strona jest darmowa do użytku."
+            "answer": "Tak, nasza strona jest darmowa w użyciu."
         },
         {
             "question": "Jakie formaty plików obsługujecie?",
-            "answer": "Obsługujemy różne formaty plików; sprawdź naszą dokumentację, aby uzyskać pełną listę."
+            "answer": "Obsługujemy różnorodne formaty plików, takie jak MP3, FLAC, WAV i wiele innych."
         },
         {
-            "question": "Czy oferujecie jakieś usługi premium?",
-            "answer": "Tak, oferujemy usługi premium z dodatkowymi funkcjami; zapoznaj się z naszymi planami abonamentowymi, aby uzyskać więcej informacji."
+            "question": "Czy oferujecie usługi premium?",
+            "answer": "Nie, nasze usługi są bezpłatne."
         },
         {
-            "question": "Ile miejsca mam na przechowywanie?",
-            "answer": "Twoja pojemność przechowywania zależy od planu abonamentowego; sprawdź ustawienia konta, aby uzyskać szczegóły."
+            "question": "Ile miejsca mam na przechowywanie plików?",
+            "answer": "Masz dostęp do łącznej przestrzeni 200 MB i możesz przesyłać do 50 pojedynczych plików."
         },
         {
             "question": "Czy obsługujecie tryb wysokiego kontrastu?",
             "answer": "Tak, nasza strona obsługuje tryb wysokiego kontrastu dla lepszej dostępności."
         },
         {
-            "question": "Czy planujecie dodanie obsługi więcej języków?",
-            "answer": "Tak, aktywnie pracujemy nad dodaniem obsługi dodatkowych języków w najbliższej przyszłości."
+            "question": "Czy planujecie dodanie obsługi dla większej ilości języków?",
+            "answer": "Tak, aktywnie pracujemy nad dodaniem obsługi dla innych języków."
         },
         {
             "question": "Czy planujecie dodanie nowych narzędzi?",
-            "answer": "Tak, mamy plany wprowadzenia nowych narzędzi, aby zwiększyć komfort użytkowników; śledź nasze aktualizacje."
+            "answer": "Owszem, mamy plany wprowadzenia nowych narzędzi w celu poprawy doświadczenia użytkownika. Śledźcie aktualizacje."
         },
         {
             "question": "Jak zapisać moje pliki?",
-            "answer": "Aby zapisać pliki, skorzystaj z opcji „Zapisz” lub „Pobierz” dostępnej w menu pliku."
+            "answer": "Aby zapisać pliki, skorzystaj z opcji „Zapisz” dostępnej w sekcji Pliki lub po użyciu jednego z narzędzi, wybierz opcję zapisu pliku."
         },
         {
             "question": "Ile czasu plik jest dostępny do pobrania?",
-            "answer": "Dostępność pobranego pliku jest nieograniczona, chyba że określono inaczej w ustawieniach konta."
+            "answer": "Po użyciu któregokolwiek z naszych narzędzi otrzymasz link, który możesz użyć do pobrania swojego nowego pliku przez następną godzinę."
         },
         {
             "question": "Czy ta strona jest bezpieczna?",
-            "answer": "Tak, priorytetem naszej firmy jest bezpieczeństwo Twoich danych; stosujemy solidne środki zapewniające bezpieczne doświadczenie użytkownika."
-        }
-    ]
-}
+            "answer": "Tak, priorytetem dla nas jest bezpieczeństwo Twoich danych. Wprowadzamy solidne środki zapewniające bezpieczeństwo."
+        }]}

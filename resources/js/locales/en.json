@@ -164,15 +164,15 @@
         },
         {
             "question": "What file formats do you support?",
-            "answer": "We support a variety of file formats; please check our documentation for the complete list."
+            "answer": "We support a variety of file formats, such as MP3, FLAC, WAV, and many more."
         },
         {
             "question": "Do you have any premium services?",
-            "answer": "Yes, we offer premium services with additional features; explore our subscription plans for more details."
+            "answer": "No, we offer services free of charge"
         },
         {
             "question": "How much storage do I have?",
-            "answer": "Your storage capacity depends on your subscription plan; refer to your account settings for details."
+            "answer": "You have access to a total of 200 MB and can upload up to 50 individual files."
         },
         {
             "question": "Do you support high contrast mode?",
@@ -184,15 +184,15 @@
         },
         {
             "question": "Do you plan to add new tools?",
-            "answer": "Indeed, we have plans to introduce new tools to enhance user experience; stay tuned for updates."
+            "answer": "Indeed, we have plans to introduce new tools to enhance user experience. Stay tuned for updates."
         },
         {
             "question": "How do I save my files?",
-            "answer": "To save your files, use the 'Save' or 'Download' option available in the file menu."
+            "answer": "To save your files, use the 'Save' option available in the Files section, or after using one of the tools, choose an option to save the file."
         },
         {
             "question": "How much time is the file available for download?",
-            "answer": "The availability of your downloaded file is unlimited unless specified otherwise in your account settings."
+            "answer": "When you use any of our tools, you are given a link that you can use to download your new file for the next hour."
         },
         {
             "question": "Is this website safe?",
