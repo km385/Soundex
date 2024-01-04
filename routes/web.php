@@ -3,6 +3,7 @@
 use App\Http\Controllers\EditController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SongController;
+use App\Http\Controllers\SuccessfulJobsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -102,6 +103,8 @@ Route::prefix('tools')->name('tools.')->group(function () {
 });
 Route::get('/songs', [SongController::class, 'getSongs']);
 Route::get('/songs/{id}', [SongController::class, 'getSongById']);
+
+Route::get('/jobs', [SuccessfulJobsController::class, 'show']);
 
 
 //Database routes

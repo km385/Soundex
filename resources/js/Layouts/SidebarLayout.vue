@@ -109,7 +109,7 @@ function getCookieValue(cookieName) {
     <div class="flex">
         <!-- sidebar-->
         <div
-            class="z-[999] sidebar h-screen bg-[#2B2B2B] pt-8 absolute md:static duration-500 flex flex-col text-white select-none"
+            class="z-[999] sidebar h-screen bg-[#2B2B2B] pt-8 absolute md:static duration-500 flex flex-col text-white select-none border-r-[1px] border-gray-600"
             :class="{'w-72': isSidebarOpen, 'w-20': !isSidebarOpen, 'hidden': !isSidebarOpen && isSmall, 'high-contrast-input':highContrast}"
         >
             <!--  burger icon  -->
