@@ -47,12 +47,15 @@ class ConvertFile implements ShouldQueue
             $filename = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
             $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
             error_log($this->fileInfo['path']);
-            FFMpeg::fromDisk('')
+            $ffmpeg = FFMpeg::fromDisk('')
                 ->open($this->fileInfo['path'])
                 ->export()
-                ->toDisk('')
-                ->addFilter('-b:a', $this->bitrate."K")
-                ->save($filename.'temp.'.$ext);
+                ->toDisk('');
+            if($this->bitrate !== "flac" && $this->bitrate !== "wav") {
+                $ffmpeg->addFilter('-b:a', $this->bitrate."K");
+            }
+
+            $ffmpeg->save($filename.'temp.'.$ext);
 
             Storage::delete($this->fileInfo['path']);
             Storage::move($filename.'temp.'.$ext, $filename.'.'.$ext);

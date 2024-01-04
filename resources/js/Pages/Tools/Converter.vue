@@ -14,6 +14,7 @@ import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
+import FormatSelection from "@/Pages/Tools/Partials/FormatSelection.vue";
 
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
@@ -123,7 +124,7 @@ const highContrast = inject('highContrast')
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
             <!--            nice info here :)-->
-            <div id="app" class="flex flex-col lg:flex-row">
+            <div id="app" class="flex flex-col lg:flex-row" v-if="extension !== 'flac' && extension !== 'wav'">
                 <button
                     v-for="bitrate in bitrates"
                     :key="bitrate"
@@ -141,7 +142,8 @@ const highContrast = inject('highContrast')
                         :class="{'high-contrast-button':highContrast}"
                         class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t('tools.submit') }}</button>
             </div>
-            <select-extension @extension="getExtension"/>
+            <FormatSelection @extension="getExtension"/>
+<!--            <select-extension @extension="getExtension"/>-->
             <!--            </div>-->
         </div>
 
