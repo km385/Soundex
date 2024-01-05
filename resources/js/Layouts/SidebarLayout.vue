@@ -117,7 +117,7 @@ function getCookieValue(cookieName) {
                 <SvgComp name="burger" class="w-12 cursor-pointer hover:bg-gray-500 duration-300 p-1 rounded-full" @click="openSidebar"/>
             </div>
             <!-- main options-->
-            <div id="tools" class="flex flex-col items-center grow overflow-y-auto overflow-x-hidden ">
+            <div id="tools" class="flex flex-col items-center grow overflow-y-auto overflow-x-hidden no-scrollbar">
                 <Link href="/" class="flex items-center w-full">
                     <SidebarRow @click="isSmall ? isSidebarOpen = false : ''" class="group" icon="home" :text="$t('sidebar.home')"
                                 :show-text="isSidebarOpen" />
@@ -297,6 +297,16 @@ function getCookieValue(cookieName) {
 .slide-fade-enter-from, .slide-fade-leave-to {
     opacity: 0;
     transform: translateY(-20px);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 </style>

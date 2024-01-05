@@ -48,7 +48,7 @@ const highContrast = inject('highContrast')
                     </div>
 
 
-                    <div class="flex flex-col px-4">
+                    <div class="flex flex-col px-4 overflow-x-auto no-scrollbar">
                         <div id="title">
                             <Link :href="tool.link">
                                 <p class="text-3xl font-bold underline cursor-pointer w-fit hover:text-[#FECEAB]">
@@ -57,7 +57,7 @@ const highContrast = inject('highContrast')
                             </Link>
 
                         </div>
-                        <div id="desc" class="overflow-y-auto max-h-[200px] scrollbar text-justify">
+                        <div id="desc" class="overflow-y-auto max-h-[200px] no-scrollbar text-justify">
                             <p>
                                 {{ $t(`welcome.${tool.name}.description`) }}
 
@@ -81,16 +81,14 @@ const highContrast = inject('highContrast')
 
 <style>
 
-.scrollbar::-webkit-scrollbar {
-    @apply w-2
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
-.scrollbar::-webkit-scrollbar-track {
-
-}
-
-.scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-gray-700 rounded-lg
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .high-contrast-input {

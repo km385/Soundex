@@ -62,6 +62,9 @@ function setFileInfo(data) {
 
     for (const property of propertiesToAssign) {
         fileInfo.value[property] = data[property];
+        if(fileInfo.value[property] === "") {
+            fileInfo.value[property] = "---"
+        }
     }
     fileInfo.value['numberOfErrors'] = data.numberOfErrors
     data.numberOfErrors > 0 ? fileInfo.value['state'] = "bad" : fileInfo.value['state'] = "good"
@@ -173,7 +176,10 @@ const highContrast = inject('highContrast')
         <div v-if="isFileReceived"
              :class="{'high-contrast-input': highContrast}"
              class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-
+            <button type="button" @click="isFileUploaded = false; isFileReceived = false"
+                    :class="{ 'high-contrast-button' : highContrast }"
+                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t("tools.changeFile") }}
+            </button>
 
             <div
 
@@ -197,7 +203,7 @@ const highContrast = inject('highContrast')
 
 
             <div
-
+                v-if="fileInfo['numberOfErrors'] > 0"
                 class="flex items-center justify-between mb-4 mt-4">
                 <h2
                     :class="{'text-yellow-300':highContrast}"
