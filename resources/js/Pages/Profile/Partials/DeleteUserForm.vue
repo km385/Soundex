@@ -6,7 +6,7 @@ import Modal from './Modal.vue';
 import SecondaryButton from './SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
-import { nextTick, ref } from 'vue';
+import {inject, nextTick, ref} from 'vue';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);
@@ -35,14 +35,16 @@ const closeModal = () => {
 
     form.reset();
 };
+
+const highContrast = inject('highContrast')
 </script>
 
 <template>
     <section class="space-y-6">
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Delete Account</h2>
+            <h2 :class="{'high-contrast-text':highContrast}" class="text-lg font-medium text-white">Delete Account</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p :class="{'high-contrast-text':highContrast}" class="mt-1 text-sm text-gray-200">
                 Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting
                 your account, please download any data or information that you wish to retain.
             </p>
@@ -93,3 +95,9 @@ const closeModal = () => {
         </Modal>
     </section>
 </template>
+
+<style scoped>
+.high-contrast-text {
+    @apply text-[#FFFF00FF]
+}
+</style>

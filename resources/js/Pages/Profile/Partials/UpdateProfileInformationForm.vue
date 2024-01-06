@@ -4,6 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
+import {inject} from "vue";
 
 defineProps({
     mustVerifyEmail: {
@@ -20,15 +21,17 @@ const form = useForm({
     nickname: user.nickname,
     email: user.email,
 });
+
+const highContrast = inject('highContrast')
 </script>
 
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
+            <h2 :class="{'high-contrast-text':highContrast}" class="text-lg font-medium text-white">Profile Information</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
+            <p :class="{'high-contrast-text':highContrast}" class="mt-1 text-sm text-gray-200">
+                Update your name or email address
             </p>
         </header>
 
@@ -50,7 +53,7 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email" class="text-white"/>
 
                 <TextInput
                     id="email"
@@ -100,3 +103,11 @@ const form = useForm({
         </form>
     </section>
 </template>
+
+<style scoped>
+
+.high-contrast-text {
+    @apply text-[#FFFF00FF]
+}
+
+</style>
