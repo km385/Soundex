@@ -19,218 +19,77 @@ class BPMFinder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private $path, private $newCoverPath, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $guestId, private $isPrivate)
     {
     }
-    // //helper functions
-    // function averageLocalEnergy($energyBuffer, $blocksPerSecond)
-    // {
-    //     $energySum = 0.0;
-    //     foreach ($energyBuffer as $e) {
-    //         $energySum += $e;
-    //     }
-
-    //     return $energySum / $blocksPerSecond;
-    // }
-
-    // function energyVariance($energyBuffer, $average, $blocksPerSecond)
-    // {
-    //     $energyVariance = 0.0;
-
-    //     foreach ($energyBuffer as $e) {
-    //         $energyVariance += ($e - $average) * ($e - $average);
-    //     }
-
-    //     return $energyVariance / $blocksPerSecond;
-    // }
-
-    // function C($variance)
-    // {
-    //     return (1.5142857) + (-0.0000075) * $variance;
-    // }
-
-    /*
-    //main operation function
-    function calculateBPM($audioFile, $duration)
-    {
-        $samplesPerBlock = 1024;
-        $numChannels = 1;
-        $sampleRate = 48000;
-
-        try {
-            $values = FFProbe::create()
-                ->getFFProbeDriver()
-                ->command([
-                    '-v',
-                    'quiet',
-                    '-print_format',
-                    'json',
-                    '-show_streams',
-                    Storage::path($audioFile)
-                ]);
-
-            $json = json_decode($values, true);
-
-            if (isset($json['streams'][0]['channels'])) {
-                $numChannels = $json['streams'][0]['channels'];
-            }
-
-            if (isset($json['streams'][0]['sample_rate'])) {
-                $sampleRate = $json['streams'][0]['sample_rate'];
-            }
-        } catch (\Exception $e) {
-            error_log('ERROR' . $e);
-            throw $e;
-        }
-
-        $blocksPerSecond = (int) ($sampleRate / $samplesPerBlock);
-        $blockBuffer = array_fill(0, $numChannels * $samplesPerBlock, 0.0);
-        $energyBufferPointer = 0;
-        $blockCounter = 0;
-        $beatCounter = 0;
-        $bpm = 1.0;
-        $instantBpm = [];
-
-        $localBlockCounter = 0;
-        $localPeakCounter = 0;
-        $localBeatCounter = 0;
-        $readFrames = $this->audioFileReadNormalizedFrames($blockBuffer, $samplesPerBlock);
-
-        while ($readFrames != 0) {
-            if ($readFrames == $samplesPerBlock) {
-                $energy = 0.0;
-                for ($i = 0; $i < $samplesPerBlock; $i++) {
-                    $energy += $blockBuffer[2 * $i] * $blockBuffer[2 * $i] +
-                        $blockBuffer[2 * $i + 1] * $blockBuffer[2 * $i + 1];
-                }
-                $energyBuffer[$energyBufferPointer] = $energy;
-                $energyBufferPointer = ($energyBufferPointer + 1) % $blocksPerSecond;
-                $blockCounter++;
-                $localBlockCounter++;
-
-                if ($blockCounter > $blocksPerSecond) {
-                    $average = $this->averageLocalEnergy();
-                    $variance = $this->energyVariance($average);
-
-                    $Cparameter = $this->C($variance);
-                    $soil = $Cparameter * $average;
-
-                    if ($energy > $soil) {
-                        $localPeakCounter++;
-                        if ($localPeakCounter == 4) {
-                            $localPeakCounter = 0;
-                            $localBeatCounter++;
-                            $beatCounter++;
-                        }
-                    } else {
-                        $localPeakCounter = 0;
-                    }
-
-                    if ($localBlockCounter > $sampleRate * 5 / $samplesPerBlock) {
-                        $beatsPerMinute = ($localBeatCounter * $sampleRate * 60.0) / ($localBlockCounter * $samplesPerBlock);
-
-                        $instantBpm[] = $beatsPerMinute;
-
-                        $localBeatCounter = 0;
-                        $localBlockCounter = 0;
-                    }
-                }
-            }
-            $readFrames = $this->audioFileReadNormalizedFrames($blockBuffer, $samplesPerBlock);
-        }
-        $bpm = ($beatCounter * $sampleRate * 60.0) / ($blockCounter * $samplesPerBlock);
-
-        return $bpm;
-    }
-    */
-    /*
-        public function handle()
-        {
-            $name = pathinfo($this->path, PATHINFO_FILENAME);
-            $ext = pathinfo($this->path, PATHINFO_EXTENSION);
-            $outputFilePath = $name . 'temp.' . $ext;
-            try {
-                FFMpeg::fromDisk('')
-                    ->open($this->path)
-                    ->export()
-                    ->inFormat(new \FFMpeg\Format\Audio\Wav)
-                    ->save($outputFilePath);
-
-                $sec = 16;
-                $bpm = $this->calculateBPM($outputFilePath,$sec);
-            } catch (\Exception $e) {
-                FileService::errorNotify(substr("ERROR" . $e, 0, 4000), $this->isPrivate, $this->guestId);
-                return;
-            }
-            Storage::delete($outputFilePath);
-            FileService::bpmNotify($bpm, $this->isPrivate, $this->guestId);
-        }
-    */
-
-    //main operation function
-
 
     public function handle()
     {
         $startTime = now();
 
+        $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
+        $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
 
-        $name = pathinfo($this->path, PATHINFO_FILENAME);
         $outputFilePath = $name . 'temp.' . 'wav';
+        $duration = 0;
+
         try {
             FFMpeg::fromDisk('')
-                ->open($this->path)
+                ->open($name . '.' . $ext)
                 ->export()
+                ->toDisk('')
                 ->inFormat(new \FFMpeg\Format\Audio\Wav)
                 ->save($outputFilePath);
 
             $duration = FFMpeg::open($outputFilePath)->getDurationInSeconds();
 
         } catch (\Exception $e) {
-            FileService::errorNotify(substr("ERROR#1" . $e, 0, 4000), $this->isPrivate, $this->guestId);
-            throw $e;
+            error_log($e);
+            FileService::errorNotify("ERROR#1", $this->isPrivate, $this->guestId);
+            return;
         }
 
-        $split_seconds = 16;
+        $split_seconds = 5;
         $pieces = ceil($duration / $split_seconds);
 
+        //podzial na czesci
         if ($pieces) {
-            for ($piece = 0; $piece < $pieces; $piece++) {
-                $startTime = $piece * $split_seconds;
+            for ($piece = 0; $piece < $pieces+1; $piece++) {
+                $start = $piece * $split_seconds;
                 $outputPartName = $name . "-part{$piece}.wav";
-                //ffmpeg -y -i "" -vn -c:a pcm_s16le -ar 44100 -ac 2 -ss 0 -t 16 "FoaSriDkV3ZkfJHQpy8EShGbdXtE9XOfRELb8Pq4-part0.wav" -threads 12
 
                 try {
-                    FFMpeg::open($this->path)
+                    FFMpeg::open($outputFilePath)
                         ->export()
                         ->toDisk('')
                         ->addFilter('-vn')
-                        ->addFilter('-acodec', 'pcm_s16le') // Set audio codec to pcm_s16le
-                        ->addFilter('-ss', $startTime)
+                        ->addFilter('-acodec', 'pcm_s16le')
+                        ->addFilter('-ss', $start)
                         ->addFilter('-t', $split_seconds)
                         ->save($outputPartName);
 
                 } catch (\Exception $e) {
-                    FileService::errorNotify(substr("ERROR#2" . $e, 0, 4000), $this->isPrivate, $this->guestId);
-                    throw $e;
+                    error_log($e);
+                    FileService::errorNotify("ERROR#2", $this->isPrivate, $this->guestId);
+                    return;
                 }
-
+                //bpm czesci
                 try {
-                    if (file_exists(Storage::Path($outputPartName))) {
-                        $cmd = 'soundstretch "' . Storage::Path($outputPartName) . '" -bpm 2>&1';
-                        exec($cmd, $piece_bpm);
-                        foreach ($piece_bpm as $line) {
-                            if (strpos($line, "Detected BPM rate") !== false) {
-                                $line = explode(" ", $line);
-                                $piece_bpm = round($line[3]);
-                                break;
-                            }
+                    $cmd = 'soundstretch "' . Storage::Path($outputPartName) . '" -bpm 2>&1';
+                    exec($cmd, $piece_bpm);
+                    foreach ($piece_bpm as $line) {
+                        if (strpos($line, "Detected BPM rate") !== false) {
+                            $line = explode(" ", $line);
+                            $piece_bpm = round($line[3]);
+                            break;
                         }
-                        $pieces_bpm[] = round(intval($piece_bpm));
                     }
+                    $pieces_bpm[] = round(intval($piece_bpm));
+
                 } catch (\Exception $e) {
-                    error_log('ERROR#3' . $e);
-                    throw $e;
+                    error_log($e);
+                    FileService::errorNotify("ERROR#3", $this->isPrivate, $this->guestId);
+                    return;
                 } finally {
                     if (Storage::Path($outputPartName)) {
                         unlink(Storage::Path($outputPartName));
@@ -238,10 +97,20 @@ class BPMFinder implements ShouldQueue
                 }
             }
         }
-        $thresholdLeniency = 5;
-        $bpmCounted = array();
+        //clear outliers
+        $filtered_bpm = [];
+        foreach ($pieces_bpm as $piece_bpm) {
+            $bpm = intval($piece_bpm);
 
-        foreach ($pieces_bpm as $bpm) {
+            if ($bpm >= 10 && $bpm <= 300) {
+                $filtered_bpm[] = round($bpm);
+            }
+        }
+
+        //group and count bpm values
+        $thresholdLeniency = 10;
+        $bpmCounted = array();
+        foreach ($filtered_bpm as $bpm) {
             $found = false;
             foreach ($bpmCounted as $key => $count) {
                 if (abs($bpm - $key) <= $thresholdLeniency) {
@@ -256,19 +125,28 @@ class BPMFinder implements ShouldQueue
         }
         arsort($bpmCounted);
 
+        exec('soundstretch "' . Storage::Path($outputFilePath) . '" -bpm 2>&1', $bpm);
+        foreach ($bpm as $line) {
+            if (strpos($line, "Detected BPM rate") !== false) {
+                $line = explode(" ", $line);
+                $bpm = round($line[3]);
+                break;
+            }
+        }
 
-        $bpm = "";
-        // For Later if list of Bpm values will be needed
-        // foreach ($bpmCounted as $bpmValue => $count) {
-        //     $bpm .= "BPM: $bpmValue, Count: $count |||";
-        // }
-
-        $bpm = array_key_first($bpmCounted);
+        $bpmArray = array(
+            array('BPM' => $bpm, 'Count' => 1),
+        );
         unlink(Storage::Path($outputFilePath));
-        FileService::bpmNotify($bpm, $this->isPrivate, $this->guestId);
+
+        foreach ($bpmCounted as $bpmValue => $count) {
+            $bpmArray[] = array('BPM' => $bpmValue, 'Count' => $count);
+        }
+
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $bpmArray);
 
         $endTime = now();
-        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        $executionTime = $endTime->diffInMilliseconds($startTime);
         FileService::logSuccess('BPMFinder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

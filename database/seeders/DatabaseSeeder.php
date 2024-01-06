@@ -15,11 +15,16 @@ class DatabaseSeeder extends Seeder
         //users:
         $this->call(TestUsersSeeder::class);
         $this->command->info('Seeding users data completed.');
+        //TODO fix bug
         //songs
-        $this->call(TestSongsSeeder::class);
-        $this->command->info('Seeding songs data completed.');
+        //$this->call(TestSongsSeeder::class);
+        //$this->command->info('Seeding songs data completed.');
         //TODO
         //playlists
+        //$this->call(TestPlaylistsSeeder::class);
+        //$this->command->info('Seeding playlists data complete.');
+        //TODO
+        //testsongs
         //$this->call(TestPlaylistsSeeder::class);
         //$this->command->info('Seeding playlists data complete.');
     }

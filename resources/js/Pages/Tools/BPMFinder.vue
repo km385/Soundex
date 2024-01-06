@@ -1,32 +1,26 @@
 <script setup>
-import { v4 as uuidv4 } from "uuid";
 import { usePage } from "@inertiajs/vue3";
-import { onMounted, ref } from "vue";
+import { v4 as uuidv4 } from "uuid";
+import { inject, onMounted, ref } from "vue";
+import { subToChannel, subToPrivate } from "@/subscriptions/subs.js";
+import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 import axios from "axios";
-import { subToPrivate, subToChannel } from "@/Subscriptions/subs.js";
-import UploadFile from "./Partials/UploadFile.vue";
-import DownloadTempFileButton from "./Partials/DownloadTempFileButton.vue";
-import SidebarLayout from "@/Layouts/SidebarLayout.vue";
-import LoadingScreen from "./Partials/LoadingScreen.vue";
+import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 
-defineOptions({
-    layout: SidebarLayout
-})
-
 const page = usePage()
 const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
-const isLoading = ref(false);
-const fileUploaded = ref({})
+const isLoading = ref(false)
+const uploadedFile = ref({})
 const isFileUploaded = ref(false)
-const downloadLink = ref("")
+const fileToDownloadLink = ref("")
+const bpmArray = ref("")
 const isError = ref(false)
 const error = ref("")
 
 onMounted(() => {
-    console.log(guestId)
     if (page.props.auth.user) {
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -42,7 +36,8 @@ function handleSubToPublic(event) {
         error.value = "error has occurred"
         isError.value = true
     } else {
-        downloadLink.value = event.fileName
+        fileToDownloadLink.value = event.fileName
+        bpmArray.value = event.bpmArray
     }
     isLoading.value = false
 }
@@ -55,74 +50,90 @@ function handleSubToPrivate(event) {
         error.value = "error has occurred"
         isError.value = true
     } else {
-        downloadLink.value = event.fileName
+        fileToDownloadLink.value = event.fileName
+        bpmArray.value = event.bpmArray
     }
     isLoading.value = false
 }
 
-const form = ref({
-    coverRef: File,
-    fileRef: File,
-})
+async function getFile(file) {
+    console.log('get file')
+    uploadedFile.value = file;
+    isFileUploaded.value = true
+}
 
 async function onSubmit() {
     const formData = new FormData()
-    Object.keys(form.value).forEach(key => {
-        const value = form.value[key]
-        formData.append(key, value)
-        console.log(key, value)
-    })
+    formData.append('file', uploadedFile.value)
     formData.append('guestId', guestId)
 
     try {
         isLoading.value = true
         const res = await axios.post('/tools/bpmFinder', formData)
         console.log(res.data.message)
-    } catch (err) {
-        if (err.response.data.error) {
-            console.log('no file')
-        } else {
-            console.log(err)
-        }
+    } catch (e) {
+        console.log(e)
     }
-}
-
-function getFile(file) {
-    console.log('file received')
-    fileUploaded.value = file
-    form.value.fileRef = file
-    isFileUploaded.value = true
-    // submit file immediately
-    onSubmit()
-    isLoading.value = true
 
 }
+
+
+
+const highContrast = inject('highContrast')
 
 </script>
+
+
 <template>
     <loading-screen v-if="isLoading" />
     <MainToolsWindow v-if="!isLoading">
 
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('bpmFinder.title')" :description="$t('bpmFinder.description')"
-                           @file="getFile"/>
+            @file="getFile" />
 
-        <div v-if="isFileUploaded && !downloadLink">
-            <button type="button" @click="onSubmit"
-                class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
-            <button type="button" @click="isFileUploaded = false"
-                class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+
+        <!-- after submit -->
+        <div v-if="isFileUploaded && !fileToDownloadLink" :class="{ 'high-contrast-input': highContrast }"
+            class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+
+
+            <button type="button" @click="isFileUploaded = false" :class="{ 'high-contrast-button': highContrast }"
+                class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t('tools.changeFile')
+                }}</button>
+
+            <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
+
+            <div class="mt-6">
+                <button type="button" @click="onSubmit" :class="{ 'high-contrast-button': highContrast }"
+                    class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t('tools.submit') }}</button>
+            </div>
         </div>
+        <!--after tool-->
 
-        <ResultOptionsScreen v-if="downloadLink" @go-back="downloadLink = ''; isFileUploaded = false"
-                             :file-to-download-link="downloadLink" :file-to-download-name="fileUploaded.name"
-                             :show-button="false"/>
+        <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
+            :file-to-download-link="fileToDownloadLink" 
+            :file-to-download-name="uploadedFile.name" 
+            :bpmArray="bpmArray" />
 
-        <div v-if="isError">
-            <p>{{ error }}</p>
+        <!-- Error Handling Section -->
+        <div v-if="isError" class="text-red-500">
+
+
+            <p class="p-6 bg-gray-800 rounded-lg shadow-lg">{{ error }}</p>
         </div>
-
     </MainToolsWindow>
 </template>
 
+<style scoped>
+.high-contrast-button {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF] focus:border-[#FFFF00FF] focus:ring-[#FFFF00FF] hover:bg-yellow-300 hover:text-black
+}
 
-<style scoped></style>
+.high-contrast-button-selected {
+    @apply bg-yellow-300 text-black
+}
+
+.high-contrast-input {
+    @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
+}
+</style>

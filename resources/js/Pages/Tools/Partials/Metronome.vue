@@ -17,7 +17,7 @@
 
 <script setup>
 import axios from "axios";
-import {inject, onMounted} from "vue";
+import {inject} from "vue";
 
 function copyToClipboard() {
     navigator.clipboard

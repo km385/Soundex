@@ -16,14 +16,20 @@ class PrivateFileReadyToDownload implements ShouldBroadcast
 
     public $fileName;
     public $user;
+    public $bpmArray;
 
     /**
      * Create a new event instance.
+     *
+     * @param string $fileName
+     * @param int $user
+     * @param array|null $bpmArray
      */
-    public function __construct($fileName, $user)
+    public function __construct($fileName, $user, $bpmArray = null)
     {
         $this->fileName = $fileName;
         $this->user = $user;
+        $this->bpmArray = $bpmArray;
     }
 
     /**

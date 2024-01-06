@@ -415,37 +415,19 @@ class EditController extends Controller
 
         return \response()->json(['message' => 'processing started']);
     }
-    public function bpmFinder(): JsonResponse
-    {
+    public function bpmFinder(): JsonResponse {
+
         $user = Request::user();
-
-        if(!$user){
-            $isPrivate = false;
-        } else {
-            $isPrivate = true;
-        }
-
+        $isPrivate = $user ? true : false;
         $guestId = Request::input('guestId');
-
-        if(Request::hasFile('fileRef')) {
-            $audioFile = Request::file('fileRef');
-            $audioPath = Storage::putFile($audioFile);
-            error_log($audioPath);
-        } else {
-            return response()->json(['error' => 'file is required'], 400);
+    
+        if (!request()->hasFile('file')) {
+            return response()->json(['error' => 'File not found.'], 400);
         }
-
-        if (Request::hasFile('coverRef')) {
-            $coverFile = Request::file('coverRef');
-            $coverPath = Storage::putFile($coverFile);
-        } else {
-            $coverPath = null;
-        }
-
-        error_log("prepering");
-
-        BPMFinder::dispatch($audioPath, $coverPath, $guestId, $isPrivate);
-
+        $file = Request::file('file');
+        $fileInfo = $this->getFileInfo($file);
+    
+        BPMFinder::dispatch($fileInfo, $guestId, $isPrivate);
         return response()->json(['message' => 'success']);
     }
 
