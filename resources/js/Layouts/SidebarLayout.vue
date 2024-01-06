@@ -106,7 +106,7 @@ function getCookieValue(cookieName) {
 </script>
 
 <template>
-    <div class="flex">
+    <div :class="{'bg-black':highContrast}" class="flex">
         <!-- sidebar-->
         <div
             class="z-[999] sidebar h-screen bg-[#2B2B2B] pt-8 absolute md:static duration-500 flex flex-col text-white select-none border-r-[1px] border-gray-600"
@@ -254,7 +254,6 @@ function getCookieValue(cookieName) {
                                 @click="isUserMenuOpen = !isUserMenuOpen;isSidebarOpen = true" />
                 </div>
             </div>
-
         </div>
 
 
