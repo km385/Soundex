@@ -45,6 +45,18 @@ const fileInfo = ref({
 
 })
 
+function formatDuration(value) {
+    let originalDurationNumber = parseFloat(value);
+
+    if (!isNaN(originalDurationNumber)) {
+        let roundedDuration = originalDurationNumber.toFixed(2);
+        return roundedDuration.toString();
+    } else {
+        console.error('Duration is not a valid number.');
+        return '---'
+    }
+}
+
 function setFileInfo(data) {
     const propertiesToAssign = [
         'name',
@@ -65,17 +77,22 @@ function setFileInfo(data) {
         if(fileInfo.value[property] === "") {
             fileInfo.value[property] = "---"
         }
+        if(property === 'bitrate' && fileInfo.value[property] !== "---") {
+            fileInfo.value[property] += ' BPM'
+        }
+
+        if(property === 'sample_rate' && fileInfo.value[property] !== "---") {
+            fileInfo.value[property] += ' Hz'
+        }
+
+        if(property === 'duration' && fileInfo.value[property] !== "---") {
+            fileInfo.value[property] = formatDuration(fileInfo.value[property])
+            fileInfo.value[property] += ' s'
+        }
     }
     fileInfo.value['numberOfErrors'] = data.numberOfErrors
     data.numberOfErrors > 0 ? fileInfo.value['state'] = "bad" : fileInfo.value['state'] = "good"
-    let originalDurationNumber = parseFloat(fileInfo.value['duration']);
 
-    if (!isNaN(originalDurationNumber)) {
-        let roundedDuration = originalDurationNumber.toFixed(2);
-        fileInfo.value.duration = roundedDuration.toString();
-    } else {
-        console.error('Duration is not a valid number.');
-    }
 }
 
 function handleSubToPublic(event) {
