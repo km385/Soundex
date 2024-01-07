@@ -260,9 +260,9 @@ function getCookieValue(cookieName) {
         <!-- burger icon for small screens -->
         <Transition name="slide-fade">
 
-        <span class="z-[998] absolute text-white text-4xl top-0 left-0  flex w-full bg-gray-900"
+        <span :class="{'high-contrast-input':highContrast}" class="z-[998] absolute text-white text-4xl top-0 left-0 bg-gray-900 items-center flex w-full"
               v-if="!isSidebarOpen && isSmall">
-                <SvgComp name="burger" class="w-12 p-2 bg-gray-900 rounded-md z-[998] cursor-pointer" @click="openSidebar"/>
+                <SvgComp name="burger" class="w-12 p-2  rounded-md z-[998] cursor-pointer" @click="openSidebar"/>
                 <p class="grow text-right pr-5">soundex</p>
         </span>
         </Transition>
