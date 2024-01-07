@@ -83,7 +83,7 @@ class ChangeMetadata implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('ChangeMetadata', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('Change Metadata', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 

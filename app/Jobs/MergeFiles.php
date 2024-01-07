@@ -81,7 +81,7 @@ class MergeFiles implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('MergeFiles', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('Merge Files', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 

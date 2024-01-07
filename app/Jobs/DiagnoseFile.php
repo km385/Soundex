@@ -60,7 +60,7 @@ class DiagnoseFile implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('DiagnoseFile', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('Diagnose File', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 

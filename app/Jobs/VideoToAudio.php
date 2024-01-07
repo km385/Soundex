@@ -52,7 +52,7 @@ class VideoToAudio implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('VideoToAudio', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('Video To Audio', $this->guestId, $executionTime, $this->isPrivate);
 
 
     }

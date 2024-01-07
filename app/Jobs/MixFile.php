@@ -62,7 +62,7 @@ class MixFile implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('MixFile', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('Mix File', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 }
