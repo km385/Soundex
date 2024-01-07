@@ -1,4 +1,5 @@
 <template>
+    
     <div class="mt-6 flex items-center">
         <a
             :class="{'high-contrast-button':highContrast}"
@@ -16,6 +17,7 @@
 </template>
 
 <script setup>
+//TODO:
 import axios from "axios";
 import {inject} from "vue";
 

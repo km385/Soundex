@@ -29,10 +29,10 @@ class BPMFinder implements ShouldQueue
 
         $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
         $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
-
         $outputFilePath = $name . 'temp.' . 'wav';
         $duration = 0;
 
+        //convert to wav
         try {
             FFMpeg::fromDisk('')
                 ->open($name . '.' . $ext)
@@ -48,13 +48,12 @@ class BPMFinder implements ShouldQueue
             FileService::errorNotify("ERROR#1", $this->isPrivate, $this->guestId);
             return;
         }
-
         $split_seconds = 5;
         $pieces = ceil($duration / $split_seconds);
 
-        //podzial na czesci
+        //split into parts
         if ($pieces) {
-            for ($piece = 0; $piece < $pieces+1; $piece++) {
+            for ($piece = 0; $piece < $pieces + 1; $piece++) {
                 $start = $piece * $split_seconds;
                 $outputPartName = $name . "-part{$piece}.wav";
 
@@ -73,7 +72,8 @@ class BPMFinder implements ShouldQueue
                     FileService::errorNotify("ERROR#2", $this->isPrivate, $this->guestId);
                     return;
                 }
-                //bpm czesci
+
+                //calc parts
                 try {
                     $cmd = 'soundstretch "' . Storage::Path($outputPartName) . '" -bpm 2>&1';
                     exec($cmd, $piece_bpm);
@@ -97,6 +97,7 @@ class BPMFinder implements ShouldQueue
                 }
             }
         }
+
         //clear outliers
         $filtered_bpm = [];
         foreach ($pieces_bpm as $piece_bpm) {
@@ -107,7 +108,7 @@ class BPMFinder implements ShouldQueue
             }
         }
 
-        //group and count bpm values
+        //group and count bpm
         $thresholdLeniency = 10;
         $bpmCounted = array();
         foreach ($filtered_bpm as $bpm) {
@@ -124,7 +125,6 @@ class BPMFinder implements ShouldQueue
             }
         }
         arsort($bpmCounted);
-
         exec('soundstretch "' . Storage::Path($outputFilePath) . '" -bpm 2>&1', $bpm);
         foreach ($bpm as $line) {
             if (strpos($line, "Detected BPM rate") !== false) {
@@ -134,19 +134,19 @@ class BPMFinder implements ShouldQueue
             }
         }
 
+        //format and send to user formated data
         $bpmArray = array(
             array('BPM' => $bpm, 'Count' => 1),
         );
         unlink(Storage::Path($outputFilePath));
-
         foreach ($bpmCounted as $bpmValue => $count) {
             $bpmArray[] = array('BPM' => $bpmValue, 'Count' => $count);
         }
 
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $bpmArray);
-
+        //notify success
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('BPMFinder', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('BPM Finder tool', $this->guestId, $executionTime, $this->isPrivate);
     }
 }
