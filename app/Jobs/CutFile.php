@@ -67,7 +67,7 @@ class CutFile implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('CutFile', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('Cut File', $this->guestId, $executionTime, $this->isPrivate);
 
     }
 

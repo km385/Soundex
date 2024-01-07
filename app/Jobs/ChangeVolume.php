@@ -66,7 +66,7 @@ class ChangeVolume implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('ChangeVolume', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('Change Volume', $this->guestId, $executionTime, $this->isPrivate);
 
 
     }

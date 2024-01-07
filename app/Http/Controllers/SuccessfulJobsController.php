@@ -20,7 +20,7 @@ class SuccessfulJobsController extends Controller
             ->where('user_id', $user->id)
             ->groupBy('tool_name')
             ->orderBy('count', 'desc')
-            ->take(10)
+            ->take(5)
             ->get();
 
         if (!$jobs) {

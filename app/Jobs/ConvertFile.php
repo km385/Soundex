@@ -67,7 +67,7 @@ class ConvertFile implements ShouldQueue
 
             $endTime = now();
             $executionTime = $endTime->diffInMilliseconds($startTime);
-            FileService::logSuccess('ConvertFile', $this->guestId, $executionTime, $this->isPrivate);
+            FileService::logSuccess('Convert File', $this->guestId, $executionTime, $this->isPrivate);
 
         } catch (\Exception $e) {
             error_log('exception caught');
