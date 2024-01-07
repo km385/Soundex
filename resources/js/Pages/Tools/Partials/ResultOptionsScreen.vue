@@ -61,25 +61,22 @@ function toggleTableVisibility() {
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-10 hover:bg-blue-500 ">
                 {{ $t("resultOptionsScreen.hearAudio") }}
             </button>
-            <!-- TODO: opis, tabelka, guzik do tabelki,-->
+            <!-- TODO: formatowanie tabelki, przekazywanie value do metronomu-->
             <div v-if="bpmArray !== null">
-                <p>Congratulations! Your song's average BPM has been successfully detected at <b> {{ bpmArray[0].BPM }} </b>
-                    beats per minute (BPM).</p>
+
+                <p v-html="$t('resultOptionsScreen.bpmFound', [bpmArray[0].BPM])"></p>
                 <br>
-                <p>For a more in-depth analysis, refer to the BPM table displaying potential BPM ranges identified in
-                    diffrent splits of your song. To validate the accuracy of the BPM detection, click the 'Hear Audio'
-                    button to listen with a
-                    rhythmic reference.</p>
+                <p>{{ $t('resultOptionsScreen.bpmDescription') }}</p>
                 <button :class="{ 'high-contrast-button': highContrast }"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="toggleTableVisibility">
-                    Show bpm table
+                    {{ $t('resultOptionsScreen.tableShowButton') }}
                 </button>
                 <div v-if="showTable">
                     <table>
                         <thead>
                             <tr>
-                                <th>BPM</th>
-                                <th>Count</th>
+                                <th>{{ $t('resultOptionsScreen.tableHeaderBpm') }}</th>
+                                <th>{{ $t('resultOptionsScreen.tableHeaderCount') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -114,4 +111,5 @@ function toggleTableVisibility() {
 
 .high-contrast-input {
     @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
-}</style>
+}
+</style>

@@ -147,6 +147,6 @@ class BPMFinder implements ShouldQueue
         //notify success
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('BPM Finder tool', $this->guestId, $executionTime, $this->isPrivate);
+        FileService::logSuccess('BPM Finder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

@@ -52,6 +52,7 @@ function handleSubToPrivate(event) {
     } else {
         fileToDownloadLink.value = event.fileName
         bpmArray.value = event.bpmArray
+
     }
     isLoading.value = false
 }
