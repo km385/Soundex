@@ -111,8 +111,8 @@ const highContrast = inject('highContrast')
         <!--after tool-->
 
         <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
-            :file-to-download-link="fileToDownloadLink" 
-            :file-to-download-name="uploadedFile.name" 
+            :file-to-download-link="fileToDownloadLink"
+            :file-to-download-name="uploadedFile.name"
             :bpmArray="bpmArray" />
 
         <!-- Error Handling Section -->
