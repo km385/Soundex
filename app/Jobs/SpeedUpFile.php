@@ -89,7 +89,7 @@ class SpeedUpFile implements ShouldQueue
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId);
 
         $endTime = now();
-        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        $executionTime = $endTime->diffInMilliseconds($startTime);
         FileService::logSuccess('SpeedUpFile', $this->userId, $executionTime, $this->isPrivate);
 
     }

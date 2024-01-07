@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('successful_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('tool_name');
-            $table->decimal('time', 4, 3);
+            $table->unsignedInteger('time');
             $table->unsignedInteger('user_id')->nullable();
             $table->boolean('is_guest');
             $table->timestamps();

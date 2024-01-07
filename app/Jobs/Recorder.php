@@ -61,7 +61,7 @@ class Recorder implements ShouldQueue
         FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
 
         $endTime = now();
-        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        $executionTime = $endTime->diffInMilliseconds($startTime);
         FileService::logSuccess('Recorder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

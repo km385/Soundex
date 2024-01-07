@@ -65,7 +65,7 @@ class ChangeVolume implements ShouldQueue
         FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
         $endTime = now();
-        $executionTime = $endTime->diffInMilliseconds($startTime) / 1000;
+        $executionTime = $endTime->diffInMilliseconds($startTime);
         FileService::logSuccess('ChangeVolume', $this->guestId, $executionTime, $this->isPrivate);
 
 
