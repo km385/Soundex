@@ -109,7 +109,7 @@
         "goBack": "Go Back",
         "downloadFile": "Download file",
         "bpmFound": "Congratulations! Your song's average BPM has been successfully detected at <span class='font-black'> {0} </span> beats per minute (BPM).",
-        "bpmDescription": "For a more in-depth analysis, refer to the BPM table displaying potential BPM ranges identified in diffrent splits of your song. To validate the accuracy of the BPM detection, click the 'Hear Audio' button to listen with a rhythmic reference. ",
+        "bpmDescription": "For a more in-depth analysis, refer to the BPM table displaying potential BPM ranges identified in diffrent splits of your song. To validate the accuracy of the BPM detection, click the 'Hear Audio' button to listen with a rhythmic reference.",
         "tableShowButton":"Show BPM table",
         "tableHeaderBpm":"Detected Tempo (BPM)",
         "tableHeaderCount":"Segments with Matching Tempo",
