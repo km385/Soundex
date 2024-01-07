@@ -202,6 +202,35 @@
             "question": "Is this website safe?",
             "answer": "Yes, we prioritize the security of your data, implementing robust measures to ensure a safe user experience."
         }
-    ]
+    ],
+    "profileEdit": {
+        "profileInfo": {
+            "header": "Profile Information",
+            "desc": "Update your name or email address",
+            "name": "Name",
+            "email": "Email"
+        },
+        "passwordInfo": {
+            "header": "Update Password",
+            "desc": "Ensure your account is using a long, random password to stay secure.",
+            "currentPass": "Current Password",
+            "newPass": "New Password",
+            "confirmPass": "Confirm Password"
+        },
+        "deleteAccount": {
+            "header": "Delete Account",
+            "desc": "Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.",
+            "deleteButton": "Delete Account",
+            "confirmation": {
+                "header": "Are you sure you want to delete your account?",
+                "desc": "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
+                "password": "Password",
+                "cancel": "Cancel",
+                "delete": "Delete Account"
+            }
+        },
+        "save": "Save",
+        "saved": "Saved."
+    }
 }
 

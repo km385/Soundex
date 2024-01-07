@@ -28,16 +28,16 @@ const highContrast = inject('highContrast')
 <template>
     <section>
         <header>
-            <h2 :class="{'high-contrast-text':highContrast}" class="text-lg font-medium text-white">Profile Information</h2>
+            <h2 :class="{'high-contrast-text':highContrast}" class="text-lg font-medium text-white">{{$t('profileEdit.profileInfo.header')}}</h2>
 
             <p :class="{'high-contrast-text':highContrast}" class="mt-1 text-sm text-gray-200">
-                Update your name or email address
+                {{$t('profileEdit.profileInfo.desc')}}
             </p>
         </header>
 
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" :value="$t('profileEdit.profileInfo.name')" />
 
                 <TextInput
                     id="name"
@@ -53,7 +53,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" class="text-white"/>
+                <InputLabel for="email" :value="$t('profileEdit.profileInfo.email')" class="text-white"/>
 
                 <TextInput
                     id="email"
@@ -89,7 +89,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">{{$t('profileEdit.save')}}</PrimaryButton>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -97,7 +97,7 @@ const highContrast = inject('highContrast')
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">{{$t('profileEdit.saved')}}</p>
                 </Transition>
             </div>
         </form>

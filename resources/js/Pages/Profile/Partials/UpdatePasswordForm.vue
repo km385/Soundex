@@ -38,16 +38,16 @@ const highContrast = inject('highContrast')
 <template>
     <section>
         <header>
-            <h2 :class="{'high-contrast-text':highContrast}" class="text-lg font-medium text-white">Update Password</h2>
+            <h2 :class="{'high-contrast-text':highContrast}" class="text-lg font-medium text-white">{{$t('profileEdit.passwordInfo.header')}}</h2>
 
             <p :class="{'high-contrast-text':highContrast}" class="mt-1 text-sm text-gray-200">
-                Ensure your account is using a long, random password to stay secure.
+                {{$t('profileEdit.passwordInfo.desc')}}
             </p>
         </header>
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel for="current_password" :value="$t('profileEdit.passwordInfo.currentPass')" />
 
                 <TextInput
                     id="current_password"
@@ -62,7 +62,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div>
-                <InputLabel for="password" value="New Password" />
+                <InputLabel for="password" :value="$t('profileEdit.passwordInfo.newPass')" />
 
                 <TextInput
                     id="password"
@@ -77,7 +77,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" :value="$t('profileEdit.passwordInfo.confirmPass')" />
 
                 <TextInput
                     id="password_confirmation"
@@ -91,7 +91,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">{{$t('profileEdit.save')}}</PrimaryButton>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -99,7 +99,7 @@ const highContrast = inject('highContrast')
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">{{$t('profileEdit.saved')}}</p>
                 </Transition>
             </div>
         </form>

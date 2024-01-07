@@ -98,7 +98,6 @@
         "upSong": "w górę",
         "deleteSong": "usuń",
         "downSong": "w dół"
-
     },
     "wavesurfer": {
         "secondRegion": "Drugi Region"
@@ -118,23 +117,23 @@
     "welcome": {
         "Cutter": {
             "title": "Narzędzie do Cięcia",
-            "description": "Przytnij swoją piosenkę według własnych upodobań z precyzją i łatwością. Dostosuj swoje ulubione utwory, usuwając niechciane fragmenty i zachowując tylko te najlepsze. Dostosuj swoje doświadczenie muzyczne do perfekcji."
+            "description": "Dostosuj utwory muzyczne do swoich upodobań. Pozbądź się niepotrzebnych fragmentów piosenek i zachowaj tylko te najlepsze."
         },
         "Tag Editor": {
             "title": "Edytor Tagów",
-            "description": "Wzbogać swoją bibliotekę muzyczną dzięki narzędziu Tag Editor. Edytuj i organizuj tagi piosenek bez wysiłku. Dostosuj metadane, takie jak nazwy artystów, tytuły albumów i gatunki muzyczne. Utrzymuj porządek w swojej kolekcji muzycznej."
+            "description": "Edytuj i organizuj tagi piosenek bez wysiłku. Dostosuj metadane, takie jak nazwy artystów, tytuły albumów i gatunki muzyczne. Utrzymuj porządek w swojej kolekcji muzycznej."
         },
         "SpeedUp": {
             "title": "Przyspieszanie",
-            "description": "Przyspiesz swoją muzykę za pomocą narzędzia SpeedUp. Zwiększ tempo swoich ulubionych utworów, aby uzyskać szybsze i bardziej energetyczne wrażenia z słuchania. Przekształć swoją bibliotekę muzyczną za pomocą kilku kliknięć."
+            "description": "Przyspiesz swoją muzykę za z pomocą narzędzia Przyspieszanie. Zwiększ tempo swoich ulubionych utworów, aby uzyskać szybsze i bardziej energetyczne wrażenia. Przekształć swoją bibliotekę muzyczną za pomocą kilku kliknięć."
         },
         "Merge": {
             "title": "Łączenie",
-            "description": "Łącz i łącz swoje ulubione utwory płynnie za pomocą narzędzia Merge. Twórz płynne przejścia między utworami i komponuj unikalne playlisty. Łącz różne elementy muzyczne, aby stworzyć harmonijną mieszankę."
+            "description": "Łącz swoje ulubione utwory za pomocą tego narzędzia. Twórz płynne przejścia między utworami i komponuj unikalne piosenki"
         },
         "Converter": {
             "title": "Konwerter",
-            "description": "Konwertuj swoją muzykę bez wysiłku dzięki narzędziu Converter. Zmieniaj formaty plików audio z łatwością, zapewniając kompatybilność między urządzeniami. Ciesz się ulubionymi utworami w formacie, który odpowiada Twoim preferencjom."
+            "description": "Konwertuj swoją muzykę bez wysiłku dzięki narzędziu Kowerter. Zmieniaj formaty plików audio z łatwością, aby dobrać idealny dla twoich potrzeb"
         },
         "Video to Audio": {
             "title": "Wideo na Audio",
@@ -142,23 +141,23 @@
         },
         "Volume Changer": {
             "title": "Zmieniacz Głośności",
-            "description": "Opanuj dynamikę swojej muzyki dzięki narzędziu Volume Changer. Dostosuj poziomy głośności poszczególnych utworów, tworząc idealną równowagę. Precyzyjnie dostosuj swoje doświadczenie dźwiękowe do dowolnego środowiska słuchania."
+            "description": "Przy pomocy tego narzędzia zmień głośność swojej piosenki tak jak ci się podoba."
         },
         "Recorder": {
             "title": "Nagrywarka",
-            "description": "Uchwytaj chwilę dzięki narzędziu Recorder. Nagrywaj wysokiej jakości dźwięk bez wysiłku i zapisuj swoje muzyczne pomysły na bieżąco. Bez względu na to, czy to melodia, nagranie głosowe czy dźwięk otoczenia, Recorder to wszechstronny towarzysz dźwiękowy."
+            "description": "Narzędzie Nagrywarka posłuży ci do nagrania swojego głosu pod dowolną piosenkę. "
         },
         "LayerMix": {
             "title": "LayerMix",
-            "description": "Zanurz się w kreatywnym miksowaniu dźwięku dzięki narzędziu LayerMix. Łącz i nakładaj różne elementy dźwiękowe, tworząc unikalne krajobrazy dźwiękowe. Eksperymentuj z teksturami, tonami i rytmami, aby wyrazić swoją muzyczną wizję."
+            "description": "Nakładaj piosenki na siebie bez ograniczeń. W łatwy połącz wokal i tło dwóch róznych piosenek ze sobą tworząc swoje własne kompozycje"
         },
         "BPM Finder": {
             "title": "BPM Finder",
-            "description": "Odkrywaj ilość uderzeń na minutę (BPM) swoich utworów za pomocą narzędzia BPM Finder. Analizuj i zrozum tempo swojej muzyki dla precyzyjnego miksowania i synchronizacji. Odkrywaj rytmiczne tajemnice swoich ulubionych utworów."
+            "description": "Sprawdź ilość uderzeń na minutę (BPM) swoich utworów za pomocą narzędzia BPM Finder."
         },
         "Diagnosis": {
             "title": "Diagnoza",
-            "description": "Diagnozuj i ulepszaj swój dźwięk dzięki narzędziu Diagnosis. Identyfikuj i rozwiązuj problemy dźwiękowe za pomocą szczegółowej analizy i narzędzi diagnostycznych. Podnieś jakość swojej muzyki, eliminując niedoskonałości i optymalizując dźwięk."
+            "description": "Przy pomocy narzędzia diagnoza poznaj stan swojego pliku dźwiękowego. Skorzystaj z szczegółowych raportów o występujących błędach w twoich plikach."
         }
     },
     "help": [
@@ -201,4 +200,35 @@
         {
             "question": "Czy ta strona jest bezpieczna?",
             "answer": "Tak, priorytetem dla nas jest bezpieczeństwo Twoich danych. Wprowadzamy solidne środki zapewniające bezpieczeństwo."
-        }]}
+        }
+    ],
+    "profileEdit": {
+        "profileInfo": {
+            "header": "Informacje o profilu",
+            "desc": "Zaktualizuj swoje imię lub adres e-mail",
+            "name": "Imię",
+            "email": "E-mail"
+        },
+        "passwordInfo": {
+            "header": "Zaktualizuj hasło",
+            "desc": "Upewnij się, że Twoje konto używa długiego, losowego hasła, aby pozostać bezpiecznym.",
+            "currentPass": "Obecne Hasło",
+            "newPass": "Nowe Hasło",
+            "confirmPass": "Potwierdź Hasło"
+        },
+        "deleteAccount": {
+            "header": "Usuń Konto",
+            "desc": "Po usunięciu konta wszystkie jego zasoby i dane zostaną trwale usunięte. Przed usunięciem konta pobierz wszelkie dane lub informacje, które chcesz zachować.",
+            "deleteButton": "Usuń Konto",
+            "confirmation": {
+                "header": "Czy na pewno chcesz usunąć swoje konto?",
+                "desc": "Po usunięciu konta wszystkie jego zasoby i dane zostaną trwale usunięte. Proszę wprowadź swoje hasło, aby potwierdzić, że chcesz trwale usunąć swoje konto.",
+                "password": "Hasło",
+                "cancel": "Anuluj",
+                "delete": "Usuń Konto"
+            }
+        },
+        "save": "Zapisz",
+        "saved": "Zapisano."
+    }
+}

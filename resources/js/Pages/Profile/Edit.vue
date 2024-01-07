@@ -28,7 +28,10 @@ const highContrast = inject('highContrast')
 
         <div class="py-12">
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6 lg:mt-10 mt-14 px-6">
-                <Link :href="route('dashboard')" as="button" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4 ">{{$t('resultOptionsScreen.goBack')}}</Link>
+                <Link :href="route('dashboard')" as="button"
+                      class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4 ">
+                    {{ $t('resultOptionsScreen.goBack') }}
+                </Link>
             </div>
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6 px-6">
                 <div :class="{'high-contrast': highContrast}" class="p-4 sm:p-8 bg-gray-800 shadow sm:rounded-lg">
