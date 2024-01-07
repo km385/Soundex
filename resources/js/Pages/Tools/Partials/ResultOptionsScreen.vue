@@ -63,7 +63,6 @@ function toggleTableVisibility() {
             </button>
             <!-- TODO:  przekazywanie value do metronomu-->
             <div v-if="bpmArray !== null">
-
                 <p v-html="$t('resultOptionsScreen.bpmFound', [bpmArray[0].BPM])" class="mt-3"></p>
                 <p class="mt-3">{{ $t('resultOptionsScreen.bpmDescription') }}</p>
                 <button :class="{ 'high-contrast-button': highContrast }"
@@ -100,9 +99,9 @@ function toggleTableVisibility() {
                                             'divide-gray-200 bg-[#343541]': !highContrast
                                         }" class="divide-y ">
                                             <tr :class="{
-                                                'divide-[#FFFF00FF]': highContrast
-                                            }"
-                                                class="transition duration-300 ease-in-out hover:bg-gray-600  divide-x"
+                                                'divide-[#FFFF00FF]': highContrast,
+                                                'hover:bg-gray-600': !highContrast
+                                            }" class="transition duration-300 ease-in-out   divide-x"
                                                 v-for="(item, index) in bpmArray.slice(1)" :key="index">
                                                 <td :class="{ 'text-gray-200': !highContrast }"
                                                     class="px-6 py-4 whitespace-nowrap  font-medium ">
@@ -132,7 +131,9 @@ function toggleTableVisibility() {
 
 
             <DownloadTempFileButton v-if="bpmArray == null" :filename="fileToDownloadName" :token="fileToDownloadLink" />
-            <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink" />
+            <div :class="{ 'float-right ': bpmArray !== null }">
+                <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink" />
+            </div>
         </div>
     </div>
 </template>
