@@ -14,7 +14,7 @@ onMounted(() => {
         labels: ['Filled', 'Remaining'],
         datasets: [{
             data: [percentage, remainingPercentage],
-            backgroundColor: ['#36A2EB', '#DDDDDD'],
+            backgroundColor: [highContrast.value ? 'yellow' : '#36A2EB', '#DDDDDD'],
             borderWidth: 0,
             hoverOffset: 4,
         }]
@@ -49,6 +49,14 @@ onMounted(() => {
             tooltip: {
                 enabled: false,
             },
+            title: {
+                display: true,
+                text: 'Number of files stored',
+                color: highContrast.value ? 'yellow' : Chart.defaults.color,
+                font: {
+                    size: 20
+                }
+            }
         },
     };
 
@@ -64,7 +72,8 @@ let chart = reactive({})
 const highContrast = inject('highContrast')
 
 watch(highContrast, (newValue) => {
-    chart.data.datasets[0].backgroundColor = newValue ? ['yellow', 'black'] : ['#36A2EB', '#DDDDDD']
+    chart.data.datasets[0].backgroundColor = newValue ? ['yellow', 'white'] : ['#36A2EB', '#DDDDDD']
+    chart.options.plugins.title.color = newValue ? 'yellow' : Chart.defaults.color
     chart.update()
 })
 </script>

@@ -49,6 +49,7 @@ createInertiaApp({
             legacy: false, // allow for composition api
             fallbackLocale: 'en',
             messages: { en, pl },
+            warnHtmlMessage: false
         })
 
         return createSSRApp({ render: () => h(App, props) })

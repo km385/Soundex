@@ -60,6 +60,14 @@ function initChart(dataset) {
             tooltip: {
                 enabled: true,
             },
+            title: {
+                display: true,
+                text: 'Tools You use the most',
+                color: highContrast.value ? 'yellow' : Chart.defaults.color,
+                font: {
+                    size: 20
+                }
+            }
         },
         scales: {
             x: {
@@ -88,6 +96,7 @@ watch(highContrast, (newValue) => {
     chart.data.datasets[0].backgroundColor = newValue ? ['yellow'] : ['#36A2EB', '#DDDDDD' , 'red' ,'yellow', 'green', 'blue']
     chart.options.scales.x.ticks.color = newValue ? 'yellow' : Chart.defaults.color
     chart.options.scales.y.ticks.color = newValue ? 'yellow' : Chart.defaults.color
+    chart.options.plugins.title.color = newValue ? 'yellow' : Chart.defaults.color
     chart.update()
 
 })
