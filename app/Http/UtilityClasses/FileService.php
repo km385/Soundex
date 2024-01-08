@@ -21,6 +21,7 @@ class FileService
 {
     public static function logSuccess($toolName, $userId, $time, $isPrivate): void
     {
+        $userId = explode("-", $userId)[0];
         try {
 
             SuccessfulJobs::create([
