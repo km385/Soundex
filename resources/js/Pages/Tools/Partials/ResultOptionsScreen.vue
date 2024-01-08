@@ -39,16 +39,23 @@ const selectedBPM = ref(0)
 const currentDuration = ref(0)
 const currentTime = ref(0)
 
-async function makeFile() {
-    if (file.value !== null) {
-        return
+async function onClick() {
+    if(showAudioTag.value){
+        showAudioTag.value = false
+    } else {
+        if(file.value === null) {
+            await makeFile()
+        }
+        showAudioTag.value = true
     }
+}
+
+async function makeFile() {
     const response = await axios.get(`/files/${props.fileToDownloadLink}`, {
         responseType: 'blob',
     })
 
     file.value = new File([response.data], '')
-    showAudioTag.value = true
 }
 
 function toggleTableVisibility() {
@@ -105,7 +112,7 @@ onMounted(() => {
                         :currentTime="currentTime" :currentDuration="currentDuration" />
                 </div>
             </div>
-            <button @click="makeFile" :class="{ 'high-contrast-button': highContrast }"
+            <button @click="onClick" :class="{ 'high-contrast-button': highContrast }"
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-10 hover:bg-blue-500 ">
                 {{ $t("resultOptionsScreen.hearAudio") }}
             </button>
