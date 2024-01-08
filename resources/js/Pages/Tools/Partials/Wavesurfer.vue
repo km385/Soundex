@@ -1,6 +1,6 @@
 <script setup>
 import WaveSurfer from "wavesurfer.js";
-import {inject, nextTick, onMounted, reactive, ref, watch} from "vue";
+import { inject, nextTick, onMounted, reactive, ref, watch } from "vue";
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions";
 
 const ws = reactive({
@@ -39,7 +39,7 @@ defineExpose({
     onStopClicked
 })
 
-const emit = defineEmits(['regionCoords','durationTimeChanged', 'currentTimeChanged'])
+const emit = defineEmits(['regionCoords', 'isPlayingChanged'])
 
 function changeVolume(value) {
     ws.wsInstance.setVolume(value)
@@ -51,15 +51,6 @@ const volumeValue = ref(startVolumeValue)
 watch(volumeValue, (value) => {
     ws.wsInstance.setVolume(value)
 })
-
-// pass durations to the parent component
-watch(() => ws.currentTime, (currentTime) => {
-    emit('currentTimeChanged', currentTime);
-});
-
-watch(() => ws.durationTime, (durationTime) => {
-    emit('durationTimeChanged', durationTime);
-});
 
 
 
@@ -88,6 +79,10 @@ watch(() => props.file, (value) => {
     ws.wsInstance.load(URL.createObjectURL(blob))
 })
 
+watch(() => isPlaying.value, (value) => {
+    console.log(value)
+    emit('isPlayingChanged', value);
+});
 const regionCheckboxValue = ref(false)
 
 watch(regionCheckboxValue, (value) => {
@@ -128,6 +123,7 @@ function changeHandleStyles(region) {
         child.style.borderWidth = '0px'
     }
 }
+
 function formatTime(time) {
     const hours = Math.floor(time / 3600);
     const minutes = Math.floor((time % 3600) / 60);
@@ -246,33 +242,38 @@ onMounted(() => {
             <p>{{ formatTime(ws.durationTime) }}</p>
         </div>
         <div>
-            <div class="flex items-center mt-5">
-<!--                TODO: add style when button pressed-->
-                <button type="button" v-if="!isPlaying" @click="onPlayClicked"
-                        :class="{ 'high-contrast-button' : highContrast }"
-                        class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
-                        <path :fill="highContrast ? '#FFFF00FF' : '#F2F3F5'"
-                              d="M381-239q-20 13-40.5 1.5T320-273v-414q0-24 20.5-35.5T381-721l326 207q18 12 18 34t-18 34L381-239Zm19-241Zm0 134 210-134-210-134v268Z"/>
-                    </svg>
+            <div class="flex justify-between">
+                <div class="flex items-center mt-5">
+                    <button type="button" v-if="!isPlaying" @click="onPlayClicked" :class="{
+                        'high-contrast-button': highContrast, 'high-contrast-metronome-on': highContrast && isPlaying,
+                        'bg-blue-500': !highContrast && isPlaying, 'bg-blue-400 text-white hover:bg-blue-500': !highContrast
+                    }" class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
+                            <path :fill="highContrast ? '#FFFF00FF' : '#F2F3F5'"
+                                d="M381-239q-20 13-40.5 1.5T320-273v-414q0-24 20.5-35.5T381-721l326 207q18 12 18 34t-18 34L381-239Zm19-241Zm0 134 210-134-210-134v268Z" />
+                        </svg>
 
-                </button>
-                <button type="button" v-if="isPlaying" @click="onStopClicked"
-                        :class="{ 'high-contrast-button' : highContrast }"
-                        class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
-                        <path :fill="highContrast ? '#FFFF00FF' : '#F2F3F5'"
-                              d="M600-200q-33 0-56.5-23.5T520-280v-400q0-33 23.5-56.5T600-760h80q33 0 56.5 23.5T760-680v400q0 33-23.5 56.5T680-200h-80Zm-320 0q-33 0-56.5-23.5T200-280v-400q0-33 23.5-56.5T280-760h80q33 0 56.5 23.5T440-680v400q0 33-23.5 56.5T360-200h-80Zm320-80h80v-400h-80v400Zm-320 0h80v-400h-80v400Zm0-400v400-400Zm320 0v400-400Z"/>
-                    </svg>
+                    </button>
+                    <button type="button" v-if="isPlaying" @click="onStopClicked" :class="{
+                        'high-contrast-button': highContrast, 'high-contrast-metronome-on': highContrast && isPlaying,
+                        'bg-blue-500': !highContrast && isPlaying, 'bg-blue-400 text-white hover:bg-blue-500': !highContrast
+                    }" class="bg-blue-400 text-white rounded p-2 mr-3 hover:bg-blue-500 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="30" viewBox="0 -960 960 960" width="30">
+                            <path :fill="highContrast ? '#FFFF00FF' : '#F2F3F5'"
+                                d="M600-200q-33 0-56.5-23.5T520-280v-400q0-33 23.5-56.5T600-760h80q33 0 56.5 23.5T760-680v400q0 33-23.5 56.5T680-200h-80Zm-320 0q-33 0-56.5-23.5T200-280v-400q0-33 23.5-56.5T280-760h80q33 0 56.5 23.5T440-680v400q0 33-23.5 56.5T360-200h-80Zm320-80h80v-400h-80v400Zm-320 0h80v-400h-80v400Zm0-400v400-400Zm320 0v400-400Z" />
+                        </svg>
 
-                </button>
-                <input v-if="allowVolumeControl" type="range" min="0" max="1" step="0.01" :class="{ 'range1' : highContrast}" class="slider" id="myRange" v-model="volumeValue">
-                <div class="inline" v-if="allowSecondRegion">
-                    <input id="regionCheckBox" type="checkbox" v-model="regionCheckboxValue"
-                           :class="{'high-contrast-checkbox' : highContrast}"
-                           class=" ml-2 form-checkbox accent-blue-600 transition duration-150 ease-in-out focus:ring focus:ring-blue-400" />
-                    <label class="ml-2" for="regionCheckBox">{{ $t("wavesurfer.secondRegion") }}</label>
+                    </button>
+                    <input v-if="allowVolumeControl" type="range" min="0" max="1" step="0.01"
+                        :class="{ 'range1': highContrast }" class="slider" id="myRange" v-model="volumeValue">
+                    <div class="inline" v-if="allowSecondRegion">
+                        <input id="regionCheckBox" type="checkbox" v-model="regionCheckboxValue"
+                            :class="{ 'high-contrast-checkbox': highContrast }"
+                            class=" ml-2 form-checkbox accent-blue-600 transition duration-150 ease-in-out focus:ring focus:ring-blue-400" />
+                        <label class="ml-2" for="regionCheckBox">{{ $t("wavesurfer.secondRegion") }}</label>
+                    </div>
                 </div>
+                <slot name="metronome" class="flex items-center mt-5"></slot>
             </div>
 
         </div>
@@ -280,6 +281,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.high-contrast-metronome-on {
+    background-color: #20200b !important;
+}
+
 .high-contrast-input {
     @apply text-xl border border-[#FFFF00FF] bg-black text-[#FFFF00FF]
 }
@@ -332,5 +337,4 @@ onMounted(() => {
     border: 1px solid #f50;
     box-shadow: -407px 0 0 400px #f50;
 }
-
 </style>

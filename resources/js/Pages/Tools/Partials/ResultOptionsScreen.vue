@@ -8,9 +8,6 @@ import Metronome from "@/Pages/Tools/Partials/Metronome.vue";
 import axios from "axios";
 import { useI18n } from "vue-i18n";
 
-const page = usePage()
-const i18n = useI18n();
-
 const props = defineProps({
     fileToDownloadLink: {
         required: true,
@@ -27,8 +24,9 @@ const props = defineProps({
     }
 })
 
+const page = usePage()
+const i18n = useI18n();
 const emits = defineEmits(['goBack'])
-
 const showAudioTag = ref(false)
 const showTable = ref(false)
 const highContrast = inject('highContrast')
@@ -36,14 +34,13 @@ const file = ref(null)
 
 const filteredBPM = ref(null)
 const selectedBPM = ref(0)
-const currentDuration = ref(0)
-const currentTime = ref(0)
+const isPlaying = ref(false)
 
 async function onClick() {
-    if(showAudioTag.value){
+    if (showAudioTag.value) {
         showAudioTag.value = false
     } else {
-        if(file.value === null) {
+        if (file.value === null) {
             await makeFile()
         }
         showAudioTag.value = true
@@ -66,15 +63,10 @@ function changeBPM(BPM) {
     selectedBPM.value = BPM;
 }
 
-function changeDuration(duration) {
-    //console.log("change duration" + duration)
-    currentDuration.value = duration;
+function changeIsPlaying(value) {
+   isPlaying.value = value;
 }
 
-function changeTime(time) {
-    //console.log("changed time: " + time)
-    currentTime.value = time;
-}
 function filterArrayOfBPM() {
     if (props.arrayOfBPM && props.arrayOfBPM.length >= 2) {
         filteredBPM.value = props.arrayOfBPM
@@ -91,7 +83,6 @@ function filterArrayOfBPM() {
 
 onMounted(() => {
     filterArrayOfBPM()
-
     if (props.arrayOfBPM && props.arrayOfBPM.length > 0) {
         selectedBPM.value = props.arrayOfBPM[0].BPM;
     }
@@ -105,12 +96,15 @@ onMounted(() => {
         <!-- File Download Section -->
         <div :class="{ 'high-contrast-input': highContrast }" class="p-6 bg-gray-800 rounded-lg shadow-lg w-full">
             <div v-if="showAudioTag">
-                <Wavesurfer :file="file" :show-controls="true" @durationTimeChanged="changeDuration"
-                    @currentTimeChanged="changeTime" />
-                <div class="mt-4">
-                    <Metronome v-if="filteredBPM !== null && currentDuration !== 0" :selectedBPM="selectedBPM"
-                        :currentTime="currentTime" :currentDuration="currentDuration" />
-                </div>
+                <Wavesurfer :file="file" :show-controls="true" @isPlayingChanged="changeIsPlaying">
+                    <template v-slot:metronome>
+                        <div class="mt-4">
+                            <Metronome v-if="filteredBPM !== null" :selectedBPM="selectedBPM"
+                                :isPlaying="isPlaying" />
+                        </div>
+                    </template>
+                </Wavesurfer>
+
             </div>
             <button @click="onClick" :class="{ 'high-contrast-button': highContrast }"
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-10 hover:bg-blue-500 ">
@@ -154,9 +148,9 @@ onMounted(() => {
                                             'divide-gray-200 bg-[#343541]': !highContrast
                                         }" class="divide-y ">
                                             <tr :class="{
-                                                'divide-[#FFFF00FF]': highContrast,
+                                                'divide-[#FFFF00FF] hover:bg-[#20200b]': highContrast,
                                                 'hover:bg-gray-600': !highContrast
-                                            }" class="transition duration-300 ease-in-out   divide-x"
+                                            }" class="transition duration-300 ease-in-out   divide-x cursor-pointer"
                                                 v-for="(item, index) in filteredBPM" :key="index"
                                                 @click="changeBPM(item.BPM)">
                                                 <td :class="{ 'text-gray-200': !highContrast }"

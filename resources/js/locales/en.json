@@ -104,13 +104,13 @@
         "secondRegion": "Second Region"
     },
     "resultOptionsScreen": {
-        "hearAudio": "Hear the audio",
+        "hearAudio": "Listen to Audio",
         "downloadInfo": "You can now download your new file",
         "goBack": "Go Back",
-        "downloadFile": "Download file",
+        "downloadFile": "Download File",
         "bpmFound": "Congratulations! Your song's average BPM has been successfully detected at <span class='font-black text-lg'> {0} </span> beats per minute (BPM).",
-        "bpmDescription": "For a more in-depth analysis, refer to the BPM table displaying potential BPM ranges identified in diffrent splits of your song. To validate the accuracy of the BPM detection, click the 'Hear Audio' button to listen with a rhythmic reference.",
-        "tableShowButton":"Show BPM table",
+        "bpmDescription": "Click the 'Listen to Audio' button to hear a song with a clear rhythmic beat. Use the table available through the 'Show BPM Table' button to see the tempo identified in different parts of your song. You can adjust the metronome tempo by choosing the right values from the table.",
+        "tableShowButton":"Show BPM Table",
         "tableHeaderBpm":"Detected Tempo (BPM)",
         "tableHeaderCount":"Segments with Matching Tempo",
         "tableAverage":"Average Found Tempo",

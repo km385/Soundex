@@ -108,7 +108,7 @@
         "goBack": "Wróć",
         "downloadFile": "Pobierz plik",
         "bpmFound": "Gratulacje! Średnie tempo twojej piosenki zostało pomyślnie wykryte na <span class='font-black text-lg'>{0}</span> uderzeń na minutę (BPM).",
-        "bpmDescription": "Dla bardziej szczegółowej analizy, skorzystaj z tabeli wyświetlającej tempo zidentyfikowane w różnych segmentach twojej piosenki. Aby zweryfikować dokładność detekcji BPM, kliknij przycisk 'Słuchaj Audio', aby przesłuchać utwór z rytmicznym odniesieniem.",
+        "bpmDescription": "Kliknij przycisk 'Słuchaj Audio', aby posłuchać utworu z wyraźnym rytmicznym odniesieniem. Skorzystaj z tabeli dostępnej poprzez przycisk 'Pokaż tabelę BPM', aby zobaczyć tempo zidentyfikowane w różnych fragmentach twojej piosenki. Możesz dostosować tempo metronomu, wybierając odpowiednie wartości z tabeli.",
         "tableShowButton": "Pokaż tabelę BPM",
         "tableHeaderBpm": "Wykryte Tempo (BPM)",
         "tableHeaderCount": "Segmenty z Pasującym Tempem",
