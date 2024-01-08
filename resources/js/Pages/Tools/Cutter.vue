@@ -1,9 +1,9 @@
 <script setup>
-import {inject, onMounted, reactive, ref, watch} from "vue";
+import {inject, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import axios from "axios";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from 'uuid';
-import {subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
+import {subToChannel, subToPrivate, disconnectFromPublic, disconnectFromPrivate} from "@/Subscriptions/subs.js";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import Wavesurfer from "./Partials/Wavesurfer.vue";
@@ -18,11 +18,11 @@ defineOptions({
     layout: SidebarLayout
 })
 const page = usePage()
-const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false)
 
 const highContrast = inject('highContrast')
-
+const isMounted = ref(true)
 
 const uploadedFile = ref({})
 const isFileUploaded = ref(false)
@@ -47,6 +47,7 @@ watch(regionCheckboxValue, (value) => {
 })
 
 onMounted(() => {
+    isMounted.value = true
     if (page.props.auth.user) {
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -54,7 +55,20 @@ onMounted(() => {
     }
 })
 
+onUnmounted(() => {
+    console.log('unmounted')
+    isMounted.value = false
+    if(page.props.auth.user) {
+        disconnectFromPrivate(guestId)
+    } else {
+        disconnectFromPublic(guestId)
+    }
+
+})
+
 function handleSubToPublic(event) {
+    if(!isMounted.value) return
+
     console.log("the event has been successfully captured")
     console.log(event)
 
@@ -68,6 +82,7 @@ function handleSubToPublic(event) {
 }
 
 function handleSubToPrivate(event) {
+    if(!isMounted.value) return
     console.log("the event has been successfully captured")
     console.log(event)
 
@@ -130,6 +145,17 @@ function getRegionData(data) {
             break
     }
 }
+
+onUnmounted(() => {
+    console.log('unmounted')
+    isMounted.value = false
+    if(page.props.auth.user) {
+        disconnectFromPrivate(guestId)
+    } else {
+        disconnectFromPublic(guestId)
+    }
+
+})
 
 </script>
 

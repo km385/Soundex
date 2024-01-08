@@ -8,15 +8,15 @@ import UploadFile from "@/Pages/Tools/Partials/UploadFile.vue";
 import SelectExtension from "@/Pages/Tools/Partials/SelectExtension.vue";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
-import {onMounted, ref} from "vue";
-import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
+import {onMounted, onUnmounted, ref} from "vue";
+import {disconnectFromPrivate, disconnectFromPublic, subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 
 const page = usePage()
-const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false);
 
 const fileUploaded = ref({})
@@ -26,8 +26,9 @@ const downloadLink = ref("")
 
 const isError = ref(false)
 const error = ref("")
-
+const isMounted = ref(true)
 onMounted(() => {
+    isMounted.value = true
     console.log(guestId)
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
@@ -35,7 +36,20 @@ onMounted(() => {
         subToChannel(guestId, handleSubToPublic)
     }
 })
+
+onUnmounted(() => {
+    console.log('unmounted')
+    isMounted.value = false
+    if(page.props.auth.user) {
+        disconnectFromPrivate(guestId)
+    } else {
+        disconnectFromPublic(guestId)
+    }
+
+})
 function handleSubToPublic(event) {
+    if(!isMounted.value) return
+
     console.log("the event has been successfully captured")
     console.log(event)
 
@@ -49,6 +63,8 @@ function handleSubToPublic(event) {
 }
 
 function handleSubToPrivate(event) {
+    if(!isMounted.value) return
+
     console.log("the event has been successfully captured")
     console.log(event)
 

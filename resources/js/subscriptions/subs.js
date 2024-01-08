@@ -14,4 +14,12 @@ function subToPrivate(guestId, callback) {
     console.log('subbed to private channel');
 }
 
-export { subToChannel, subToPrivate};
+function disconnectFromPublic(guestId) {
+    Echo.leaveChannel(`fileUpload.${guestId}`)
+}
+
+function disconnectFromPrivate(guestId) {
+    Echo.leaveChannel(`user.${guestId}`)
+}
+
+export { subToChannel, subToPrivate, disconnectFromPublic, disconnectFromPrivate};

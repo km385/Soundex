@@ -8,8 +8,8 @@ import DownloadTempFile from "@/Pages/Tools/Partials/DownloadTempFileButton.vue"
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from "uuid";
-import {computed, inject, onMounted, reactive, ref, watch} from "vue";
-import {subToChannel, subToPrivate} from "@/subscriptions/subs.js";
+import {computed, inject, onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {disconnectFromPrivate, disconnectFromPublic, subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import axios from "axios";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
@@ -20,7 +20,7 @@ defineOptions({
     layout: SidebarLayout
 })
 const page = usePage()
-const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false)
 
 
@@ -30,8 +30,9 @@ const fileToDownloadLink = ref("")
 
 const isError = ref(false)
 const error = ref("")
-
+const isMounted = ref(true)
 onMounted(() => {
+    isMounted.value = true
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -39,7 +40,20 @@ onMounted(() => {
     }
 })
 
+onUnmounted(() => {
+    console.log('unmounted')
+    isMounted.value = false
+    if(page.props.auth.user) {
+        disconnectFromPrivate(guestId)
+    } else {
+        disconnectFromPublic(guestId)
+    }
+
+})
+
 function handleSubToPublic(event) {
+    if(!isMounted.value) return
+
     console.log("the event has been successfully captured")
     console.log(event)
 
@@ -53,6 +67,8 @@ function handleSubToPublic(event) {
 }
 
 function handleSubToPrivate(event) {
+    if(!isMounted.value) return
+
     console.log("the event has been successfully captured")
     console.log(event)
 

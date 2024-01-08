@@ -1,8 +1,8 @@
 <script setup>
 import { usePage } from "@inertiajs/vue3";
 import { v4 as uuidv4 } from "uuid";
-import { inject, onMounted, ref } from "vue";
-import { subToChannel, subToPrivate } from "@/subscriptions/subs.js";
+import {inject, onMounted, onUnmounted, ref} from "vue";
+import {disconnectFromPrivate, disconnectFromPublic, subToChannel, subToPrivate} from "@/subscriptions/subs.js";
 import LoadingScreen from "@/Pages/Tools/Partials/LoadingScreen.vue";
 import axios from "axios";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
@@ -11,7 +11,7 @@ import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
 
 const page = usePage()
-const guestId = page.props.auth.user ? page.props.auth.user.id : uuidv4()
+const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false)
 const uploadedFile = ref({})
 const isFileUploaded = ref(false)
@@ -19,8 +19,10 @@ const fileToDownloadLink = ref("")
 const arrayOfBPM = ref("")
 const isError = ref(false)
 const error = ref("")
+const isMounted = ref(true)
 
 onMounted(() => {
+    isMounted.value = true
     if (page.props.auth.user) {
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -28,7 +30,20 @@ onMounted(() => {
     }
 })
 
+onUnmounted(() => {
+    console.log('unmounted')
+    isMounted.value = false
+    if(page.props.auth.user) {
+        disconnectFromPrivate(guestId)
+    } else {
+        disconnectFromPublic(guestId)
+    }
+
+})
+
 function handleSubToPublic(event) {
+    if(!isMounted.value) return
+
     console.log("the event has been successfully captured")
     console.log(event)
 
@@ -43,6 +58,8 @@ function handleSubToPublic(event) {
 }
 
 function handleSubToPrivate(event) {
+    if(!isMounted.value) return
+
     if (event.fileName === "ERROR") {
         error.value = "error has occurred"
         isError.value = true
