@@ -92,15 +92,22 @@ watch(highContrast, (newValue) => {
 
 })
 
+const isDataPresent = ref(true)
+
 onMounted(async () => {
     const dataset = await getDataForChart()
-    initChart(dataset)
+    if(dataset.length !== 0) {
+        initChart(dataset)
+    } else {
+        isDataPresent.value = false
+    }
 })
 </script>
 
 <template>
-    <div>
-        <canvas id="toolsUseChart"></canvas>
+    <div class="flex justify-center items-center">
+        <canvas id="toolsUseChart" v-if="isDataPresent"></canvas>
+        <p v-else class="text-3xl">tools  never used</p>
     </div>
 </template>
 
