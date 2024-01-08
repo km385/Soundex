@@ -31,8 +31,8 @@ const highContrast = inject('highContrast')
         class="bg-gray-800 py-10">
         <div
             :class="{'high-contrast-input': highContrast}"
-            class="max-w-3xl mx-auto rounded-lg bg-gray-700 px-4 shadow-xl">
-            <div class="flex rounded-lg px-4 w-full pt-2">
+            class="max-w-3xl mx-auto rounded-lg bg-gray-700 w-[90%] flex justify-center shadow-xl mt-10">
+            <div class="flex rounded-lg px-4 w-full py-4  ">
                 <div class="">
                     <SvgComp name="user" class="w-40"/>
                 </div>
@@ -53,16 +53,16 @@ const highContrast = inject('highContrast')
         </div>
         <div
             :class="{'high-contrast-input':highContrast}"
-            class="mx-auto max-w-3xl mt-20 lg:mt-10 flex bg-gray-700 rounded-lg items-center justify-around px-10  shadow-xl">
+            class="mx-auto max-w-3xl w-[90%] py-5 mt-20 lg:mt-10 flex flex-col lg:flex-row bg-gray-700 rounded-lg items-center justify-around px-10 shadow-xl">
 
-            <DoughnutChart class="mt-10 w-1/3 pb-5 " />
-            <NumberOfFilesChart class="mt-10 ml-5 w-1/3 pb-5"/>
+            <DoughnutChart class="pb-5 " />
+            <NumberOfFilesChart class="ml-5 pb-5"/>
 
         </div>
 
         <div
             :class="{'high-contrast-input':highContrast}"
-            class="mx-auto max-w-3xl mt-20 mb-10 lg:mt-10 flex bg-gray-700 rounded-lg items-center px-10 justify-center shadow-xl">
+            class="mx-auto max-w-3xl w-[90%] mt-20 mb-10 lg:mt-10 flex bg-gray-700 rounded-lg items-center px-10 justify-center shadow-xl">
             <div class="py-10 w-full my-10 ">
                 <ToolsUseChart />
             </div>
