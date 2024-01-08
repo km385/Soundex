@@ -2,12 +2,14 @@
 import DownloadTempFileButton from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import { usePage } from "@inertiajs/vue3";
-import { inject, ref,onMounted } from "vue";
+import { inject, ref, onMounted } from "vue";
 import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import Metronome from "@/Pages/Tools/Partials/Metronome.vue";
 import axios from "axios";
+import { useI18n } from "vue-i18n";
 
 const page = usePage()
+const i18n = useI18n();
 
 const props = defineProps({
     fileToDownloadLink: {
@@ -32,6 +34,7 @@ const showTable = ref(false)
 const highContrast = inject('highContrast')
 const file = ref(null)
 
+const filteredBPM = ref(null)
 const selectedBPM = ref(0)
 const currentDuration = ref(0)
 const currentTime = ref(0)
@@ -65,8 +68,23 @@ function changeTime(time) {
     //console.log("changed time: " + time)
     currentTime.value = time;
 }
+function filterArrayOfBPM() {
+    if (props.arrayOfBPM && props.arrayOfBPM.length >= 2) {
+        filteredBPM.value = props.arrayOfBPM
+        const bpmValue1 = parseInt(props.arrayOfBPM[0].BPM, 10);
+        const bpmValue2 = parseInt(props.arrayOfBPM[1].BPM, 10);
+
+        if (bpmValue1 === bpmValue2) {
+            filteredBPM.value = filteredBPM.value.slice(1);
+        } else {
+            filteredBPM.value[0].Count = i18n.t("resultOptionsScreen.tableAverage");
+        }
+    }
+}
 
 onMounted(() => {
+    filterArrayOfBPM()
+
     if (props.arrayOfBPM && props.arrayOfBPM.length > 0) {
         selectedBPM.value = props.arrayOfBPM[0].BPM;
     }
@@ -80,16 +98,20 @@ onMounted(() => {
         <!-- File Download Section -->
         <div :class="{ 'high-contrast-input': highContrast }" class="p-6 bg-gray-800 rounded-lg shadow-lg w-full">
             <div v-if="showAudioTag">
-                <Wavesurfer :file="file" :show-controls="true" @durationTimeChanged="changeDuration" @currentTimeChanged="changeTime"/>
-                <Metronome v-if="arrayOfBPM !== null" :selectedBPM="selectedBPM" :currentTime="currentTime" :currentDuration="currentDuration"/>
+                <Wavesurfer :file="file" :show-controls="true" @durationTimeChanged="changeDuration"
+                    @currentTimeChanged="changeTime" />
+                <div class="mt-4">
+                    <Metronome v-if="filteredBPM !== null && currentDuration !== 0" :selectedBPM="selectedBPM"
+                        :currentTime="currentTime" :currentDuration="currentDuration" />
+                </div>
             </div>
             <button @click="makeFile" :class="{ 'high-contrast-button': highContrast }"
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-10 hover:bg-blue-500 ">
                 {{ $t("resultOptionsScreen.hearAudio") }}
             </button>
 
-            <div v-if="arrayOfBPM !== null">
-                <p v-html="$t('resultOptionsScreen.bpmFound', [arrayOfBPM[0].BPM])" class="mt-3"></p>
+            <div v-if="filteredBPM !== null">
+                <p v-html="$t('resultOptionsScreen.bpmFound', [selectedBPM])" class="mt-3"></p>
                 <p class="mt-3">{{ $t('resultOptionsScreen.bpmDescription') }}</p>
                 <button :class="{ 'high-contrast-button': highContrast }"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="toggleTableVisibility">
@@ -128,7 +150,7 @@ onMounted(() => {
                                                 'divide-[#FFFF00FF]': highContrast,
                                                 'hover:bg-gray-600': !highContrast
                                             }" class="transition duration-300 ease-in-out   divide-x"
-                                                v-for="(item, index) in arrayOfBPM.slice(1)" :key="index"
+                                                v-for="(item, index) in filteredBPM" :key="index"
                                                 @click="changeBPM(item.BPM)">
                                                 <td :class="{ 'text-gray-200': !highContrast }"
                                                     class="px-6 py-4 whitespace-nowrap  font-medium ">

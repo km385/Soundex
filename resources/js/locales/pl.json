@@ -107,11 +107,12 @@
         "downloadInfo": "Możesz teraz pobrać swój nowy plik",
         "goBack": "Wróć",
         "downloadFile": "Pobierz plik",
-        "bpmFound": "Gratulacje! Średnie tempo twojej piosenki zostało pomyślnie wykryte na <span class='font-black'>{0}</span> uderzeń na minutę (BPM).",
+        "bpmFound": "Gratulacje! Średnie tempo twojej piosenki zostało pomyślnie wykryte na <span class='font-black text-lg'>{0}</span> uderzeń na minutę (BPM).",
         "bpmDescription": "Dla bardziej szczegółowej analizy, skorzystaj z tabeli wyświetlającej tempo zidentyfikowane w różnych segmentach twojej piosenki. Aby zweryfikować dokładność detekcji BPM, kliknij przycisk 'Słuchaj Audio', aby przesłuchać utwór z rytmicznym odniesieniem.",
         "tableShowButton": "Pokaż tabelę BPM",
         "tableHeaderBpm": "Wykryte Tempo (BPM)",
         "tableHeaderCount": "Segmenty z Pasującym Tempem",
+        "tableAverage":"Średnie Znalezione Tempo",
         "saveToLibrary": "Zapisz do Biblioteki"
     },
     "welcome": {

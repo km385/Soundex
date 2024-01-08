@@ -20,6 +20,5 @@ const props = defineProps({
     <p>BPM selected: {{ selectedBPM }}</p>
     <p>Current Time: {{ currentTime }}</p>
     <p>Current Duration: {{ currentDuration }}</p>
-    <!-- Add your metronome logic or UI here based on the provided props -->
   </div>
 </template>
