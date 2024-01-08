@@ -103,13 +103,13 @@
         "secondRegion": "Drugi Region"
     },
     "resultOptionsScreen": {
-        "hearAudio": "Słuchaj audio",
+        "hearAudio": "Słuchaj Audio",
         "downloadInfo": "Możesz teraz pobrać swój nowy plik",
         "goBack": "Wróć",
-        "downloadFile": "Pobierz plik",
+        "downloadFile": "Pobierz Plik",
         "bpmFound": "Gratulacje! Średnie tempo twojej piosenki zostało pomyślnie wykryte na <span class='font-black text-lg'>{0}</span> uderzeń na minutę (BPM).",
         "bpmDescription": "Kliknij przycisk 'Słuchaj Audio', aby posłuchać utworu z wyraźnym rytmicznym odniesieniem. Skorzystaj z tabeli dostępnej poprzez przycisk 'Pokaż tabelę BPM', aby zobaczyć tempo zidentyfikowane w różnych fragmentach twojej piosenki. Możesz dostosować tempo metronomu, wybierając odpowiednie wartości z tabeli.",
-        "tableShowButton": "Pokaż tabelę BPM",
+        "tableShowButton": "Pokaż Tabelę BPM",
         "tableHeaderBpm": "Wykryte Tempo (BPM)",
         "tableHeaderCount": "Segmenty z Pasującym Tempem",
         "tableAverage":"Średnie Znalezione Tempo",
