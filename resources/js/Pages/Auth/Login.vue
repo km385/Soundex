@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import {inject} from "vue";
 
 defineProps({
     canResetPassword: {
@@ -27,6 +28,8 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+const highContrast = inject('highContrast')
 </script>
 
 <template>
@@ -72,8 +75,8 @@ const submit = () => {
 
             <div class="block mt-4">
                 <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <Checkbox :class="{'high-contrast-checkbox':highContrast}" name="remember" v-model:checked="form.remember" />
+                    <span :class="{'high-contrast':highContrast}" class="ml-2 text-sm text-gray-600">Remember me</span>
                 </label>
             </div>
 
@@ -81,6 +84,7 @@ const submit = () => {
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
+                    :class="{'high-contrast':highContrast}"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                     Forgot your password?
@@ -93,3 +97,13 @@ const submit = () => {
         </form>
     </GuestLayout>
 </template>
+
+<style scoped>
+.high-contrast {
+    @apply text-[#FFFF00FF]
+}
+
+.high-contrast-checkbox {
+    @apply border border-[#FFFF00FF] text-[#FFFF00FF] focus:ring-yellow-300 focus:ring-offset-0 bg-black checked:text-black checked:border-[#FFFF00FF]
+}
+</style>

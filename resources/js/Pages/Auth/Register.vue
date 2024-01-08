@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import {inject} from "vue";
 
 const form = useForm({
     nickname: '',
@@ -19,6 +20,8 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const highContrast = inject('highContrast')
 </script>
 
 <template>
@@ -47,7 +50,7 @@ const submit = () => {
 
             <div class="mt-4">
                 <InputLabel for="country_code" value="Country Code (alpha-3)" />
-                <TextInput id="country_code" type="text" class="mt-1 block w-full" v-model="form.country_code" required maxlength="3" 
+                <TextInput id="country_code" type="text" class="mt-1 block w-full" v-model="form.country_code" required maxlength="3"
                 @input="form.country_code = $event.target.value.toUpperCase()"
                     />
 
@@ -75,6 +78,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <Link :href="route('login')"
+                      :class="{'text-yellow-300':highContrast}"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 Already registered?
                 </Link>
