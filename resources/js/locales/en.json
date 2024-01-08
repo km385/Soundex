@@ -232,6 +232,12 @@
         },
         "save": "Save",
         "saved": "Saved."
+    },
+    "dashboard": {
+        "joined": "Joined",
+        "storageSpace": "Storage Space",
+        "numberOfFiles": "Number of files stored",
+        "toolsUsed": "Tools You use the most"
     }
 }
 

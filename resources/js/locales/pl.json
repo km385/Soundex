@@ -231,5 +231,11 @@
         },
         "save": "Zapisz",
         "saved": "Zapisano."
+    },
+    "dashboard": {
+        "joined": "Dołączono",
+        "storageSpace": "Miejsce na dysku",
+        "numberOfFiles": "Ilość przechowywanych plików",
+        "toolsUsed": "Narzędzia używane przez Ciebie najczęściej"
     }
 }

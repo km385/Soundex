@@ -1,10 +1,14 @@
 <script setup>
 
-import {inject, onMounted, reactive, ref, watch} from "vue";
+import {computed, inject, onMounted, reactive, ref, watch} from "vue";
 import {Chart} from "chart.js/auto";
+import {useI18n} from "vue-i18n";
 
+const v18n = useI18n()
 const highContrast = inject('highContrast')
 let chart = reactive({})
+
+const title = computed(() => v18n.t('dashboard.toolsUsed'))
 
 
 async function getDataForChart() {
@@ -62,7 +66,7 @@ function initChart(dataset) {
             },
             title: {
                 display: true,
-                text: 'Tools You use the most',
+                text: title.value,
                 color: highContrast.value ? 'yellow' : Chart.defaults.color,
                 font: {
                     size: 20
@@ -90,6 +94,11 @@ function initChart(dataset) {
 
     });
 }
+
+watch(v18n.locale,() => {
+    chart.options.plugins.title.text = title.value
+    chart.update()
+})
 
 watch(highContrast, (newValue) => {
 

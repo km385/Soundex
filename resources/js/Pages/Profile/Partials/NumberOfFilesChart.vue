@@ -1,10 +1,20 @@
 <script setup>
-import {inject, onMounted, reactive, watch} from "vue";
+import {computed, inject, onMounted, reactive, watch} from "vue";
 import {Chart} from "chart.js/auto";
 import {usePage} from "@inertiajs/vue3";
+import {useI18n} from "vue-i18n";
 
 const page = usePage()
-onMounted(() => {
+const v18n = useI18n()
+
+let chart = reactive({})
+const highContrast = inject('highContrast')
+
+const title = computed(() => {
+    return v18n.t('dashboard.storageSpace')
+})
+
+function initChart() {
     const ctx = document.getElementById('numberOfFiles');
 
     const percentage = (page.props.auth.user.files_stored / 50) * 100
@@ -23,7 +33,7 @@ onMounted(() => {
     const doughnutLabel = {
         id: 'doughnutLabel',
         beforeDatasetsDraw(chart, args, options) {
-            const { ctx, data } = chart
+            const {ctx, data} = chart
 
             ctx.save()
 
@@ -34,7 +44,7 @@ onMounted(() => {
             ctx.fillStyle = highContrast.value ? 'yellow' : 'rgba(54, 162, 235, 1)'
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
-            ctx.fillText(`${percentage}%`, xCor, yCor )
+            ctx.fillText(`${percentage}%`, xCor, yCor)
         }
     }
 
@@ -51,7 +61,7 @@ onMounted(() => {
             },
             title: {
                 display: true,
-                text: 'Number of files stored',
+                text: title.value,
                 color: highContrast.value ? 'yellow' : Chart.defaults.color,
                 font: {
                     size: 20
@@ -66,10 +76,16 @@ onMounted(() => {
         options: options,
         plugins: [doughnutLabel]
     });
+}
+
+onMounted(() => {
+    initChart();
 })
 
-let chart = reactive({})
-const highContrast = inject('highContrast')
+watch(v18n.locale, () => {
+    chart.options.plugins.title.text = title.value
+    chart.update()
+})
 
 watch(highContrast, (newValue) => {
     chart.data.datasets[0].backgroundColor = newValue ? ['yellow', 'white'] : ['#36A2EB', '#DDDDDD']

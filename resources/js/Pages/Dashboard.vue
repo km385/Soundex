@@ -41,7 +41,7 @@ const highContrast = inject('highContrast')
                         {{ page.props.auth.user.nickname }}
                     </div>
                     <div class="">
-                        Joined {{ userDate }}
+                        {{ $t('dashboard.joined')}} {{ userDate }}
                     </div>
                 </div>
                 <div class="">
