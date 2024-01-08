@@ -75,7 +75,7 @@ function toggleCookieValue(cookieName) {
     const currentValue = getCookieValue(cookieName);
     const booleanValue = currentValue === 'true';
     const newValue = !booleanValue;
-    document.cookie = `${cookieName}=${newValue}; expires=${getCookieExpirationDate()}; path=/`;
+    document.cookie = `${cookieName}=${newValue}; expires=${getCookieExpirationDate()}; path=/; SameSite=Lax`
     return newValue;
 }
 
