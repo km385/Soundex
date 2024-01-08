@@ -9,32 +9,6 @@ const ws = reactive({
     currentTime: 0,
 })
 
-const highContrast = inject('highContrast')
-
-let regions = reactive({})
-
-// expose set volume to parent component
-defineExpose({
-    changeVolume,
-    onPlayClicked,
-    onStopClicked
-})
-
-function changeVolume(value) {
-    ws.wsInstance.setVolume(value)
-}
-
-const startVolumeValue = 0.5
-const volumeValue = ref(startVolumeValue)
-
-watch(volumeValue, (value) => {
-    ws.wsInstance.setVolume(value)
-})
-
-const regionCheckboxValue = ref(false)
-watch(regionCheckboxValue, (value) => {
-
-})
 
 const props = defineProps({
     file: {
@@ -52,7 +26,43 @@ const props = defineProps({
         default: true,
     }
 })
-const emit = defineEmits(['regionCoords'])
+
+
+const highContrast = inject('highContrast')
+
+let regions = reactive({})
+
+// expose set volume to parent component
+defineExpose({
+    changeVolume,
+    onPlayClicked,
+    onStopClicked
+})
+
+const emit = defineEmits(['regionCoords','durationTimeChanged', 'currentTimeChanged'])
+
+function changeVolume(value) {
+    ws.wsInstance.setVolume(value)
+}
+
+const startVolumeValue = 0.5
+const volumeValue = ref(startVolumeValue)
+
+watch(volumeValue, (value) => {
+    ws.wsInstance.setVolume(value)
+})
+
+// pass durations to the parent component
+watch(() => ws.currentTime, (currentTime) => {
+    emit('currentTimeChanged', currentTime);
+});
+
+watch(() => ws.durationTime, (durationTime) => {
+    emit('durationTimeChanged', durationTime);
+});
+
+
+
 
 watch(highContrast, (newValue) => {
     console.log(newValue)
@@ -60,6 +70,71 @@ watch(highContrast, (newValue) => {
         waveColor: newValue ? '#FFFF00FF' : '#FECEAB',
     })
 })
+
+const isPlaying = ref(false)
+
+function onPlayClicked() {
+    ws.wsInstance.play()
+    isPlaying.value = !isPlaying.value
+}
+
+function onStopClicked() {
+    ws.wsInstance.pause()
+    isPlaying.value = !isPlaying.value
+}
+
+watch(() => props.file, (value) => {
+    const blob = new Blob([value])
+    ws.wsInstance.load(URL.createObjectURL(blob))
+})
+
+const regionCheckboxValue = ref(false)
+
+watch(regionCheckboxValue, (value) => {
+    if (value) {
+        addSecondRegion()
+    } else {
+        regions.getRegions()[1].remove()
+    }
+    console.log(regions.getRegions())
+})
+
+function addSecondRegion() {
+    const region = regions.addRegion({
+        start: 0,
+        end: 1,
+        color: 'rgba(0,255,10,0.5)',
+        drag: true,
+        resize: true,
+
+    })
+    region.setOptions({
+        start: ws.durationTime * 0.3,
+        end: ws.durationTime * 0.4
+    })
+
+    changeHandleStyles(region)
+}
+
+function changeHandleStyles(region) {
+    for (const child of region.element.children) {
+        child.innerHTML = '&vellip;'
+        child.style.color = 'white'
+        child.style.width = '6px'
+        child.style.backgroundColor = '#282828'
+        child.style.display = 'flex'
+        child.style.alignItems = 'center'
+        child.style.justifyContent = 'center'
+        child.style.borderWidth = '0px'
+    }
+}
+function formatTime(time) {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = Math.floor(time % 60);
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+}
 
 onMounted(() => {
     console.log('on mounted')
@@ -156,69 +231,6 @@ onMounted(() => {
     }
 
 })
-
-const isPlaying = ref(false)
-
-function onPlayClicked() {
-    ws.wsInstance.play()
-    isPlaying.value = !isPlaying.value
-}
-
-function onStopClicked() {
-    ws.wsInstance.pause()
-    isPlaying.value = !isPlaying.value
-}
-
-watch(() => props.file, (value) => {
-    const blob = new Blob([value])
-    ws.wsInstance.load(URL.createObjectURL(blob))
-})
-
-watch(regionCheckboxValue, (value) => {
-    if (value) {
-        addSecondRegion()
-    } else {
-        regions.getRegions()[1].remove()
-    }
-    console.log(regions.getRegions())
-})
-
-function addSecondRegion() {
-    const region = regions.addRegion({
-        start: 0,
-        end: 1,
-        color: 'rgba(0,255,10,0.5)',
-        drag: true,
-        resize: true,
-
-    })
-    region.setOptions({
-        start: ws.durationTime * 0.3,
-        end: ws.durationTime * 0.4
-    })
-
-    changeHandleStyles(region)
-}
-
-function changeHandleStyles(region) {
-    for (const child of region.element.children) {
-        child.innerHTML = '&vellip;'
-        child.style.color = 'white'
-        child.style.width = '6px'
-        child.style.backgroundColor = '#282828'
-        child.style.display = 'flex'
-        child.style.alignItems = 'center'
-        child.style.justifyContent = 'center'
-        child.style.borderWidth = '0px'
-    }
-}
-function formatTime(time) {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = Math.floor(time % 60);
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
-}
 
 </script>
 

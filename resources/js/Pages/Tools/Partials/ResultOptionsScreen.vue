@@ -2,7 +2,7 @@
 import DownloadTempFileButton from "@/Pages/Tools/Partials/DownloadTempFileButton.vue";
 import SaveToLibraryButton from "@/Pages/Tools/Partials/SaveToLibraryButton.vue";
 import { usePage } from "@inertiajs/vue3";
-import { inject, ref } from "vue";
+import { inject, ref,onMounted } from "vue";
 import Wavesurfer from "@/Pages/Tools/Partials/Wavesurfer.vue";
 import Metronome from "@/Pages/Tools/Partials/Metronome.vue";
 import axios from "axios";
@@ -18,7 +18,7 @@ const props = defineProps({
         required: true,
         type: String
     },
-    bpmArray: {
+    arrayOfBPM: {
         required: false,
         type: Array,
         default: null,
@@ -30,8 +30,12 @@ const emits = defineEmits(['goBack'])
 const showAudioTag = ref(false)
 const showTable = ref(false)
 const highContrast = inject('highContrast')
-
 const file = ref(null)
+
+const selectedBPM = ref(0)
+const currentDuration = ref(0)
+const currentTime = ref(0)
+
 async function makeFile() {
     if (file.value !== null) {
         return
@@ -43,9 +47,31 @@ async function makeFile() {
     file.value = new File([response.data], '')
     showAudioTag.value = true
 }
+
 function toggleTableVisibility() {
     showTable.value = !showTable.value;
 }
+
+function changeBPM(BPM) {
+    selectedBPM.value = BPM;
+}
+
+function changeDuration(duration) {
+    //console.log("change duration" + duration)
+    currentDuration.value = duration;
+}
+
+function changeTime(time) {
+    //console.log("changed time: " + time)
+    currentTime.value = time;
+}
+
+onMounted(() => {
+    if (props.arrayOfBPM && props.arrayOfBPM.length > 0) {
+        selectedBPM.value = props.arrayOfBPM[0].BPM;
+    }
+});
+
 </script>
 
 <template>
@@ -54,16 +80,16 @@ function toggleTableVisibility() {
         <!-- File Download Section -->
         <div :class="{ 'high-contrast-input': highContrast }" class="p-6 bg-gray-800 rounded-lg shadow-lg w-full">
             <div v-if="showAudioTag">
-                <Wavesurfer :file="file" :show-controls="true" />
-                <Metronome v-if="bpmArray !== null" />
+                <Wavesurfer :file="file" :show-controls="true" @durationTimeChanged="changeDuration" @currentTimeChanged="changeTime"/>
+                <Metronome v-if="arrayOfBPM !== null" :selectedBPM="selectedBPM" :currentTime="currentTime" :currentDuration="currentDuration"/>
             </div>
             <button @click="makeFile" :class="{ 'high-contrast-button': highContrast }"
                 class="bg-blue-400 text-white rounded py-2 px-4 mt-10 hover:bg-blue-500 ">
                 {{ $t("resultOptionsScreen.hearAudio") }}
             </button>
-            <!-- TODO:  przekazywanie value do metronomu-->
-            <div v-if="bpmArray !== null">
-                <p v-html="$t('resultOptionsScreen.bpmFound', [bpmArray[0].BPM])" class="mt-3"></p>
+
+            <div v-if="arrayOfBPM !== null">
+                <p v-html="$t('resultOptionsScreen.bpmFound', [arrayOfBPM[0].BPM])" class="mt-3"></p>
                 <p class="mt-3">{{ $t('resultOptionsScreen.bpmDescription') }}</p>
                 <button :class="{ 'high-contrast-button': highContrast }"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="toggleTableVisibility">
@@ -102,7 +128,8 @@ function toggleTableVisibility() {
                                                 'divide-[#FFFF00FF]': highContrast,
                                                 'hover:bg-gray-600': !highContrast
                                             }" class="transition duration-300 ease-in-out   divide-x"
-                                                v-for="(item, index) in bpmArray.slice(1)" :key="index">
+                                                v-for="(item, index) in arrayOfBPM.slice(1)" :key="index"
+                                                @click="changeBPM(item.BPM)">
                                                 <td :class="{ 'text-gray-200': !highContrast }"
                                                     class="px-6 py-4 whitespace-nowrap  font-medium ">
                                                     {{ item.BPM + " BPM" }}
@@ -130,8 +157,8 @@ function toggleTableVisibility() {
 
 
 
-            <DownloadTempFileButton v-if="bpmArray == null" :filename="fileToDownloadName" :token="fileToDownloadLink" />
-            <div :class="{ 'float-right ': bpmArray !== null }">
+            <DownloadTempFileButton v-if="arrayOfBPM == null" :filename="fileToDownloadName" :token="fileToDownloadLink" />
+            <div :class="{ 'float-right ': arrayOfBPM !== null }">
                 <SaveToLibraryButton v-if="page.props.auth.user" :file-link="fileToDownloadLink" />
             </div>
         </div>

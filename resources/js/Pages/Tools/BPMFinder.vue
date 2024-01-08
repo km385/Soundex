@@ -16,7 +16,7 @@ const isLoading = ref(false)
 const uploadedFile = ref({})
 const isFileUploaded = ref(false)
 const fileToDownloadLink = ref("")
-const bpmArray = ref("")
+const arrayOfBPM = ref("")
 const isError = ref(false)
 const error = ref("")
 
@@ -37,22 +37,18 @@ function handleSubToPublic(event) {
         isError.value = true
     } else {
         fileToDownloadLink.value = event.fileName
-        bpmArray.value = event.bpmArray
+        arrayOfBPM.value = event.bpmArray
     }
     isLoading.value = false
 }
 
 function handleSubToPrivate(event) {
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if (event.fileName === "ERROR") {
         error.value = "error has occurred"
         isError.value = true
     } else {
         fileToDownloadLink.value = event.fileName
-        bpmArray.value = event.bpmArray
-
+        arrayOfBPM.value = event.bpmArray
     }
     isLoading.value = false
 }
@@ -114,7 +110,7 @@ const highContrast = inject('highContrast')
         <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
             :file-to-download-link="fileToDownloadLink"
             :file-to-download-name="uploadedFile.name"
-            :bpmArray="bpmArray" />
+            :arrayOfBPM="arrayOfBPM" />
 
         <!-- Error Handling Section -->
         <div v-if="isError" class="text-red-500">
