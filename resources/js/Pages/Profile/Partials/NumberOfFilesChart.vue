@@ -11,7 +11,7 @@ let chart = reactive({})
 const highContrast = inject('highContrast')
 
 const title = computed(() => {
-    return v18n.t('dashboard.storageSpace')
+    return v18n.t('dashboard.numberOfFiles')
 })
 
 function initChart() {

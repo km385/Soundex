@@ -96,11 +96,13 @@ function initChart(dataset) {
 }
 
 watch(v18n.locale,() => {
+    if(!isDataPresent.value) return
     chart.options.plugins.title.text = title.value
     chart.update()
 })
 
 watch(highContrast, (newValue) => {
+    if(!isDataPresent.value) return
 
     chart.data.datasets[0].backgroundColor = newValue ? ['yellow'] : ['#36A2EB', '#DDDDDD' , 'red' ,'yellow', 'green', 'blue']
     chart.options.scales.x.ticks.color = newValue ? 'yellow' : Chart.defaults.color
