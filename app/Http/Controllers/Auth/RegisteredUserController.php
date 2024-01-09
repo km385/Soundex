@@ -38,7 +38,8 @@ class RegisteredUserController extends Controller
             'country_code' => 'required|string|min:3|max:3',
         ]);
 
-        $user = User::create([
+        $user = User
+            ::create([
             'nickname' => $request->nickname,
             'email' => $request->email,
             'password' => Hash::make($request->password),

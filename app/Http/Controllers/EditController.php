@@ -79,6 +79,7 @@ class EditController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
         if($user->files_stored >= 50) {
+            error('no space left');
             return response()->json(['message' => 'number of files limit reached'], 401);
         }
         $link = Request::input('token');
@@ -93,6 +94,10 @@ class EditController extends Controller
         $parts = explode("?", $link);
         $token = $parts[0];
         $file = TemporarySong::where('token', $token)->first();
+
+        if (!$file) {
+            return response()->json(['message' => 'File not found'], 404);
+        }
 
         if(Song::where('song_path', $file->song_path)->first()) {
             error_log('already exist');
@@ -420,13 +425,13 @@ class EditController extends Controller
         $user = Request::user();
         $isPrivate = $user ? true : false;
         $guestId = Request::input('guestId');
-    
+
         if (!request()->hasFile('file')) {
             return response()->json(['error' => 'File not found.'], 400);
         }
         $file = Request::file('file');
         $fileInfo = $this->getFileInfo($file);
-    
+
         BPMFinder::dispatch($fileInfo, $guestId, $isPrivate);
         return response()->json(['message' => 'success']);
     }
