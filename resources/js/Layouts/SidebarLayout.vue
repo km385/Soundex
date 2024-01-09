@@ -265,7 +265,7 @@ function getCookieValue(cookieName) {
             <span class="pl-5">soundex</span>
             <div class="flex grow pr-3">
                 <div class="grow"></div>
-                <SvgComp name="burger" class="w-12 p-2 rounded-md z-[998] cursor-pointer" @click="openSidebar"/>
+                <SvgComp name="burger" class="w-12 p-1 rounded-full z-[998] cursor-pointer hover:bg-gray-500 duration-300 " @click="openSidebar"/>
             </div>
         </div>
         </Transition>
