@@ -83,11 +83,11 @@ class FileService
         ['fileName' => $tempFile->token],
         false
     );
-
+    dump($fileInfo['path']);
+    dump(Storage::exists($fileInfo['path']));
     $parts = explode('/files/', $temporaryUrl);
     $extractedUrl = end($parts);
     error_log($extractedUrl);
-
     if ($isPrivate) {
         error_log('creating private event');
         event(new PrivateFileReadyToDownload($extractedUrl, $userId, $bpmArray));

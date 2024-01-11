@@ -29,15 +29,6 @@ use function Laravel\Prompts\error;
 
 class EditController extends Controller
 {
-
-    public function test() {
-        error_log('test');
-        $file = Request::file('file');
-        $path = Storage::putFile($file);
-
-//        $coverPath = FileService::extractCover($path);
-        FileService::addCover($path, 'pMPeKH8Lu61NStiLH2DSngdVhahWwTKsbOygR7rL.png');
-    }
     public function downloadFile ($token): StreamedResponse|JsonResponse
     {
         if(!Request::hasValidSignature(false)){
@@ -52,7 +43,7 @@ class EditController extends Controller
         }
         error_log('no file');
 
-        return response()->json(['message' => 'no file']);
+        return response()->json(['message' => 'no file'], 404);
 
     }
 
@@ -311,6 +302,9 @@ class EditController extends Controller
 
         $file = Request::file('recording');
         $file2 = Request::file('background');
+        if(!$file || !$file2) {
+            return \response()->json(['message' => 'no file'], 404);
+        }
         $guestId = Request::input('guestId');
         $path = Storage::putFile($file);
         $path2 = Storage::putFile($file2);
