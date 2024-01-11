@@ -19,7 +19,7 @@ class Recorder implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $path, private $path2, private $guestId, private $isPrivate)
+    public function __construct(private $path, private $path2, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -58,7 +58,7 @@ class Recorder implements ShouldQueue
             'path' => $finalPath,
         ];
 
-        FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
+        FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);

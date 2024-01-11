@@ -35,70 +35,76 @@ class FileService
             error_log($e);
         }
     }
-    public static function createAndNotify($fileInfo, $isPrivate, $userId, $bpmArray = null): void
-{
-    error_log('createandnotify');
-    try {
-        $tags = FileService::extractMetadata($fileInfo['path']);
-        if (!isset($tags['tags']['year']) || !DateTime::createFromFormat('Y-m-d', $tags['tags']['year']) !== false) {
-            $tags['tags']['year'] = null;
+
+    public static function createAndNotify($fileInfo,  $isPrivate, $userId, $scheduleFileDeletion = true, $bpmArray = null): void
+    {
+        error_log('createandnotify');
+        try {
+            $tags = FileService::extractMetadata($fileInfo['path']);
+            if (!isset($tags['tags']['year']) || !DateTime::createFromFormat('Y-m-d', $tags['tags']['year']) !== false) {
+                $tags['tags']['year'] = null;
+            }
+
+            if (!isset($tags['size'])) {
+                error('no size info');
+                throw new \Exception();
+            }
+        } catch (\Exception $e) {
+            error($e->getMessage());
+            self::errorNotify('error', $isPrivate, $userId);
+            return;
         }
 
-        if (!isset($tags['size'])) {
-            error('no size info');
-            throw new \Exception();
+        try {
+            $tempFile = TemporarySong::create([
+                'song_path' => $fileInfo['path'],
+                'extension' => $fileInfo['originalExt'],
+                'title' => $tags['tags']['title'] ?? $fileInfo['originalName'],
+                'album' => $tags['tags']['album'] ?? null,
+                'year' => $tags['tags']['year'] ?? null,
+                'artist' => $tags['tags']['artist'] ?? null,
+                'genre' => $tags['tags']['genre'] ?? null,
+                'size_kb' => $tags['size'] / 1024,
+                'composer' => $tags['tags']['composer'] ?? null,
+                'comment' => $tags['tags']['comment'] ?? null,
+                'copyright_message' => $tags['tags']['copyrightMessage'] ?? null,
+                'publisher' => $tags['tags']['publisher'] ?? null,
+                'track_number' => $tags['tags']['trackNumber'] ?? null,
+                'lyrics' => $tags['tags']['lyrics'] ?? null,
+            ]);
+            if(!$tempFile) {
+                throw new \Exception();
+            }
+        } catch (\Exception $e) {
+            error($e);
+            self::errorNotify('error', $isPrivate, $userId);
+            return;
         }
-    } catch (\Exception $e) {
-        error($e->getMessage());
-        self::errorNotify('error', $isPrivate, $userId);
-        return;
-    }
 
-    try {
-        $tempFile = TemporarySong::create([
-            'song_path' => $fileInfo['path'],
-            'extension' => $fileInfo['originalExt'],
-            'title' => $tags['tags']['title'] ?? $fileInfo['originalName'],
-            'album' => $tags['tags']['album'] ?? null,
-            'year' => $tags['tags']['year'] ?? null,
-            'artist' => $tags['tags']['artist'] ?? null,
-            'genre' => $tags['tags']['genre'] ?? null,
-            'size_kb' => $tags['size'] / 1024,
-            'composer' => $tags['tags']['composer'] ?? null,
-            'comment' => $tags['tags']['comment'] ?? null,
-            'copyright_message' => $tags['tags']['copyrightMessage'] ?? null,
-            'publisher' => $tags['tags']['publisher'] ?? null,
-            'track_number' => $tags['tags']['trackNumber'] ?? null,
-            'lyrics' => $tags['tags']['lyrics'] ?? null,
-        ]);
-    } catch (\Exception $e) {
-        error($e);
-    }
+        $temporaryUrl = URL::temporarySignedRoute(
+            'downloadFile',
+            // Route name
+            now()->addHours(1),
+            // Expiration time
+            ['fileName' => $tempFile->token],
+            false
+        );
 
-    $temporaryUrl = URL::temporarySignedRoute(
-        'downloadFile',
-        // Route name
-        now()->addHours(1),
-        // Expiration time
-        ['fileName' => $tempFile->token],
-        false
-    );
-    dump($fileInfo['path']);
-    dump(Storage::exists($fileInfo['path']));
-    $parts = explode('/files/', $temporaryUrl);
-    $extractedUrl = end($parts);
-    error_log($extractedUrl);
-    if ($isPrivate) {
-        error_log('creating private event');
-        event(new PrivateFileReadyToDownload($extractedUrl, $userId, $bpmArray));
-    } else {
-        error_log('creating public event');
-        event(new FileReadyToDownload($extractedUrl, $userId, $bpmArray));
-    }
+        $parts = explode('/files/', $temporaryUrl);
+        $extractedUrl = end($parts);
 
-    error_log($tempFile->id);
-    self::scheduleFileDeletion($tempFile->id);
-}
+        if ($isPrivate) {
+            error_log('creating private event');
+            event(new PrivateFileReadyToDownload($extractedUrl, $userId, $bpmArray));
+        } else {
+            error_log('creating public event');
+            event(new FileReadyToDownload($extractedUrl, $userId, $bpmArray));
+        }
+
+        if($scheduleFileDeletion) {
+            self::scheduleFileDeletion($tempFile->id);
+        }
+    }
 
     public static function scheduleFileDeletion($tempFileId): void
     {
