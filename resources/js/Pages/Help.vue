@@ -23,7 +23,7 @@ const highContrast = inject('highContrast')
     <div class="my-10 mx-10 text-white">
 
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-            <div v-for="(content, index) in $tm('help')" class="">
+            <div v-for="(content, index) in $tm('help')" class="sm:max-w-[512px]">
                     <div @click="toggleQuestion(index)"
                          :class="{'high-contrast-input':highContrast}"
                          class="bg-gray-400 flex items-center px-4 cursor-pointer ">
