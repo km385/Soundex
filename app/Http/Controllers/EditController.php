@@ -388,7 +388,6 @@ class EditController extends Controller
         $paths = [];
         foreach ($fileKeys as $key){
             if($key == "guestId") {
-                error_log('guest lol');
                 continue;
             }
             $file = Request::file($key);

@@ -21,7 +21,7 @@ class MergeFiles implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $paths, private $guestId, private $isPrivate)
+    public function __construct(private $paths, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -76,7 +76,7 @@ class MergeFiles implements ShouldQueue
             'path' => $finalPath,
         ];
 
-        $res = FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
+        $res = FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
 
         $endTime = now();

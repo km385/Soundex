@@ -113,7 +113,7 @@ class FileService
         DeleteTempFileJob::dispatch($tempFileId)->delay(now()->addHour());
     }
 
-    public static function diagnoseNotify($data, $pathToSavedFile, $isPrivate, $userId): void
+    public static function diagnoseNotify($data, $pathToSavedFile, $isPrivate, $userId, $scheduleFileDeletion = true): void
     {
         error_log("notify");
         $temporaryUrl = URL::temporarySignedRoute(
@@ -136,7 +136,9 @@ class FileService
             error_log('creating public event');
             event(new FileReadyToDownload($jsonData, $userId));
         }
-        DeleteErrorFileJob::dispatch($pathToSavedFile)->delay(now()->addMinute());
+        if($scheduleFileDeletion) {
+            DeleteErrorFileJob::dispatch($pathToSavedFile)->delay(now()->addMinute());
+        }
     }
 
 

@@ -19,7 +19,7 @@ class BPMFinder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private $fileInfo, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
     }
 
@@ -142,15 +142,14 @@ class BPMFinder implements ShouldQueue
         foreach ($bpmCounted as $bpmValue => $count) {
             $bpmArray[] = array('BPM' => $bpmValue, 'Count' => $count);
         }
-
-        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, true, $bpmArray);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion, $bpmArray);
         //notify success
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        if(!$res) {
-    Storage::delete($this->fileInfo['path']);
-    return;
-}
-FileService::logSuccess('BPM Finder', $this->guestId, $executionTime, $this->isPrivate);
+        if (!$res) {
+            Storage::delete($this->fileInfo['path']);
+            return;
+        }
+        FileService::logSuccess('BPM Finder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

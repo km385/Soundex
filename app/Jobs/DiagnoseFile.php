@@ -20,7 +20,7 @@ class DiagnoseFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $fileInfo, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -56,7 +56,7 @@ class DiagnoseFile implements ShouldQueue
 
         Storage::delete($this->fileInfo['path']);
 
-        FileService::diagnoseNotify($data, $pathToSavedFile, $this->isPrivate, $this->guestId);
+        FileService::diagnoseNotify($data, $pathToSavedFile, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);

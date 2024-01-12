@@ -82,7 +82,7 @@ function handleSubToPrivate(event) {
 function getFile(file) {
     if(uploadedFiles.value.length >= 2) return
 
-    for (const existingFile of form.value.files) {
+    for (const existingFile of uploadedFiles.value) {
         if (existingFile.name === file.name) {
             return
         }

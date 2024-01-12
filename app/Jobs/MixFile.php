@@ -19,7 +19,7 @@ class MixFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $pathBg, private $pathFg, private $guestId, private $isPrivate)
+    public function __construct(private $pathBg, private $pathFg, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -58,7 +58,7 @@ class MixFile implements ShouldQueue
             'path' => $finalPath,
         ];
 
-        $res = FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
+        $res = FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);

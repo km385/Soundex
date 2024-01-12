@@ -19,7 +19,7 @@ class ChangeVolume implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $fileInfo, private $volume, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $volume, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -62,7 +62,7 @@ class ChangeVolume implements ShouldQueue
         Storage::move($name.'temp.'.$ext, $this->fileInfo['path']);
         FileService::addCover($this->fileInfo['path'], $coverPath);
 
-        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
