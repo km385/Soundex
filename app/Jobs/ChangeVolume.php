@@ -62,10 +62,14 @@ class ChangeVolume implements ShouldQueue
         Storage::move($name.'temp.'.$ext, $this->fileInfo['path']);
         FileService::addCover($this->fileInfo['path'], $coverPath);
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
+        if(!$res) {
+            Storage::delete($this->fileInfo['path']);
+            return;
+        }
         FileService::logSuccess('Change Volume', $this->guestId, $executionTime, $this->isPrivate);
 
 

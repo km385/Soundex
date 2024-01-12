@@ -76,11 +76,15 @@ class MergeFiles implements ShouldQueue
             'path' => $finalPath,
         ];
 
-        FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
+        $res = FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId);
 
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
+        if(!$res) {
+            Storage::delete($fileInfo['path']);
+            return;
+        }
         FileService::logSuccess('Merge Files', $this->guestId, $executionTime, $this->isPrivate);
 
     }

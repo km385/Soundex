@@ -62,11 +62,15 @@ class ConvertFile implements ShouldQueue
             FileService::addCover($this->fileInfo['path'], $coverPath);
 
             $this->fileInfo['path'] = $filename.'.'.$ext;
-            FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
+            $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
 
             $endTime = now();
             $executionTime = $endTime->diffInMilliseconds($startTime);
+            if(!$res) {
+                Storage::delete($this->fileInfo['path']);
+                return;
+            }
             FileService::logSuccess('Convert File', $this->guestId, $executionTime, $this->isPrivate);
 
         } catch (\Exception $e) {

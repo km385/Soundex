@@ -58,10 +58,14 @@ class Recorder implements ShouldQueue
             'path' => $finalPath,
         ];
 
-        FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
+        $res = FileService::createAndNotify($fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
+        if (!$res) {
+            Storage::delete($fileInfo['path']);
+            return;
+        }
         FileService::logSuccess('Recorder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

@@ -143,10 +143,14 @@ class BPMFinder implements ShouldQueue
             $bpmArray[] = array('BPM' => $bpmValue, 'Count' => $count);
         }
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, true, $bpmArray);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, true, $bpmArray);
         //notify success
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('BPM Finder', $this->guestId, $executionTime, $this->isPrivate);
+        if(!$res) {
+    Storage::delete($this->fileInfo['path']);
+    return;
+}
+FileService::logSuccess('BPM Finder', $this->guestId, $executionTime, $this->isPrivate);
     }
 }

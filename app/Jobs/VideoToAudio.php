@@ -48,10 +48,14 @@ class VideoToAudio implements ShouldQueue
         Storage::move($name.'temp.mp3', $name.'.mp3');
         $this->fileInfo['path'] = $name.'.mp3';
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
+        if(!$res) {
+            Storage::delete($this->fileInfo['path']);
+            return;
+        }
         FileService::logSuccess('Video To Audio', $this->guestId, $executionTime, $this->isPrivate);
 
 

@@ -19,7 +19,7 @@ class CutFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $af, private $fileInfo, private $guestId, private $isPrivate)
+    public function __construct(private $params, private $fileInfo, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -43,13 +43,13 @@ class CutFile implements ShouldQueue
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
-
+        $af = $this->get_configuration();
         try{
             FFMpeg::fromDisk('')
                 ->open($name.'.'.$ext)
                 ->export()
                 ->toDisk('')
-                ->addFilter('-af', $this->af)
+                ->addFilter('-af', $af)
                 ->save($name.'temp.'.$ext);
         }catch (\Exception $e){
             error_log($e);
@@ -62,13 +62,50 @@ class CutFile implements ShouldQueue
 
         FileService::addCover($this->fileInfo['path'], $coverPath);
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
+        if (!$res) {
+            Storage::delete($this->fileInfo['path']);
+            return;
+        }
         FileService::logSuccess('Cut File', $this->guestId, $executionTime, $this->isPrivate);
 
+    }
+
+    private function get_configuration(): string
+    {
+//        ffmpeg -i lol.mp3 -af "aselect='between(t,4,6.5)+between(t,17,26)+between(t,74,91)',asetpts=N/SR/TB" out.mp3
+
+        $af = "";
+        $start = $this->params['start'];
+        $end = $this->params['end'];
+        if($this->params['start2'] && $this->params['end2']){
+            error_log('2 ranges');
+
+            $start2 = $this->params['start2'];
+            $end2 = $this->params['end2'];
+
+            if (($start >= $start2 && $start <= $end2) || ($start2 >= $start && $start2 <= $end)) {
+                error_log('overlap');
+                error_log(min($start, $start2, $end, $end2));
+                error_log(max($start, $start2, $end, $end2));
+                $af = "aselect='between(t,".min($start, $start2, $end, $end2).",".max($start, $start2, $end, $end2).")',asetpts=N/SR/TB";
+            } else {
+                error_log('osobno');
+                if($start < $start2){
+                    $af = "aselect='between(t,".$start.",".$end.")+between(t,".$start2.",".$end2.")',asetpts=N/SR/TB";
+                } else {
+                    $af = "aselect='between(t,".$start2.",".$end2.")+between(t,".$start.",".$end.")',asetpts=N/SR/TB";
+                }
+            }
+        } else {
+            error_log('1 range');
+            $af = "aselect='between(t,".$start.",".$end.")',asetpts=N/SR/TB";
+        }
+        return $af;
     }
 
 

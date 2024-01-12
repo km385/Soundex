@@ -36,7 +36,7 @@ class FileService
         }
     }
 
-    public static function createAndNotify($fileInfo,  $isPrivate, $userId, $scheduleFileDeletion = true, $bpmArray = null): void
+    public static function createAndNotify($fileInfo,  $isPrivate, $userId, $scheduleFileDeletion = true, $bpmArray = null): bool
     {
         error_log('createandnotify');
         try {
@@ -52,7 +52,7 @@ class FileService
         } catch (\Exception $e) {
             error($e->getMessage());
             self::errorNotify('error', $isPrivate, $userId);
-            return;
+            return false;
         }
 
         try {
@@ -60,6 +60,7 @@ class FileService
                 'song_path' => $fileInfo['path'],
                 'extension' => $fileInfo['originalExt'],
                 'title' => $tags['tags']['title'] ?? $fileInfo['originalName'],
+                'duration_sec' => $tags['duration'] ?? null,
                 'album' => $tags['tags']['album'] ?? null,
                 'year' => $tags['tags']['year'] ?? null,
                 'artist' => $tags['tags']['artist'] ?? null,
@@ -78,7 +79,7 @@ class FileService
         } catch (\Exception $e) {
             error($e);
             self::errorNotify('error', $isPrivate, $userId);
-            return;
+            return false;
         }
 
         $temporaryUrl = URL::temporarySignedRoute(
@@ -104,6 +105,7 @@ class FileService
         if($scheduleFileDeletion) {
             self::scheduleFileDeletion($tempFile->id);
         }
+        return true;
     }
 
     public static function scheduleFileDeletion($tempFileId): void
@@ -150,6 +152,9 @@ class FileService
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function extractMetadata($filePath)
     {
         $filePath = Storage::path($filePath);
@@ -169,7 +174,7 @@ class FileService
             // if mp3
             return $arr['format'];
         } catch (\Exception $e) {
-            return $e->getMessage();
+            throw new \Exception();
         }
     }
 

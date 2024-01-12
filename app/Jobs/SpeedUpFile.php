@@ -86,11 +86,15 @@ class SpeedUpFile implements ShouldQueue
         Storage::move(pathinfo($this->fileInfo['path'], PATHINFO_FILENAME).'temp.mp3', $this->fileInfo['path']);
 
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId, $this->scheduleFileDeletion);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        FileService::logSuccess('SpeedUp File', $this->userId, $executionTime, $this->isPrivate);
+        if(!$res) {
+    Storage::delete($this->fileInfo['path']);
+    return;
+}
+FileService::logSuccess('SpeedUp File', $this->userId, $executionTime, $this->isPrivate);
 
     }
 }

@@ -79,10 +79,14 @@ class ChangeMetadata implements ShouldQueue
         }
         error_log("cover added");
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
+        $res = FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
+        if(!$res) {
+            Storage::delete($this->fileInfo['path']);
+            return;
+        }
         FileService::logSuccess('Change Metadata', $this->guestId, $executionTime, $this->isPrivate);
 
     }
