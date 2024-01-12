@@ -21,7 +21,7 @@ class ChangeMetadata implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $fileInfo, private $newCoverPath, private $metadata, private $newExtension, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $newCoverPath, private $metadata, private $newExtension, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -79,7 +79,7 @@ class ChangeMetadata implements ShouldQueue
         }
         error_log("cover added");
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);

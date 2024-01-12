@@ -19,7 +19,7 @@ class VideoToAudio implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $fileInfo, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -48,7 +48,7 @@ class VideoToAudio implements ShouldQueue
         Storage::move($name.'temp.mp3', $name.'.mp3');
         $this->fileInfo['path'] = $name.'.mp3';
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);

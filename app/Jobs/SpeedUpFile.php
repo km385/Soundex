@@ -19,7 +19,7 @@ class SpeedUpFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $fileInfo, private $pitch, private $speed, private $isPrivate, private $userId)
+    public function __construct(private $fileInfo, private $pitch, private $speed, private $isPrivate, private $userId, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -86,7 +86,7 @@ class SpeedUpFile implements ShouldQueue
         Storage::move(pathinfo($this->fileInfo['path'], PATHINFO_FILENAME).'temp.mp3', $this->fileInfo['path']);
 
 
-        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId);
+        FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->userId, $this->scheduleFileDeletion);
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);

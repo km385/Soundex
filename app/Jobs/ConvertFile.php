@@ -19,7 +19,7 @@ class ConvertFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private $fileInfo, private $newExtension, private $bitrate, private $guestId, private $isPrivate)
+    public function __construct(private $fileInfo, private $newExtension, private $bitrate, private $guestId, private $isPrivate, private $scheduleFileDeletion = true)
     {
         //
     }
@@ -62,7 +62,7 @@ class ConvertFile implements ShouldQueue
             FileService::addCover($this->fileInfo['path'], $coverPath);
 
             $this->fileInfo['path'] = $filename.'.'.$ext;
-            FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId);
+            FileService::createAndNotify($this->fileInfo, $this->isPrivate, $this->guestId, $this->scheduleFileDeletion);
 
 
             $endTime = now();
