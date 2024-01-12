@@ -21,6 +21,26 @@ class ProfileTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_profile_page_is_not_accessible_to_guest(): void
+    {
+        $response = $this
+            ->get('/profile');
+
+        $response
+            ->assertStatus(302)
+            ->assertRedirect('/login');
+    }
+
+    public function test_dashboard_page_is_not_accessible_to_guest(): void
+    {
+        $response = $this
+            ->get('/dashboard');
+
+        $response
+            ->assertStatus(302)
+            ->assertRedirect('/login');
+    }
+
     public function test_profile_information_can_be_updated(): void
     {
         $user = User::factory()->create();
