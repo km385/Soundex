@@ -1,4 +1,5 @@
 {
+    "error": "an error occurred",
     "cutter": {
         "title": "Cutting Tool",
         "description": "Cut your song to your liking"
@@ -37,11 +38,13 @@
         "title": "Layer Mixer Tool",
         "description": "Put two songs on top of each other",
         "foreground": "foreground",
-        "background": "background - will determine the duration of the final song"
+        "background": "background - will determine the duration of the final song",
+        "error1": "add foreground and background"
     },
     "merge": {
         "title": "Merge Tool",
-        "description": "Merge multiple songs into one"
+        "description": "Merge multiple songs into one",
+        "error1": "submit at least 2 files"
     },
     "recorder": {
         "title": "Recorder Tool",
@@ -67,7 +70,10 @@
         "publisher": "Publisher",
         "trackNumber": "TrackNumber",
         "lyrics": "Lyrics",
-        "cover": "Cover"
+        "cover": "Cover",
+        "error1": "fill at least 1 field",
+        "error2": "not a valid image",
+        "error3": "TrackNumber must have values between 0 and 65535"
 
     },
     "videoToAudio": {
@@ -130,6 +136,12 @@
         "tableHeaderCount":"Segments with Matching Tempo",
         "tableAverage":"Average Found Tempo",
         "saveToLibrary": "Save to Library"
+    },
+    "savedToLibraryButton": {
+        "saved": "saved",
+        "alreadySaved": "the file is already saved",
+        "noSpace": "no space left",
+        "error": "an error occurred"
     },
     "welcome": {
         "Cutter": {

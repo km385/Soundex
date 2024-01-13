@@ -13,11 +13,13 @@ import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
+import {useI18n} from "vue-i18n";
 defineOptions({
     layout: SidebarLayout
 })
 
 const page = usePage()
+const v18n = useI18n()
 const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false)
 const uploadedFiles = ref([]);
@@ -57,7 +59,7 @@ function handleSubToPublic(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         downloadLink.value = event.fileName
@@ -71,7 +73,7 @@ function handleSubToPrivate(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         downloadLink.value = event.fileName
@@ -95,7 +97,7 @@ function getFile(file) {
 
 async function onMergeClicked(){
     if(uploadedFiles.value.length < 2) {
-        error.value = "add foreground and background"
+        error.value = v18n.t('layerMixer.error1')
         isError.value = true
         return
     }

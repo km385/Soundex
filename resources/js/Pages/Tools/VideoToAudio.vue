@@ -14,8 +14,10 @@ import axios from "axios";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
+import {useI18n} from "vue-i18n";
 
 const page = usePage()
+const v18n = useI18n()
 const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false);
 
@@ -54,7 +56,7 @@ function handleSubToPublic(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         downloadLink.value = event.fileName
@@ -69,7 +71,7 @@ function handleSubToPrivate(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         downloadLink.value = event.fileName
@@ -118,7 +120,7 @@ function getFile(file) {
 
             <div v-if="isFileUploaded && !downloadLink">
                 <button type="button"  @click="onSubmit" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Submit</button>
-                <button type="button"  @click="isFileUploaded = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
+                <button type="button"  @click="isFileUploaded = false;isError = false" class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">Change file</button>
             </div>
         </div>
 

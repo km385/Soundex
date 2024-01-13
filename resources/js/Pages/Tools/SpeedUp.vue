@@ -13,6 +13,7 @@ import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
+import {useI18n} from "vue-i18n";
 defineOptions({
     layout: SidebarLayout
 })
@@ -27,6 +28,7 @@ const fileToDownloadLink = ref("")
 
 
 const page = usePage()
+const v18n = useI18n()
 const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false)
 
@@ -61,7 +63,7 @@ function handleSubToPublic(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         fileToDownloadLink.value = event.fileName
@@ -75,7 +77,7 @@ function handleSubToPrivate(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         fileToDownloadLink.value = event.fileName
@@ -136,7 +138,7 @@ function changeHandleStyles(region){
         <div v-if="isUploaded && !fileToDownloadLink"
              :class="{'high-contrast-input':highContrast}"
              class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-            <button type="button"  @click="isUploaded = false"
+            <button type="button"  @click="isUploaded = false;isError = false"
                     :class="{'high-contrast-button':highContrast}"
                     class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
 

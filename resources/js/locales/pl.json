@@ -1,4 +1,5 @@
 {
+    "error": "wystąpił błąd",
     "cutter": {
         "title": "Narzędzie do cięcia",
         "description": "Przytnij swoją piosenkę według własnych preferencji"
@@ -37,11 +38,13 @@
         "title": "Narzędzie do mieszania warstw",
         "description": "Umieść dwie piosenki na sobie",
         "foreground": "pierwszy plan",
-        "background": "tło - wyznaczy długość piosenki"
+        "background": "tło - wyznaczy długość piosenki",
+        "error1": "dodaj obie części piosenki"
     },
     "merge": {
         "title": "Narzędzie do łączenia",
-        "description": "Połącz kilka piosenek w jedną"
+        "description": "Połącz kilka piosenek w jedną",
+        "error1": "dodaj przynajmniej dwie piosenki"
     },
     "recorder": {
         "title": "Narzędzie do nagrywania",
@@ -67,7 +70,10 @@
         "publisher": "Wydawca",
         "trackNumber": "Numer utworu",
         "lyrics": "Tekst piosenki",
-        "cover": "Okładka"
+        "cover": "Okładka",
+        "error1": "wypełnij przynajmniej 1 pole",
+        "error2": "nie poprawne zdjęcie",
+        "error3": "Numer utworu musi mieć wartość pomiędzy 0 and 65535"
     },
     "videoToAudio": {
         "title": "Zdjęcie dźwięku z wideo",
@@ -129,6 +135,12 @@
         "tableHeaderCount": "Segmenty z Pasującym Tempem",
         "tableAverage":"Średnie Znalezione Tempo",
         "saveToLibrary": "Zapisz do Biblioteki"
+    },
+    "savedToLibraryButton": {
+        "saved": "zapisano",
+        "alreadySaved": "plik został już zapisany",
+        "noSpace": "brak wolnego miejsca",
+        "error": "wystąpił błąd"
     },
     "welcome": {
         "Cutter": {

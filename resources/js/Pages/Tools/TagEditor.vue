@@ -12,12 +12,15 @@ import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
+import InputError from "@/Components/InputError.vue";
+import {useI18n} from "vue-i18n";
 
 defineOptions({
     layout: SidebarLayout
 })
 
 const page = usePage()
+const v18n = useI18n()
 const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false);
 
@@ -62,7 +65,7 @@ function handleSubToPublic(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         downloadLink.value = event.fileName
@@ -77,7 +80,7 @@ function handleSubToPrivate(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         downloadLink.value = event.fileName
@@ -107,7 +110,7 @@ async function onSubmit() {
 
     const isAllFieldsEmpty = Object.values(form.value).slice(0, -3).every(value => value === '');
     if(isAllFieldsEmpty && isCoverUploaded.value === false) {
-        error.value = "fill at least 1 field"
+        error.value = v18n.t('tagEditor.error1')
         isError.value = true
         console.log(form.value.coverRef)
         return
@@ -146,14 +149,14 @@ function getFile(file) {
 function onCoverUpload(event) {
 
     if(!event.target.files[0].type.startsWith("image/")) {
-        error.value = "not a valid image"
+        error.value = v18n.t('tagEditor.error2')
         isError.value = true
         document.getElementById('cover').value = null
         return
     }
 
     if(event.target.files[0].type.includes('svg')) {
-        error.value = "not a valid image"
+        error.value = v18n.t('tagEditor.error2')
         isError.value = true
         document.getElementById('cover').value = null
         return
@@ -183,7 +186,7 @@ const isSmallInt = (value) => {
 
 const validateTrackNumber = () => {
     if (form.value.trackNumber !== '' && !isSmallInt(form.value.trackNumber)) {
-        error.value = 'TrackNumber must have values between 0 and 65535'
+        error.value = v18n.t('tagEditor.error3')
         isError.value = true
         return false
     }
@@ -242,7 +245,7 @@ const validateTrackNumber = () => {
                 <button type="button"  @click="onSubmit"
                         :class="{'high-contrast-button': highContrast }"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
-                <button type="button"  @click="isFileUploaded = false"
+                <button type="button"  @click="isFileUploaded = false;isError = false"
                         :class="{'high-contrast-button': highContrast }"
                         class="bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">{{ $t("tools.changeFile") }}</button>
             </div>

@@ -13,6 +13,7 @@ import LoadingScreen from "./Partials/LoadingScreen.vue";
 import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
+import {useI18n} from "vue-i18n";
 defineOptions({
     layout: SidebarLayout
 })
@@ -20,6 +21,7 @@ defineOptions({
 const isFileUploaded = ref(false)
 const fileToDownloadLink = ref("")
 const page = usePage()
+const v18n = useI18n()
 
 const guestId = page.props.auth.user ? `${page.props.auth.user.id}-${uuidv4()}` : uuidv4()
 const isLoading = ref(false)
@@ -59,7 +61,7 @@ function handleSubToPublic(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         fileToDownloadLink.value = event.fileName
@@ -74,7 +76,7 @@ function handleSubToPrivate(event) {
     console.log(event)
 
     if(event.fileName === "ERROR") {
-        error.value = "error has occurred"
+        error.value = v18n.t('error')
         isError.value = true
     } else {
         fileToDownloadLink.value = event.fileName
@@ -100,7 +102,7 @@ function getWaveformId(fileName) {
 
 async function onMergeClicked(){
     if(form.value.files.length < 2) {
-        error.value = "submit at least 2 files"
+        error.value = v18n.t('merge.error1')
         isError.value = true
         return
     }

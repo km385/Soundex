@@ -1,9 +1,13 @@
 <script setup>
 import {inject, ref} from "vue";
+import {useI18n} from "vue-i18n";
+import InputError from "@/Components/InputError.vue";
 
 const props = defineProps({
     fileLink: String
 })
+
+const v18n = useI18n()
 
 const error = ref("")
 const isError = ref(false)
@@ -21,14 +25,14 @@ async function onClick() {
     try {
         const res = await axios.post('/savetolibrary', formData)
         console.log(res)
-        saved.value = 'saved'
+        saved.value = v18n.t('savedToLibraryButton.saved')
     } catch (e) {
         if (e.response.data.message === "already saved") {
-            error.value = "the file is already saved"
+            error.value = v18n.t('savedToLibraryButton.alreadySaved')
         } else if(e.response.data.message === "no space left") {
-            error.value = "error - no space left"
+            error.value = v18n.t('savedToLibraryButton.noSpace')
         } else {
-            error.value = "an error occurred"
+            error.value = v18n.t('savedToLibraryButton.error')
         }
         isError.value = true
         but.value.disabled = true
