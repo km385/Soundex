@@ -81,11 +81,26 @@
     "sidebar": {
         "home": "home",
         "tools": "tools",
+        "cutter": "Cutter",
+        "tagEditor": "Tag Editor",
+        "speedUp": "SpeedUp",
+        "merge": "Merge",
+        "converter": "Converter",
+        "videoToAudio": "Video to Audio",
+        "volumeChanger": "Volume Changer",
+        "recorder": "Recorder",
+        "layerMixer": "Layer Mixer",
+        "bpmFinder": "BPM Finder",
+        "diagnosis": "Diagnosis",
         "files": "files",
         "help": "help",
         "lang": "lang",
         "contrast": "contrast",
-        "user": "user"
+        "user": "user",
+        "profile": "Profile",
+        "logout": "Log Out",
+        "login": "Login",
+        "register": "Register"
     },
     "upload": {
         "title": "Upload new file"
@@ -235,9 +250,37 @@
     },
     "dashboard": {
         "joined": "Joined",
-        "storageSpace": "Storage Space",
+        "storageSpace": "Used Storage Space",
         "numberOfFiles": "Number of files stored",
-        "toolsUsed": "Tools You use the most"
+        "toolsUsed": "Tools You use the most",
+        "space": "space",
+        "files": "files",
+        "tools": {
+            "Change Volume": "Volume Changer",
+            "Convert File": "Converter",
+            "Change Metadata": "Tag Editor",
+            "Mix File": "Layer Mixer",
+            "BPM Finder": "BPM Finder",
+            "SpeedUp File": "SpeedUp",
+            "Cut File": "Cutter",
+            "Merge Files": "Merge",
+            "Recorder": "Recorder",
+            "Diagnose File": "Diagnosis",
+            "Video To Audio": "Video to Audio"
+        }
+    },
+    "login": {
+        "password": "Password",
+        "remember": "Remember me",
+        "forgotPass": "Forgot your password?",
+        "button": "Log in"
+    },
+    "register": {
+        "nickname": "Nickname",
+        "password": "Password",
+        "confirmPass": "Confirm Password",
+        "alreadyRegistered": "Already registered?",
+        "register": "Register"
     }
 }
 

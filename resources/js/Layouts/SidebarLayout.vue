@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref, provide, inject, onMounted} from "vue";
+import {ref, provide, inject, onMounted, computed} from "vue";
 import {Link, usePage} from '@inertiajs/vue3';
 import SidebarRow from "./Partials/SidebarRow.vue";
 import {useI18n} from "vue-i18n";
@@ -56,17 +56,17 @@ function setCookie(key, value, expiresInSeconds) {
 }
 
 const tools = [
-    { name: 'Cutter', component: 'Tools/Cutter', link: '/tools/cutter' },
-    { name: 'Tag Editor', component: 'Tools/TagEditor', link: '/tools/tageditor' },
-    { name: 'SpeedUp', component: 'Tools/SpeedUp', link: '/tools/speedup' },
-    { name: 'Merge', component: 'Tools/Merge', link: '/tools/merge' },
-    { name: 'Converter', component: 'Tools/Converter', link: '/tools/converter' },
-    { name: 'Video to Audio', component: 'Tools/VideoToAudio', link: '/tools/videotoaudio' },
-    { name: 'Volume Changer', component: 'Tools/VolumeChanger', link: '/tools/volumechanger' },
-    { name: 'Recorder', component: 'Tools/Recorder', link: '/tools/recorder' },
-    { name: 'LayerMix', component: 'Tools/LayerMixer', link: '/tools/layermixer' },
-    { name: 'BPM Finder', component: 'Tools/BPMFinder', link: '/tools/bpmFinder' },
-    { name: 'Diagnosis', component: 'Tools/Diagnosis', link: '/tools/diagnosis' }
+    { name: 'cutter', component: 'Tools/Cutter', link: '/tools/cutter' },
+    { name: 'tagEditor', component: 'Tools/TagEditor', link: '/tools/tageditor' },
+    { name: 'speedUp', component: 'Tools/SpeedUp', link: '/tools/speedup' },
+    { name: 'merge', component: 'Tools/Merge', link: '/tools/merge' },
+    { name: 'converter', component: 'Tools/Converter', link: '/tools/converter' },
+    { name: 'videoToAudio', component: 'Tools/VideoToAudio', link: '/tools/videotoaudio' },
+    { name: 'volumeChanger', component: 'Tools/VolumeChanger', link: '/tools/volumechanger' },
+    { name: 'recorder', component: 'Tools/Recorder', link: '/tools/recorder' },
+    { name: 'layerMixer', component: 'Tools/LayerMixer', link: '/tools/layermixer' },
+    { name: 'bpmFinder', component: 'Tools/BPMFinder', link: '/tools/bpmFinder' },
+    { name: 'diagnosis', component: 'Tools/Diagnosis', link: '/tools/diagnosis' }
 ];
 
 const sortedTools = tools.sort((a, b) => a.name.localeCompare(b.name));
@@ -150,7 +150,7 @@ function getCookieValue(cookieName) {
                                             'high-contrast-button-selected':page.component === tool.component && highContrast
                                         }"
                                 >
-                                    {{ tool.name }}
+                                    {{ $t(`sidebar.${tool.name}`) }}
                                 </li>
                             </Link>
                         </ul>
@@ -211,14 +211,14 @@ function getCookieValue(cookieName) {
                             <div
                                 :class="{'high-contrast-button': highContrast}"
                                 class="border-b py-2 hover:bg-gray-500 rounded-t-lg">
-                                <p class="pl-2">Profile</p>
+                                <p class="pl-2">{{$t('sidebar.profile')}}</p>
                             </div>
                         </Link>
                         <Link href="/logout" method="post" as="button" class="w-full text-left">
                             <div
                                 :class="{'high-contrast-button': highContrast}"
                                 class="py-2 hover:bg-gray-500 rounded-b-lg">
-                                <p class="pl-2">Log out</p>
+                                <p class="pl-2">{{$t('sidebar.logout')}}</p>
                             </div>
                         </Link>
                     </div>
@@ -237,7 +237,7 @@ function getCookieValue(cookieName) {
                             <div
                                 :class="{'high-contrast-button': highContrast}"
                                 class="border-b py-2 hover:bg-gray-500 rounded-t-lg">
-                                <p class="pl-2">Register</p>
+                                <p class="pl-2">{{$t('sidebar.register')}}</p>
                             </div>
                         </Link>
 
@@ -245,7 +245,7 @@ function getCookieValue(cookieName) {
                             <div
                                 :class="{'high-contrast-button': highContrast}"
                                 class="py-2 hover:bg-gray-500 rounded-b-lg">
-                                <p class="pl-2">Login</p>
+                                <p class="pl-2">{{$t('sidebar.login')}}</p>
                             </div>
                         </Link>
                     </div>

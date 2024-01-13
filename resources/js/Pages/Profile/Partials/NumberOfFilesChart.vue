@@ -24,7 +24,7 @@ function initChart() {
         labels: ['Filled', 'Remaining'],
         datasets: [{
             data: [percentage, remainingPercentage],
-            backgroundColor: [highContrast.value ? 'yellow' : '#36A2EB', '#DDDDDD'],
+            backgroundColor: [highContrast.value ? 'yellow' : '#FECEAB', '#DDDDDD'],
             borderWidth: 0,
             hoverOffset: 4,
         }]
@@ -41,10 +41,10 @@ function initChart() {
             const yCor = chart.getDatasetMeta(0).data[0].y
 
             ctx.font = 'bold 30px sans-serif'
-            ctx.fillStyle = highContrast.value ? 'yellow' : 'rgba(54, 162, 235, 1)'
+            ctx.fillStyle = highContrast.value ? 'yellow' : '#FECEAB'
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
-            ctx.fillText(`${percentage}%`, xCor, yCor)
+            ctx.fillText(`${page.props.auth.user.files_stored} / 50`, xCor, yCor)
         }
     }
 
@@ -62,7 +62,7 @@ function initChart() {
             title: {
                 display: true,
                 text: title.value,
-                color: highContrast.value ? 'yellow' : Chart.defaults.color,
+                color: highContrast.value ? 'yellow' : 'white',
                 font: {
                     size: 20
                 }
@@ -88,8 +88,8 @@ watch(v18n.locale, () => {
 })
 
 watch(highContrast, (newValue) => {
-    chart.data.datasets[0].backgroundColor = newValue ? ['yellow', 'white'] : ['#36A2EB', '#DDDDDD']
-    chart.options.plugins.title.color = newValue ? 'yellow' : Chart.defaults.color
+    chart.data.datasets[0].backgroundColor = newValue ? ['yellow', 'white'] : ['#FECEAB', '#DDDDDD']
+    chart.options.plugins.title.color = newValue ? 'yellow' : 'white'
     chart.update()
 })
 </script>

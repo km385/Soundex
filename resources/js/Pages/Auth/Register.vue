@@ -30,7 +30,7 @@ const highContrast = inject('highContrast')
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="nickname" value="Nickname" />
+                <InputLabel for="nickname" :value="$t('register.nickname')" />
 
                 <TextInput id="nickname" type="text" class="mt-1 block w-full" v-model="form.nickname" required autofocus
                     autocomplete="name" />
@@ -48,7 +48,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value="$t('register.password')" />
 
                 <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required
                     autocomplete="new-password" />
@@ -57,7 +57,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" :value="$t('register.confirmPass')" />
 
                 <TextInput id="password_confirmation" type="password" class="mt-1 block w-full"
                     v-model="form.password_confirmation" required autocomplete="new-password" />
@@ -69,11 +69,11 @@ const highContrast = inject('highContrast')
                 <Link :href="route('login')"
                       :class="{'text-yellow-300':highContrast}"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Already registered?
+                {{ $t('register.alreadyRegistered') }}
                 </Link>
 
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    {{ $t('register.register') }}
                 </PrimaryButton>
             </div>
         </form>

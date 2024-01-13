@@ -15,15 +15,16 @@ const title = computed(() => {
 
 function initChart() {
     const ctx = document.getElementById('freeStorage');
-
-    const percentage = ((page.props.auth.user.storage_used / 1024) / 200).toFixed(2) * 100;
+    const limit = 200
+    console.log((page.props.auth.user.storage_used / 1024).toFixed(2))
+    const percentage = ((page.props.auth.user.storage_used / 1024) / limit).toFixed(2) * 100;
     const remainingPercentage = 100 - percentage;
 
     const data = {
         labels: ['Filled', 'Remaining'],
         datasets: [{
             data: [percentage, remainingPercentage],
-            backgroundColor: [highContrast.value ? 'yellow' : '#36A2EB', '#DDDDDD'],
+            backgroundColor: [highContrast.value ? 'yellow' : '#FECEAB', '#DDDDDD'],
             borderWidth: 0,
             hoverOffset: 4,
         }]
@@ -40,7 +41,7 @@ function initChart() {
             const yCor = chart.getDatasetMeta(0).data[0].y
 
             ctx.font = 'bold 30px sans-serif'
-            ctx.fillStyle = highContrast.value ? 'yellow' : 'rgba(54, 162, 235, 1)'
+            ctx.fillStyle = highContrast.value ? 'yellow' : '#FECEAB'
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'
             ctx.fillText(`${percentage}%`, xCor, yCor)
@@ -61,7 +62,7 @@ function initChart() {
             title: {
                 display: true,
                 text: title.value,
-                color: highContrast.value ? 'yellow' : Chart.defaults.color,
+                color: highContrast.value ? 'yellow' : 'white',
                 font: {
                     size: 20
                 }
@@ -82,8 +83,8 @@ onMounted(() => {
 })
 
 watch(highContrast, (newValue) => {
-    chart.data.datasets[0].backgroundColor = newValue ? ['yellow', 'white'] : ['#36A2EB', '#DDDDDD']
-    chart.options.plugins.title.color = newValue ? 'yellow' : Chart.defaults.color
+    chart.data.datasets[0].backgroundColor = newValue ? ['yellow', 'white'] : ['#FECEAB', '#DDDDDD']
+    chart.options.plugins.title.color = newValue ? 'yellow' : 'white'
     chart.update()
 })
 

@@ -59,7 +59,7 @@ const highContrast = inject('highContrast')
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value="$t('login.password')" />
 
                 <TextInput
                     id="password"
@@ -76,7 +76,7 @@ const highContrast = inject('highContrast')
             <div class="block mt-4">
                 <label class="flex items-center">
                     <Checkbox :class="{'high-contrast-checkbox':highContrast}" name="remember" v-model:checked="form.remember" />
-                    <span :class="{'high-contrast':highContrast}" class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <span :class="{'high-contrast':highContrast}" class="ml-2 text-sm text-gray-600">{{ $t('login.remember') }}</span>
                 </label>
             </div>
 
@@ -87,11 +87,11 @@ const highContrast = inject('highContrast')
                     :class="{'high-contrast':highContrast}"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Forgot your password?
+                    {{$t('login.forgotPass')}}
                 </Link>
 
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
+                    {{$t('login.button')}}
                 </PrimaryButton>
             </div>
         </form>

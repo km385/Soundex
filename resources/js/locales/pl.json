@@ -80,11 +80,26 @@
     "sidebar": {
         "home": "główna",
         "tools": "narzędzia",
+        "cutter": "Przycinanie",
+        "tagEditor": "Edycja metadanych",
+        "speedUp": "Zmiana tempa",
+        "merge": "Łączenie",
+        "converter": "Konwerter",
+        "videoToAudio": "Wideo na Audio",
+        "volumeChanger": "Zmiana głośności",
+        "recorder": "Nagrywanie",
+        "layerMixer": "Mięszanie warstw",
+        "bpmFinder": "Znajdowanie BPM",
+        "diagnosis": "Diagnostyka",
         "files": "pliki",
         "help": "pomoc",
         "lang": "języki",
         "contrast": "kontrast",
-        "user": "konto"
+        "user": "konto",
+        "profile": "Profil",
+        "logout": "Wyloguj się",
+        "login": "Zaloguj się",
+        "register": "Zarejestruj się"
     },
     "upload": {
         "title": "Prześlij nowy plik"
@@ -117,15 +132,15 @@
     },
     "welcome": {
         "Cutter": {
-            "title": "Narzędzie do Cięcia",
-            "description": "Dostosuj utwory muzyczne do swoich upodobań. Pozbądź się niepotrzebnych fragmentów piosenek i zachowaj tylko te najlepsze."
+            "title": "Przycinanie",
+            "description": "Twórz własne, spersonalizowane wersje ulubionych utworów, dzięki naszemu narzędziu do edycji dźwięku, które pozwala usuwać zbędne fragmenty i zachowywać jedynie najbardziej pożądane elementy, dostosowując muzykę do Twojego gustu"
         },
         "Tag Editor": {
-            "title": "Edytor Tagów",
-            "description": "Edytuj i organizuj tagi piosenek bez wysiłku. Dostosuj metadane, takie jak nazwy artystów, tytuły albumów i gatunki muzyczne. Utrzymuj porządek w swojej kolekcji muzycznej."
+            "title": "Edycja metadanych",
+            "description": "Nasze narzędzie do edycji metadanych umożliwia użytkownikom pełną kontrolę nad informacjami związanymi z utworami muzycznymi. Możesz edytować metadane, takie jak tytuł, artysta czy kompozytor i wiele innych."
         },
         "SpeedUp": {
-            "title": "Przyspieszanie",
+            "title": "Zmiana tempa",
             "description": "Przyspiesz swoją muzykę za z pomocą narzędzia Przyspieszanie. Zwiększ tempo swoich ulubionych utworów, aby uzyskać szybsze i bardziej energetyczne wrażenia. Przekształć swoją bibliotekę muzyczną za pomocą kilku kliknięć."
         },
         "Merge": {
@@ -141,23 +156,23 @@
             "description": "Wydobywaj wysokiej jakości dźwięk z wideo za pomocą narzędzia Video to Audio. Konwertuj ścieżki dźwiękowe z wideo na samodzielne pliki audio. Zachowaj esencję dźwięku swoich ulubionych wideo w formacie idealnym dla Twojej biblioteki muzycznej."
         },
         "Volume Changer": {
-            "title": "Zmieniacz Głośności",
+            "title": "Zmiana Głośności",
             "description": "Przy pomocy tego narzędzia zmień głośność swojej piosenki tak jak ci się podoba."
         },
         "Recorder": {
-            "title": "Nagrywarka",
+            "title": "Nagrywanie",
             "description": "Narzędzie Nagrywarka posłuży ci do nagrania swojego głosu pod dowolną piosenkę. "
         },
         "LayerMix": {
-            "title": "LayerMix",
+            "title": "Mięszanie warstw",
             "description": "Nakładaj piosenki na siebie bez ograniczeń. W łatwy połącz wokal i tło dwóch róznych piosenek ze sobą tworząc swoje własne kompozycje"
         },
         "BPM Finder": {
-            "title": "BPM Finder",
+            "title": "Znajdowanie BPM",
             "description": "Sprawdź ilość uderzeń na minutę (BPM) swoich utworów za pomocą narzędzia BPM Finder."
         },
         "Diagnosis": {
-            "title": "Diagnoza",
+            "title": "Diagnostyka",
             "description": "Przy pomocy narzędzia diagnoza poznaj stan swojego pliku dźwiękowego. Skorzystaj z szczegółowych raportów o występujących błędach w twoich plikach."
         }
     },
@@ -234,8 +249,39 @@
     },
     "dashboard": {
         "joined": "Dołączono",
-        "storageSpace": "Miejsce na dysku",
+        "storageSpace": "Zajęte miejsce na dysku",
         "numberOfFiles": "Ilość przechowywanych plików",
-        "toolsUsed": "Narzędzia używane przez Ciebie najczęściej"
+        "toolsUsed": "Narzędzia używane przez Ciebie najczęściej",
+        "space": "miejsca",
+        "files": "plików",
+        "tools": {
+            "Change Volume": "Zmiana głośności",
+            "Convert File": "Konwerter",
+            "Change Metadata": "Edycja metadanych",
+            "Mix File": "Mięszanie warstw",
+            "BPM Finder": "Znajdowanie BPM",
+            "SpeedUp File": "Zmiana tempa",
+            "Cut File": "Przycinanie",
+            "Merge Files": "Łączenie",
+            "Recorder": "Nagrywanie",
+            "Diagnose File": "Diagnostyka",
+            "Video To Audio": "Wideo na Audio"
+        }
+
+    },
+    "login": {
+        "password": "Hasło",
+        "remember": "Zapamiętaj mnie",
+        "forgotPass": "Zapomniałeś hasła?",
+        "button": "Zaloguj się"
+    },
+    "register": {
+        "nickname": "Nazwa",
+        "password": "Hasło",
+        "confirmPass": "Potwierdź Hasło",
+        "alreadyRegistered": "Masz już konto?",
+        "register": "Zarejstruj się"
     }
+
+
 }

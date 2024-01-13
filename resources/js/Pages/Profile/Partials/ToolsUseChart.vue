@@ -10,6 +10,7 @@ let chart = reactive({})
 
 const title = computed(() => v18n.t('dashboard.toolsUsed'))
 
+const labelRef = ref(null)
 
 async function getDataForChart() {
     // todo map job names to tool names
@@ -18,7 +19,9 @@ async function getDataForChart() {
         if(res.data && res.data.data) {
             const val = res.data.data
             if(val && val.length > 0) {
-                const labelsArr = val.map(item => item ? item.tool_name : null);
+                let labelsArr = val.map(item => item ? item.tool_name : null);
+                labelRef.value = labelsArr
+                labelsArr = labelsArr.map(label => v18n.t(`dashboard.tools.${label}`))
                 const dataArr = val.map(item => item ? item.count : null);
                 return {labelsArr, dataArr}
             } else {
@@ -46,7 +49,7 @@ function initChart(dataset) {
         labels: labelsArr,
         datasets: [{
             data: dataArr,
-            backgroundColor: highContrast.value ? ['yellow'] : ['#36A2EB', '#DDDDDD' , 'red' ,'yellow', 'green', 'blue'],
+            backgroundColor: highContrast.value ? ['yellow'] : ['#FECEAB', '#DDDDDD' , 'red' ,'yellow', 'green', 'blue'],
             borderWidth: 0,
             hoverOffset: 4,
         }]
@@ -67,7 +70,7 @@ function initChart(dataset) {
             title: {
                 display: true,
                 text: title.value,
-                color: highContrast.value ? 'yellow' : Chart.defaults.color,
+                color: highContrast.value ? 'yellow' : 'white',
                 font: {
                     size: 20
                 }
@@ -76,12 +79,12 @@ function initChart(dataset) {
         scales: {
             x: {
                 ticks: {
-                    color: highContrast.value ? 'yellow' : Chart.defaults.color, // Change the color of x-axis text
+                    color: highContrast.value ? 'yellow' : 'white', // Change the color of x-axis text
                 },
             },
             y: {
                 ticks: {
-                    color: highContrast.value ? 'yellow' : Chart.defaults.color, // Change the color of y-axis text
+                    color: highContrast.value ? 'yellow' : 'white', // Change the color of y-axis text
                 },
             },
         },
@@ -98,16 +101,17 @@ function initChart(dataset) {
 watch(v18n.locale,() => {
     if(!isDataPresent.value) return
     chart.options.plugins.title.text = title.value
+    chart.data.labels = labelRef.value.map(label => v18n.t(`dashboard.tools.${label}`))
     chart.update()
 })
 
 watch(highContrast, (newValue) => {
     if(!isDataPresent.value) return
 
-    chart.data.datasets[0].backgroundColor = newValue ? ['yellow'] : ['#36A2EB', '#DDDDDD' , 'red' ,'yellow', 'green', 'blue']
-    chart.options.scales.x.ticks.color = newValue ? 'yellow' : Chart.defaults.color
-    chart.options.scales.y.ticks.color = newValue ? 'yellow' : Chart.defaults.color
-    chart.options.plugins.title.color = newValue ? 'yellow' : Chart.defaults.color
+    chart.data.datasets[0].backgroundColor = newValue ? ['yellow'] : ['#FECEAB', '#DDDDDD' , 'red' ,'yellow', 'green', 'blue']
+    chart.options.scales.x.ticks.color = newValue ? 'yellow' : 'white'
+    chart.options.scales.y.ticks.color = newValue ? 'yellow' : 'white'
+    chart.options.plugins.title.color = newValue ? 'yellow' : 'white'
     chart.update()
 
 })

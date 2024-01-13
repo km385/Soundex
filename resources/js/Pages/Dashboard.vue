@@ -28,13 +28,15 @@ const highContrast = inject('highContrast')
 
     <div
         :class="{'high-contrast-bg':highContrast}"
-        class="bg-gray-800 py-10">
+        class="py-10">
         <div
             :class="{'high-contrast-input': highContrast}"
-            class="max-w-3xl mx-auto rounded-lg bg-gray-700 w-[90%] flex justify-center shadow-xl mt-10">
-            <div class="flex rounded-lg px-4 w-full py-4  ">
-                <div class="">
-                    <SvgComp name="user" class="w-40"/>
+            class="max-w-3xl mx-auto rounded-lg bg-gray-800 w-[90%] flex justify-center shadow-xl mt-10">
+            <div
+                :class="{'high-contrast-text':highContrast}"
+                class="flex rounded-lg px-4 w-full py-4 text-white ">
+                <div class="mx-2">
+                    <SvgComp name="user" :class="{'high-contrast-border':highContrast}" class="w-40 border-2 border-white"/>
                 </div>
                 <div class=" flex flex-col pl-1 grow ">
                     <div class="text-6xl font-bold ">
@@ -53,16 +55,26 @@ const highContrast = inject('highContrast')
         </div>
         <div
             :class="{'high-contrast-input':highContrast}"
-            class="mx-auto max-w-3xl w-[90%] py-5 mt-20 lg:mt-10 flex flex-col lg:flex-row bg-gray-700 rounded-lg items-center justify-around px-10 shadow-xl">
+            class="mx-auto max-w-3xl w-[90%] py-5 mt-20 lg:mt-10 flex flex-col lg:flex-row bg-gray-800 rounded-lg items-center justify-around px-10 shadow-xl">
 
-            <DoughnutChart class="pb-5 " />
-            <NumberOfFilesChart class="ml-5 pb-5"/>
+
+            <div>
+                <DoughnutChart class="pb-5 "/>
+                <p :class="{'high-contrast-text':highContrast}" class="text-white text-center">
+                    {{ (page.props.auth.user.files_stored / 1024).toFixed(3) }} MB / 200MB {{ $t('dashboard.space') }}</p>
+            </div>
+            <div class='lg:ml-5 mt-5 lg:mt-0'>
+                <NumberOfFilesChart class=" pb-5"/>
+                <p :class="{'high-contrast-text':highContrast}" class="text-white text-center">
+                    {{ page.props.auth.user.files_stored }} / 50 {{ $t('dashboard.files') }}</p>
+
+            </div>
 
         </div>
 
         <div
             :class="{'high-contrast-input':highContrast}"
-            class="mx-auto max-w-3xl w-[90%] mt-20 mb-10 lg:mt-10 flex bg-gray-700 rounded-lg items-center px-10 justify-center shadow-xl">
+            class="mx-auto max-w-3xl w-[90%] mt-20 mb-10 lg:mt-10 flex bg-gray-800 rounded-lg items-center px-10 justify-center shadow-xl">
             <div class="py-10 w-full my-10 ">
                 <ToolsUseChart />
             </div>
@@ -81,6 +93,10 @@ const highContrast = inject('highContrast')
 
 .high-contrast-text {
     @apply text-[#FFFF00FF]
+}
+
+.high-contrast-border {
+    @apply border-[#FFFF00FF]
 }
 
 .high-contrast-input {
