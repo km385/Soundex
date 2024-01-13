@@ -1,20 +1,14 @@
 <script setup>
-import {inject, onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {inject, onMounted, onUnmounted, ref} from "vue";
 import axios from "axios";
 import {usePage} from "@inertiajs/vue3";
 import {v4 as uuidv4} from 'uuid';
 import {disconnectFromPrivate, disconnectFromPublic, subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
-import Wavesurfer from "./Partials/Wavesurfer.vue";
-import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
-import ResultOptionsScreen from "@/Pages/Tools/Partials/ResultOptionsScreen.vue";
 import ToolsUploadScreen from "@/Pages/Tools/Partials/ToolsUploadScreen.vue";
 import MainToolsWindow from "@/Pages/Tools/Partials/MainToolsWindow.vue";
-import {useI18n} from "vue-i18n";
-// component data => layout props
-// choose manually persistent layout and give it its props and children
-// use h(type, props, children) render function
+
 defineOptions({
     layout: SidebarLayout
 })
@@ -61,8 +55,12 @@ function formatDuration(value) {
     let originalDurationNumber = parseFloat(value);
 
     if (!isNaN(originalDurationNumber)) {
-        let roundedDuration = originalDurationNumber.toFixed(2);
-        return roundedDuration.toString();
+        const time = originalDurationNumber.toFixed()
+        const minutes = Math.floor(time / 60);
+        const seconds = (time % 60);
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+        return `${formattedMinutes}:${formattedSeconds}`;
     } else {
         console.error('Duration is not a valid number.');
         return '---'
@@ -90,16 +88,17 @@ function setFileInfo(data) {
             fileInfo.value[property] = "---"
         }
         if(property === 'bitrate' && fileInfo.value[property] !== "---") {
-            fileInfo.value[property] += ' BPM'
+            fileInfo.value[property] /= 1000
+            fileInfo.value[property] += ' kbit/s'
         }
 
         if(property === 'sample_rate' && fileInfo.value[property] !== "---") {
-            fileInfo.value[property] += ' Hz'
+            fileInfo.value[property] /= 1000
+            fileInfo.value[property] += ' kHz'
         }
 
         if(property === 'duration' && fileInfo.value[property] !== "---") {
             fileInfo.value[property] = formatDuration(fileInfo.value[property])
-            fileInfo.value[property] += ' s'
         }
     }
     fileInfo.value['numberOfErrors'] = data.numberOfErrors
