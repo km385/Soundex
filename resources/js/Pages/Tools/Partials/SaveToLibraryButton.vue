@@ -8,6 +8,9 @@ const props = defineProps({
 const error = ref("")
 const isError = ref(false)
 
+const saved = ref("")
+const isSaved = ref(false)
+
 const but = ref(null)
 
 async function onClick() {
@@ -18,7 +21,7 @@ async function onClick() {
     try {
         const res = await axios.post('/savetolibrary', formData)
         console.log(res)
-
+        saved.value = 'saved'
     } catch (e) {
         if (e.response.data.message === "already saved") {
             error.value = "the file is already saved"
@@ -42,6 +45,9 @@ const highContrast = inject('highContrast')
             :class="{ 'bg-blue-400': !isError, 'bg-red-400 hover:bg-red-400': isError, 'high-contrast-button':highContrast }">
         {{ $t("resultOptionsScreen.saveToLibrary") }}
     </button>
+    <div v-if="saved && !error" >
+        {{ saved }}
+    </div>
     <div v-if="error" :class="{ 'text-green-500': !isError, 'text-red-500': isError }">
         {{ error }}
     </div>

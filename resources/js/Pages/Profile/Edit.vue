@@ -19,7 +19,7 @@ const highContrast = inject('highContrast')
 </script>
 
 <template>
-    <Head title="Profile" />
+    <Head title="Edit" />
 
         <div class="py-12">
             <div class="max-w-3xl mx-auto sm:px-6 lg:px-8 space-y-6 lg:mt-10 mt-14 px-6">
