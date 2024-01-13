@@ -151,6 +151,13 @@ function onCoverUpload(event) {
         document.getElementById('cover').value = null
         return
     }
+
+    if(event.target.files[0].type.includes('svg')) {
+        error.value = "not a valid image"
+        isError.value = true
+        document.getElementById('cover').value = null
+        return
+    }
     isCoverUploaded.value = true
     coverUploaded.value = event.target.files[0]
     form.coverRef = event.target.files[0]

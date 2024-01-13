@@ -274,7 +274,6 @@ class FileService
         }
         // TODO: check other extensions
         // TODO: possibly convert any to jpg
-        // TODO: prohibit svg files ever making out of client
         if (in_array(strtolower(File::extension($coverPath)), ['webp', 'png'])) {
             FFMpeg::fromDisk('')
                 ->open($coverPath)
