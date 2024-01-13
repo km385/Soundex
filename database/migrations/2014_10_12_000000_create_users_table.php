@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('country_code');
-            
+
             $table->boolean('is_admin')->default(false);;
             $table->unsignedInteger('storage_used')->nullable();
             $table->unsignedInteger('files_stored')->nullable();

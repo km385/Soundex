@@ -16,7 +16,6 @@ class TemporarySong extends Model
         'extension',
         'cover_path',
         'size_kb',
-        'song_status',
         'duration_sec',
         'title',
         'artist',

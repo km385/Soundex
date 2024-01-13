@@ -24,7 +24,6 @@ class User extends Authenticatable
         'is_admin',
         'storage_used',
         'files_stored',
-        'country_code',
         'password',
 
     ];

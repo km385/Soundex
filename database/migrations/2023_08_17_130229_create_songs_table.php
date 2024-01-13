@@ -23,7 +23,6 @@ return new class extends Migration {
             $table->string('song_path');
             //path to song on given disk
             $table->string('cover_path')->nullable();
-            $table->enum('song_status', ['banned', 'published', 'waiting'])->default('published');
 
             // metadata fields
             $table->string('title')->nullable(); //song name set in tags

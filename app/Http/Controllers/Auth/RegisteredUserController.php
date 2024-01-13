@@ -35,7 +35,6 @@ class RegisteredUserController extends Controller
             'nickname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'country_code' => 'required|string|min:3|max:3',
         ]);
 
         $user = User
@@ -43,7 +42,6 @@ class RegisteredUserController extends Controller
             'nickname' => $request->nickname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'country_code' => $request->country_code,
             'storage_used' => 0,
             'files_stored' => 0,
             'is_admin' => false,

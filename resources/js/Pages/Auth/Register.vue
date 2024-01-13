@@ -12,7 +12,6 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
-    country_code: '',
 });
 
 const submit = () => {
@@ -47,16 +46,6 @@ const highContrast = inject('highContrast')
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
-
-            <div class="mt-4">
-                <InputLabel for="country_code" value="Country Code (alpha-3)" />
-                <TextInput id="country_code" type="text" class="mt-1 block w-full" v-model="form.country_code" required maxlength="3"
-                @input="form.country_code = $event.target.value.toUpperCase()"
-                    />
-
-                <InputError class="mt-2" :message="form.errors.country_code" />
-            </div>
-
 
             <div class="mt-4">
                 <InputLabel for="password" value="Password" />

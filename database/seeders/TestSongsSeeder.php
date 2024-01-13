@@ -15,7 +15,7 @@ class TestSongsSeeder extends Seeder
     {
         // To run only this seeder, use the command:
         // php artisan db:seed --class=TestSongsSeeder
-        
+
         // Loop creating 15 random songs with names from 'test (1)' to 'test (15)'.
         // Files must be provided manually.
         // Mass renaming in Windows automatically names files in this format.
@@ -41,7 +41,7 @@ class TestSongsSeeder extends Seeder
             [
                 'artist' => "Queen",
                 'album' => "A Night at the Opera",
-                'year' => "1975-01-01 00:00:00", 
+                'year' => "1975-01-01 00:00:00",
                 'comment' => "Classic rock masterpiece",
                 'composer' => "Freddie Mercury",
                 'copyright_message' => "© 1975 Queen Productions Ltd.",
@@ -53,7 +53,7 @@ class TestSongsSeeder extends Seeder
             [
                 'artist' => "Ed Sheeran",
                 'album' => "÷ (Divide)",
-                'year' => "2017-01-01 00:00:00", 
+                'year' => "2017-01-01 00:00:00",
                 'comment' => "Chart-topping hit",
                 'composer' => "Ed Sheeran",
                 'copyright_message' => "© 2017 Asylum Records UK, a division of Atlantic Records UK. A Warner Music Group Company",
@@ -65,7 +65,7 @@ class TestSongsSeeder extends Seeder
             [
                 'artist' => "Michael Jackson",
                 'album' => "Thriller",
-                'year' => "1982-01-01 00:00:00", 
+                'year' => "1982-01-01 00:00:00",
                 'comment' => "Iconic dance track",
                 'composer' => "Michael Jackson",
                 'copyright_message' => "© 1982 Mijac Music (BMI)",
@@ -77,7 +77,7 @@ class TestSongsSeeder extends Seeder
             [
                 'artist' => "Eagles",
                 'album' => "Hotel California",
-                'year' => "1976-01-01 00:00:00", 
+                'year' => "1976-01-01 00:00:00",
                 'comment' => "Timeless classic",
                 'composer' => "Don Felder, Don Henley, Glenn Frey",
                 'copyright_message' => "© 1976 Cass County Music (ASCAP), Don Henley Songs (ASCAP), Fingers Music (ASCAP), Wisteria Music (ASCAP)",
@@ -87,12 +87,12 @@ class TestSongsSeeder extends Seeder
                 'track_number' => 4,
             ],
         ];
-        
+
         $songStatus = ['banned', 'published', 'waiting'];
 
         for ($i = 1; $i <= 15; $i++) {
             $songName = 'test (' . $i . ')';
-        
+
             DB::table('songs')->insert([
                 'name' => $songName,
                 'duration_sec' => rand(15, 500),
@@ -100,11 +100,10 @@ class TestSongsSeeder extends Seeder
                 'disk' => '',
                 'song_path' => $songName . '.mp3',
                 'cover_path' => $songName . '.jpg',
-                'song_status' => $songStatus[array_rand($songStatus)],
-        
+
                 'created_at' => now(),
                 'updated_at' => now(),
-        
+
                 'title' => $songTitles[array_rand($songTitles)],
                 'artist' => $metadataSets[array_rand($metadataSets)]['artist'],
                 'album' => $metadataSets[array_rand($metadataSets)]['album'],
@@ -118,7 +117,7 @@ class TestSongsSeeder extends Seeder
                 'track_number' => $metadataSets[array_rand($metadataSets)]['track_number'],
             ]);
         }
-        
+
 
 
 

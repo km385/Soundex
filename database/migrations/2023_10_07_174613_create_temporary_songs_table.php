@@ -22,7 +22,6 @@ return new class extends Migration
             $table->unsignedInteger('size_kb');
 
             $table->string('cover_path')->nullable();
-            $table->enum('song_status', ['banned', 'published', 'waiting'])->default('published');
 
             $table->unsignedBigInteger('duration_sec')->nullable();
 

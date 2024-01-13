@@ -17,7 +17,6 @@ class Song extends Model
         'song_path',
         'size_kb',
         'cover_path',
-        'song_status',
         'title',
         'artist',
         'album',
@@ -36,7 +35,7 @@ class Song extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = ['user_id','disk','song_path','cover_path','song_status'];
+    protected $hidden = ['user_id','disk','song_path','cover_path'];
 
     public function user(): BelongsTo
     {
