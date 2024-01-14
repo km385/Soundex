@@ -16,7 +16,7 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->get('/profile');
+            ->get('/edit');
 
         $response->assertOk();
     }
@@ -24,7 +24,7 @@ class ProfileTest extends TestCase
     public function test_profile_page_is_not_accessible_to_guest(): void
     {
         $response = $this
-            ->get('/profile');
+            ->get('/edit');
 
         $response
             ->assertStatus(302)
@@ -47,14 +47,14 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->patch('/profile', [
+            ->patch('/edit', [
                 'nickname' => 'Test User',
                 'email' => 'test@example.com',
             ]);
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
+            ->assertRedirect('/edit');
 
         $user->refresh();
 
@@ -69,14 +69,14 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->patch('/profile', [
+            ->patch('/edit', [
                 'name' => 'Test User',
                 'email' => $user->email,
             ]);
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
+            ->assertRedirect('/edit');
 
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
@@ -87,7 +87,7 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->delete('/profile', [
+            ->delete('/edit', [
                 'password' => 'password',
             ]);
 
@@ -105,14 +105,14 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from('/profile')
-            ->delete('/profile', [
+            ->from('/edit')
+            ->delete('/edit', [
                 'password' => 'wrong-password',
             ]);
 
         $response
             ->assertSessionHasErrors('password')
-            ->assertRedirect('/profile');
+            ->assertRedirect('/edit');
 
         $this->assertNotNull($user->fresh());
     }
