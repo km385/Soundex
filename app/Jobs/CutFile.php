@@ -39,7 +39,6 @@ class CutFile implements ShouldQueue
             $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
             // TODO: determine if cutter/speedup need to stop if error while extracting a cover
-            error_log('exception caught');
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
@@ -52,7 +51,7 @@ class CutFile implements ShouldQueue
                 ->addFilter('-af', $af)
                 ->save($name.'temp.'.$ext);
         }catch (\Exception $e){
-            error_log($e);
+
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
@@ -83,18 +82,14 @@ class CutFile implements ShouldQueue
         $start = $this->params['start'];
         $end = $this->params['end'];
         if($this->params['start2'] && $this->params['end2']){
-            error_log('2 ranges');
-
             $start2 = $this->params['start2'];
             $end2 = $this->params['end2'];
 
             if (($start >= $start2 && $start <= $end2) || ($start2 >= $start && $start2 <= $end)) {
-                error_log('overlap');
                 error_log(min($start, $start2, $end, $end2));
                 error_log(max($start, $start2, $end, $end2));
                 $af = "aselect='between(t,".min($start, $start2, $end, $end2).",".max($start, $start2, $end, $end2).")',asetpts=N/SR/TB";
             } else {
-                error_log('osobno');
                 if($start < $start2){
                     $af = "aselect='between(t,".$start.",".$end.")+between(t,".$start2.",".$end2.")',asetpts=N/SR/TB";
                 } else {
@@ -102,7 +97,6 @@ class CutFile implements ShouldQueue
                 }
             }
         } else {
-            error_log('1 range');
             $af = "aselect='between(t,".$start.",".$end.")',asetpts=N/SR/TB";
         }
         return $af;

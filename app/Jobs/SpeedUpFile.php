@@ -51,14 +51,12 @@ class SpeedUpFile implements ShouldQueue
             $json = json_decode($values, true);
             $sample_rate = $json['streams'][0]['sample_rate'];
         } catch (\Exception $e){
-            error_log($e);
+
         }
 
         if(!$sample_rate){
-            error_log('default sample_rate');
             $sample_rate = 48000;
         }
-        error_log('sample rate obtained');
 
         try {
             FFMpeg::fromDisk('')
@@ -72,11 +70,11 @@ class SpeedUpFile implements ShouldQueue
                 ->save(pathinfo($this->fileInfo['path'], PATHINFO_FILENAME).'temp.mp3');
         } catch (\Exception $e){
             Storage::delete($this->fileInfo['path']);
-            error_log($e);
+
             FileService::errorNotify("ERROR", $this->isPrivate, $this->userId);
             return;
         }
-        error_log('file sped up');
+
 
         FileService::addCover(pathinfo($this->fileInfo['path'], PATHINFO_FILENAME).'temp.mp3', $currentCoverPath);
         Storage::delete($currentCoverPath);
@@ -90,11 +88,11 @@ class SpeedUpFile implements ShouldQueue
 
         $endTime = now();
         $executionTime = $endTime->diffInMilliseconds($startTime);
-        if(!$res) {
-    Storage::delete($this->fileInfo['path']);
-    return;
-}
-FileService::logSuccess('SpeedUp File', $this->userId, $executionTime, $this->isPrivate);
+        if (!$res) {
+            Storage::delete($this->fileInfo['path']);
+            return;
+        }
+        FileService::logSuccess('SpeedUp File', $this->userId, $executionTime, $this->isPrivate);
 
     }
 }

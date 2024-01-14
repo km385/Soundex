@@ -44,7 +44,6 @@ class BPMFinder implements ShouldQueue
             $duration = FFMpeg::open($outputFilePath)->getDurationInSeconds();
 
         } catch (\Exception $e) {
-            error_log($e);
             FileService::errorNotify("ERROR#1", $this->isPrivate, $this->guestId);
             return;
         }
@@ -68,7 +67,6 @@ class BPMFinder implements ShouldQueue
                         ->save($outputPartName);
 
                 } catch (\Exception $e) {
-                    error_log($e);
                     FileService::errorNotify("ERROR#2", $this->isPrivate, $this->guestId);
                     return;
                 }
@@ -87,7 +85,6 @@ class BPMFinder implements ShouldQueue
                     $pieces_bpm[] = round(intval($piece_bpm));
 
                 } catch (\Exception $e) {
-                    error_log($e);
                     FileService::errorNotify("ERROR#3", $this->isPrivate, $this->guestId);
                     return;
                 } finally {

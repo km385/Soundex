@@ -36,7 +36,6 @@ class MergeFiles implements ShouldQueue
         $filter_complex_value = $this->get_filter_complex_value();
 
         try {
-            error_log('creating ffmpeg command based on the files');
             $ffmpeg = FFMpeg::fromDisk('')
                 ->open($this->paths[0])
                 ->export()
@@ -49,16 +48,14 @@ class MergeFiles implements ShouldQueue
                     ->addFilter('-i', Storage::path($path));
 
             }
-            error_log('ffmpeg process starting');
+
 
             $ffmpeg
                 ->addFilter('-filter_complex', $filter_complex_value)
                 ->addFilter('-map', "[a]")
                 ->save(pathinfo($this->paths[0], PATHINFO_FILENAME).'temp.mp3');
-            error_log('ffmpeg done successfully');
 
         }catch (\Exception $e){
-            error_log($e);
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
@@ -68,7 +65,6 @@ class MergeFiles implements ShouldQueue
         }
         $finalPath = pathinfo($this->paths[0], PATHINFO_FILENAME).'.mp3';
         Storage::move(pathinfo($this->paths[0], PATHINFO_FILENAME).'temp.mp3', $finalPath);
-        error_log('final file created: '.$finalPath);
 
         $fileInfo = [
             'originalName' => 'merge',
@@ -99,7 +95,7 @@ class MergeFiles implements ShouldQueue
             $filter_complex_value .= "[$i:a]";
         }
         $filter_complex_value .= "concat=n=" . count($this->paths) . ":v=0:a=1[a]";
-        error_log("filter_complex: ".$filter_complex_value);
+
         return $filter_complex_value;
     }
 }

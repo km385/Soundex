@@ -32,16 +32,13 @@ class EditController extends Controller
     public function downloadFile ($token): StreamedResponse|JsonResponse
     {
         if(!Request::hasValidSignature(false)){
-            error_log('expired url');
             return response()->json(['message' => 'expired url'], 500);
         }
         $file = TemporarySong::where('token', $token)->first();
         if($file) {
             $filePath = $file->song_path;
-            error_log($filePath);
             return Storage::disk('')->download($filePath);
         }
-        error_log('no file');
 
         return response()->json(['message' => 'no file'], 404);
 
@@ -50,7 +47,6 @@ class EditController extends Controller
     public function downloadDiagnosticFile($path): StreamedResponse|JsonResponse
     {
         if(!Request::hasValidSignature(false)){
-            error_log('expired url');
             return response()->json(['message' => 'expired url'], 500);
         }
 
@@ -71,17 +67,15 @@ class EditController extends Controller
         }
         if($user->files_stored >= 50) {
             error('no space left');
-            return response()->json(['message' => 'number of files limit reached'], 401);
+            return response()->json(['message' => 'number of files limit reached'], 403);
         }
         $link = Request::input('token');
 
         $fullLink = "http://localhost/files/".$link;
         if(!URL::isValidUrl($fullLink)){
-            error_log('not valid');
             return response()->json(['message' => 'not valid'], 401);
         }
 
-        error_log('valid');
         $parts = explode("?", $link);
         $token = $parts[0];
         $file = TemporarySong::where('token', $token)->first();
@@ -91,13 +85,12 @@ class EditController extends Controller
         }
 
         if(Song::where('song_path', $file->song_path)->first()) {
-            error_log('already exist');
-            return response()->json(['message' => 'already saved'], 401);
+            return response()->json(['message' => 'already saved'], 403);
         }
 
         if(234800 - $user->storage_used <= $file->size_kb) {
             error('no storage left');
-            return response()->json(['message' => 'no space left'], 401);
+            return response()->json(['message' => 'no space left'], 403);
         }
 
         try {
@@ -242,8 +235,6 @@ class EditController extends Controller
 
         $newExtension = Request::input('extension');
 
-        error_log("prepering");
-
         ChangeMetadata::dispatch($fileInfo, $coverPath, $metadata, $newExtension, $guestId, $isPrivate);
 
         return response()->json(['message' => 'success']);
@@ -308,9 +299,6 @@ class EditController extends Controller
         $guestId = Request::input('guestId');
         $path = Storage::putFile($file);
         $path2 = Storage::putFile($file2);
-        error_log($path);
-        error_log($path2);
-        error_log($guestId);
         Recorder::dispatch($path, $path2, $guestId, $isPrivate);
 
         return \response()->json(['message' => 'success']);
@@ -335,8 +323,7 @@ class EditController extends Controller
         $pitch = Request::input('pitchValue');
         $speed = Request::input('speedValue');
         $guestId = Request::input('guestId');
-        error_log($isPrivate);
-        error_log($guestId);
+
         SpeedUpFile::dispatch($fileInfo, $pitch, $speed, $isPrivate, $guestId);
 
         return \response()->json(['message' => 'success']);
@@ -392,7 +379,6 @@ class EditController extends Controller
             }
             $file = Request::file($key);
             $path = Storage::putFile($file);
-            error_log('key: '.$key);
             $paths[] = $path;
         }
         MergeFiles::dispatch($paths, $guestId, $isPrivate);

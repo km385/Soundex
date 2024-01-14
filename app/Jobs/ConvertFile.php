@@ -36,7 +36,6 @@ class ConvertFile implements ShouldQueue
             $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
             // TODO: determine if cutter/speedup need to stop if error while extracting a cover
-            error_log('exception caught');
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
@@ -46,7 +45,7 @@ class ConvertFile implements ShouldQueue
             // change bitrate
             $filename = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
             $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
-            error_log($this->fileInfo['path']);
+
             $ffmpeg = FFMpeg::fromDisk('')
                 ->open($this->fileInfo['path'])
                 ->export()
@@ -74,8 +73,6 @@ class ConvertFile implements ShouldQueue
             FileService::logSuccess('Convert File', $this->guestId, $executionTime, $this->isPrivate);
 
         } catch (\Exception $e) {
-            error_log('exception caught');
-            error_log($e);
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }

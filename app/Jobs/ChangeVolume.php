@@ -34,12 +34,10 @@ class ChangeVolume implements ShouldQueue
 
         $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
         $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
-        error_log($this->volume);
         try {
             $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
             // TODO: determine if cutter/speedup need to stop if error while extracting a cover
-            error_log('exception caught');
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
@@ -53,7 +51,6 @@ class ChangeVolume implements ShouldQueue
                 ->addFilter('-filter:a', "volume=".(1 + $this->volume))
                 ->save($name.'temp.'.$ext);
         }catch (\Exception $e){
-            error_log($e);
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }

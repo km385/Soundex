@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Jobs\CutFile;
 use App\Jobs\Recorder;
+use App\Jobs\SpeedUpFile;
 use App\Models\TemporarySong;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,7 +19,7 @@ class EditControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_endpoint(): void
+    public function test_recorder_endpoint(): void
     {
         Storage::fake();
         Queue::fake();
@@ -35,6 +36,25 @@ class EditControllerTest extends TestCase
         ]);
 
         Queue::assertPushed(Recorder::class);
+        $response->assertStatus(200);
+    }
+
+    public function test_speedup_endpoint() {
+        Storage::fake();
+        Queue::fake();
+
+        $sourcePath = base_path('/tests/testing_files/song.mp3');
+        $file = new UploadedFile($sourcePath, 'song.mp3', 'audio/mpeg');
+
+        $response = $this->post('/tools/speedup', [
+            'file' => $file,
+            'pitchValue' => 1.2,
+            'speedValue' => 1.3,
+            'guestId' => "123"
+        ]);
+
+        Queue::assertPushed(SpeedUpFile::class);
+        $response->assertStatus(200);
     }
 
     public function test_cutter_endpoint() {
@@ -83,12 +103,12 @@ class EditControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_no_space_left() {
+    public function test_save_temporary_file_when_no_space_left() {
         $user = User::factory()->create();
         $user->update([
             'files_stored' => 60,
         ]);
-        $fakePath = Str::uuid();
+        $fakePath = 'pathtofile.mp3';
 
         $tempFile = TemporarySong::create([
             'title' => 'song',
@@ -109,9 +129,7 @@ class EditControllerTest extends TestCase
             'song_path' => $fakePath,
         ])->count(0);
 
-
-        $response->assertStatus(401);
-
+        $response->assertStatus(403);
     }
 
     public function test_download_file() {

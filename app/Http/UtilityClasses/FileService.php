@@ -32,13 +32,12 @@ class FileService
             ]);
             \Laravel\Prompts\info("job $toolName completed successfully");
         } catch (\Exception $e) {
-            error_log($e);
+
         }
     }
 
     public static function createAndNotify($fileInfo,  $isPrivate, $userId, $scheduleFileDeletion = true, $bpmArray = null): bool
     {
-        error_log('createandnotify');
         try {
             $tags = FileService::extractMetadata($fileInfo['path']);
             if (!isset($tags['tags']['year']) || !DateTime::createFromFormat('Y-m-d', $tags['tags']['year']) !== false) {
@@ -95,10 +94,8 @@ class FileService
         $extractedUrl = end($parts);
 
         if ($isPrivate) {
-            error_log('creating private event');
             event(new PrivateFileReadyToDownload($extractedUrl, $userId, $bpmArray));
         } else {
-            error_log('creating public event');
             event(new FileReadyToDownload($extractedUrl, $userId, $bpmArray));
         }
 
@@ -115,7 +112,6 @@ class FileService
 
     public static function diagnoseNotify($data, $pathToSavedFile, $isPrivate, $userId, $scheduleFileDeletion = true): void
     {
-        error_log("notify");
         $temporaryUrl = URL::temporarySignedRoute(
             'downloadDiagnoseFile',
             // Route name
@@ -130,10 +126,8 @@ class FileService
         $jsonData = json_encode($data);
 
         if ($isPrivate) {
-            error_log('creating private event');
             event(new PrivateFileReadyToDownload($jsonData, $userId));
         } else {
-            error_log('creating public event');
             event(new FileReadyToDownload($jsonData, $userId));
         }
         if($scheduleFileDeletion) {
@@ -146,10 +140,8 @@ class FileService
     public static function errorNotify($error, $isPrivate, $userId): void
     {
         if ($isPrivate) {
-            error_log('creating private event');
             event(new PrivateFileReadyToDownload($error, $userId));
         } else {
-            error_log('creating public event');
             event(new FileReadyToDownload($error, $userId));
         }
     }
@@ -160,7 +152,6 @@ class FileService
     public static function extractMetadata($filePath)
     {
         $filePath = Storage::path($filePath);
-        error_log($filePath);
 
         try {
             $FFProbe = FFProbe::create()
@@ -217,16 +208,12 @@ class FileService
                     '-of', 'default=noprint_wrappers=1:nokey=1',
                     Storage::path($filePath)
                 ]);
-            error_log($FFProbe);
             if (empty($FFProbe)) {
-                error_log('hasCover: no cover present');
                 return false;
             } else {
-                error_log('hasCover: cover exist');
                 return true;
             }
         } catch (\Exception $e) {
-            error_log('hasCover: ERROR');
             throw $e;
         }
     }
@@ -253,7 +240,6 @@ class FileService
                 ->addFilter('-vcodec', 'copy')
                 ->save($filename . '.jpg');
         } catch (\Exception $e) {
-            error_log('error during extracting a cover');
             throw $e;
         }
         return $filename . '.jpg';
@@ -262,14 +248,12 @@ class FileService
     public static function addCover($filePath, $coverPath): void
     {
         if ($coverPath === "") {
-            error_log('no cover to add');
             return;
         }
         // adding cover to opus is not supported yet by ffmpeg
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
         if ($ext == "ogg") {
-            error_log('opus/ogg file not compatible');
             return;
         }
         // TODO: check other extensions
@@ -281,7 +265,7 @@ class FileService
                 ->toDisk('')
                 ->save(pathinfo($coverPath, PATHINFO_FILENAME) . '.jpg');
             $coverPath = pathinfo($coverPath, PATHINFO_FILENAME) . '.jpg';
-            error_log('converted to jpg');
+
         }
         // it works for mp3 and jpg
 //        ffmpeg.exe -i '.\song (1).flac' -i .\cover.jpg  -map 0:a -map 1 -codec copy -metadata:s:v title="Album cover" -metadata:s:v comment="Cover (front)" -disposition:v attached_pic songcover.flac
@@ -304,7 +288,7 @@ class FileService
             }
             $ffmpeg->save('output.' . strtolower(File::extension($filePath)));
         } catch (\Exception $e) {
-            error_log($e);
+
         }
 
 
@@ -314,7 +298,6 @@ class FileService
 
         Storage::move('output.' . strtolower(File::extension($filePath)), $filename . '.' . $ext);
 
-        error_log('added/kept cover');
     }
 
 }

@@ -74,7 +74,7 @@ class DiagnoseFile implements ShouldQueue
                     '-print_format', 'json',
                     '-show_format',
                     '-show_streams', Storage::path($fileInfo['path'])]);
-            error_log($values);
+
             $json = json_decode($values, true);
             $sample_rate = $json['streams'][0]['sample_rate' ?? ""];
             $duration = $json['streams'][0]['duration'] ?? "";
@@ -84,7 +84,7 @@ class DiagnoseFile implements ShouldQueue
             $album = $json['format']['tags']['album'] ?? "";
             $artist = $json['format']['tags']['artist'] ?? "";
         } catch (\Exception $e){
-            error_log($e);
+
         }
 
         return [

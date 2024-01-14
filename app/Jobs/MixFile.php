@@ -40,7 +40,6 @@ class MixFile implements ShouldQueue
                 ->save(pathinfo($this->pathBg, PATHINFO_FILENAME).'temp.mp3');
 
         }catch (\Exception $e){
-            error_log($e);
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         } finally {

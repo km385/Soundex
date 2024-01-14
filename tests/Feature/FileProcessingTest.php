@@ -67,7 +67,8 @@ class FileProcessingTest extends TestCase
             'path' => $filePath,
         ];
 
-        (new SpeedUpFile($fileInfo, 1.2, 1.3, false, '123', false))->handle();
+        (new SpeedUpFile($fileInfo, 1.2, 1.3, false, '123', false))
+            ->handle();
 
         $this->assertDatabaseCount(TemporarySong::class, 1);
         $this->assertDatabaseCount(SuccessfulJobs::class, 1);
@@ -82,7 +83,7 @@ class FileProcessingTest extends TestCase
                 '-show_format',
                 Storage::path($tempFile->song_path)
             ]);
-        $arr = json_decode($FFProbe, 1);
+        $outputFileInfo = json_decode($FFProbe, 1);
         $referenceFilePath = Storage::putFile($sourcePath);
         $FFProbe = FFProbe::create()
             ->getFFProbeDriver()
@@ -92,9 +93,9 @@ class FileProcessingTest extends TestCase
                 '-show_format',
                 Storage::path($referenceFilePath)
             ]);
-        $refArr = json_decode($FFProbe, 1);
+        $inputFileInfo = json_decode($FFProbe, 1);
 
-        $this->assertLessThan($refArr['format']['duration'], $arr['format']['duration']);
+        $this->assertLessThan($inputFileInfo['format']['duration'], $outputFileInfo['format']['duration']);
     }
 
     public function test_convert_job() {
@@ -109,7 +110,8 @@ class FileProcessingTest extends TestCase
             'path' => $filePath,
         ];
 
-        (new ConvertFile($fileInfo, 'mp3', '192', '123', false, false))->handle();
+        (new ConvertFile($fileInfo, 'mp3', '192', '123', false,
+            false))->handle();
 
         $this->assertDatabaseCount(TemporarySong::class, 1);
         $this->assertDatabaseCount(SuccessfulJobs::class, 1);
@@ -125,10 +127,10 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($tempFile->song_path)
             ]);
-        $arr = json_decode($FFProbe, 1);
+        $outputFileInfo = json_decode($FFProbe, 1);
 
-        $this->assertEquals('mp3', $arr['streams'][0]['codec_name']);
-        $this->assertEquals('192000', $arr['streams'][0]['bit_rate']);
+        $this->assertEquals('mp3', $outputFileInfo['streams'][0]['codec_name']);
+        $this->assertEquals('192000', $outputFileInfo['streams'][0]['bit_rate']);
     }
 
     public function test_change_metadata_job() {
@@ -176,10 +178,10 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($tempFile->song_path)
             ]);
-        $arr = json_decode($FFProbe, 1);
-        unset($arr['format']['tags']['encoder']);
+        $outputFileInfo = json_decode($FFProbe, 1);
+        unset($outputFileInfo['format']['tags']['encoder']);
 
-        $this->assertEquals($metadata, $arr['format']['tags']);
+        $this->assertEquals($metadata, $outputFileInfo['format']['tags']);
     }
 
     public function test_video_to_audio_job() {
@@ -210,10 +212,10 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($tempFile->song_path)
             ]);
-        $arr = json_decode($FFProbe, 1);
+        $outputFileInfo = json_decode($FFProbe, 1);
 
-        $this->assertEquals('mp3', $arr['streams'][0]['codec_name']);
-        $this->assertEquals('audio', $arr['streams'][0]['codec_type']);
+        $this->assertEquals('mp3', $outputFileInfo['streams'][0]['codec_name']);
+        $this->assertEquals('audio', $outputFileInfo['streams'][0]['codec_type']);
 
     }
 
@@ -254,9 +256,9 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($tempFile->song_path)
             ]);
-        $arr = json_decode($FFProbe, 1);
+        $outputFileInfo = json_decode($FFProbe, 1);
 
-        $this->assertEqualsWithDelta($end - $start, (float)$arr['streams'][0]['duration'], 1.0);
+        $this->assertEqualsWithDelta($end - $start, (float)$outputFileInfo['streams'][0]['duration'], 1.0);
     }
 
     public function test_change_volume_job() {
@@ -361,7 +363,7 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($tempFile->song_path)
             ]);
-        $arr = json_decode($FFProbe, 1);
+        $outputFileInfo = json_decode($FFProbe, 1);
         $filePath = Storage::putFile($sourcePath);
         $filePath2 = Storage::putFile($sourcePath2);
 
@@ -374,7 +376,7 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($filePath)
             ]);
-        $ref1 = json_decode($FFProbe, 1);
+        $inputFileInfo1 = json_decode($FFProbe, 1);
 
         $FFProbe = FFProbe::create()
             ->getFFProbeDriver()
@@ -385,11 +387,11 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($filePath2)
             ]);
-        $ref2 = json_decode($FFProbe, 1);
+        $inputFileInfo2 = json_decode($FFProbe, 1);
 
-        $file1Duration = $ref1['streams'][0]['duration'];
-        $file2Duration = $ref2['streams'][0]['duration'];
-        $outputFileDuration = $arr['streams'][0]['duration'];
+        $file1Duration = $inputFileInfo1['streams'][0]['duration'];
+        $file2Duration = $inputFileInfo2['streams'][0]['duration'];
+        $outputFileDuration = $outputFileInfo['streams'][0]['duration'];
 
         $this->assertEqualsWithDelta($file1Duration + $file2Duration, $outputFileDuration, 1);
 
@@ -420,7 +422,7 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($tempFile->song_path)
             ]);
-        $arr = json_decode($FFProbe, 1);
+        $outputFileInfo = json_decode($FFProbe, 1);
 
         $filePath = Storage::putFile($sourcePath2);
 
@@ -433,10 +435,10 @@ class FileProcessingTest extends TestCase
                 '-show_streams',
                 Storage::path($filePath)
             ]);
-        $ref1 = json_decode($FFProbe, 1);
+        $inputFileInfo1 = json_decode($FFProbe, 1);
 
-        $outputFileDuration = (float)$arr['streams'][0]['duration'];
-        $referenceFileDuration = (float)$ref1['streams'][0]['duration'];
+        $outputFileDuration = (float)$outputFileInfo['streams'][0]['duration'];
+        $referenceFileDuration = (float)$inputFileInfo1['streams'][0]['duration'];
         $this->assertEqualsWithDelta($referenceFileDuration, $outputFileDuration, 1);
 
     }

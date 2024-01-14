@@ -13,7 +13,6 @@ const title = computed(() => v18n.t('dashboard.toolsUsed'))
 const labelRef = ref(null)
 
 async function getDataForChart() {
-    // todo map job names to tool names
     try {
         const res = await axios.get('/jobs')
         if(res.data && res.data.data) {
@@ -131,7 +130,7 @@ onMounted(async () => {
 <template>
     <div class="flex justify-center items-center">
         <canvas id="toolsUseChart" v-if="isDataPresent"></canvas>
-        <p v-else class="text-3xl">tools  never used</p>
+        <p v-else :class="{'text-yellow-300':highContrast}" class="text-white text-3xl">tools  never used</p>
     </div>
 </template>
 
