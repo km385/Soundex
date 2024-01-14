@@ -170,11 +170,10 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            <p v-else>
-                {{ $t("resultOptionsScreen.downloadInfo") }}
-            </p>
+
+            <br>
             <button :class="{ 'high-contrast-button': highContrast }"
-                class="bg-blue-400 text-white rounded py-2 px-4 mt-4 hover:bg-blue-500" @click="emits('goBack')">
+                class="bg-blue-400 text-white rounded py-2 px-4 mt-8 hover:bg-blue-500" @click="emits('goBack')">
                 {{ $t("resultOptionsScreen.goBack") }}
             </button>
 

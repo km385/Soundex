@@ -98,12 +98,9 @@ const highContrast = inject('highContrast')
         <label for="fileInput"
                :class="{'high-contrast-button': highContrast}"
                class="cursor-pointer inline-flex bg-blue-400 text-white rounded py-2 px-4 mt-5 mr-3 hover:bg-blue-500">
-            <svg
-                :class="{ 'text-yellow-300': highContrast }"
-                class="-ml-1 mr-2 h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
+
+            <SvgComp name="plus-lg" :class="{'high-contrast-text':highContrast}" class="w-5 mr-2 -ml-1 text-gray-700" />
+
             {{ $t("tools.addNewSong") }}
         </label>
         <input ref="fileInput" type="file" class="hidden" name="fileInput" id="fileInput" @change="handleFileChange">

@@ -126,7 +126,6 @@
     },
     "resultOptionsScreen": {
         "hearAudio": "Listen to Audio",
-        "downloadInfo": "You can now download your new file",
         "goBack": "Go Back",
         "downloadFile": "Download File",
         "bpmFound": "Congratulations! Your song's average BPM has been successfully detected at <span class='font-black text-lg'> {0} </span> beats per minute (BPM).",
@@ -136,6 +135,11 @@
         "tableHeaderCount":"Segments with Matching Tempo",
         "tableAverage":"Average Found Tempo",
         "saveToLibrary": "Save to Library"
+    },
+    "downloadTempFileButton": {
+        "fileIsReady": "Your file is ready!",
+        "instruction": "Please either click the download button or copy the link and paste it into your browser.",
+        "howMuchTime": "You have one hour to download your file."
     },
     "savedToLibraryButton": {
         "saved": "saved",

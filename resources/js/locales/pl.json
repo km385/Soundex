@@ -125,7 +125,6 @@
     },
     "resultOptionsScreen": {
         "hearAudio": "Słuchaj Audio",
-        "downloadInfo": "Możesz teraz pobrać swój nowy plik",
         "goBack": "Wróć",
         "downloadFile": "Pobierz Plik",
         "bpmFound": "Gratulacje! Średnie tempo twojej piosenki zostało pomyślnie wykryte na <span class='font-black text-lg'>{0}</span> uderzeń na minutę (BPM).",
@@ -135,6 +134,11 @@
         "tableHeaderCount": "Segmenty z Pasującym Tempem",
         "tableAverage":"Średnie Znalezione Tempo",
         "saveToLibrary": "Zapisz do Biblioteki"
+    },
+    "downloadTempFileButton": {
+        "fileIsReady": "Twój plik jest gotowy!",
+        "instruction": "Kliknij w przycisk do pobrania lub skopiuj odnośnik i wklej do przeglądarki",
+        "howMuchTime": "Masz 1h na pobranie pliku"
     },
     "savedToLibraryButton": {
         "saved": "zapisano",

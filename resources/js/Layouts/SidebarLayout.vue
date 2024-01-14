@@ -137,7 +137,7 @@ function getCookieValue(cookieName) {
 
                 </SidebarRow>
                     <Transition name="slide-fade">
-                        <ul v-if="isToolsMenuOpen" class="w-[80%]">
+                        <ul v-if="isToolsMenuOpen && isSidebarOpen" class="w-[80%]">
                             <Link v-for="(tool, index) in sortedTools" :key="tool.link" :href="tool.link">
                                 <li
                                     @click="isSmall ? isSidebarOpen = false : ''"
@@ -176,7 +176,7 @@ function getCookieValue(cookieName) {
 
 
                 <Transition name="slide-fade">
-                    <ul v-if="isLangMenuOpen" class="w-[80%]">
+                    <ul v-if="isLangMenuOpen && isSidebarOpen" class="w-[80%]">
                         <li @click="setLang('en')" class="hover:bg-gray-500 cursor-pointer rounded-md py-1 pl-2"
                             :class="{ 'bg-gray-500' : i18.locale.value === 'en',
                                         'high-contrast-button':highContrast,

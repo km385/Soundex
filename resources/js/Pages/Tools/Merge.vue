@@ -224,7 +224,7 @@ const highContrast = inject('highContrast')
         <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
                              :file-to-download-link="fileToDownloadLink" :file-to-download-name="'merged.mp3'"/>
 
-        <div v-if="isError">
+        <div v-if="isError && !fileToDownloadLink">
             <p>{{ error }}</p>
         </div>
 
