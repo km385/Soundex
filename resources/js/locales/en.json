@@ -148,49 +148,52 @@
         "error": "an error occurred"
     },
     "welcome": {
+        "welcome": "Welcome to Soundex!",
+        "thanks": "Thanks to our tools, you can quickly and easily edit your audio files.",
+        "info": "You can also save your files on the cloud to have access to them everywhere.",
         "Cutter": {
-            "title": "Cutting Tool",
-            "description": "Cut your song to your liking with precision and ease. Customize your favorite tracks by removing unwanted portions and keeping only the best parts. Tailor your music experience to perfection."
+            "title": "Przycinanie",
+            "description": "Create your own personalized versions of favorite tracks using our sound editing tool. Remove unnecessary segments and keep only the most desired elements, customizing the music to your taste."
         },
         "Tag Editor": {
-            "title": "Tag Editor",
-            "description": "Enhance your music library with the Tag Editor tool. Edit and organize song tags effortlessly. Customize metadata such as artist names, album titles, and genres. Keep your music collection neat and well-organized."
+            "title": "Edycja metadanych",
+            "description": "Our metadata editing tool gives users full control over information related to music tracks. You can edit metadata such as title, artist, composer, and much more."
         },
         "SpeedUp": {
-            "title": "SpeedUp",
-            "description": "Accelerate your music with the SpeedUp tool. Increase the tempo of your favorite songs for a faster and more energetic listening experience. Transform your music library with just a few clicks."
+            "title": "Zmiana tempa",
+            "description": "Accelerate your music with this tool. Increase the tempo of your favorite tracks for faster and more energetic experiences. Transform your music library with just a few clicks."
         },
         "Merge": {
-            "title": "Merge",
-            "description": "Combine and merge your favorite songs seamlessly with the Merge tool. Create seamless transitions between tracks and craft unique playlists. Blend different musical elements together to compose a harmonious mix."
+            "title": "Łączenie",
+            "description": "Merge your favorite songs using this tool. Create smooth transitions between tracks and compose unique songs."
         },
         "Converter": {
-            "title": "Converter",
-            "description": "Convert your music effortlessly with the Converter tool. Change audio file formats with ease, ensuring compatibility across devices. Enjoy your favorite songs in the format that suits your preferences."
+            "title": "Konwerter",
+            "description": "Effortlessly convert your music with the Converter tool. Change audio file formats easily to find the perfect one for your needs."
         },
         "Video to Audio": {
-            "title": "Video to Audio",
-            "description": "Extract high-quality audio from videos using the Video to Audio tool. Convert video soundtracks to standalone audio files. Preserve the audio essence of your favorite videos in a format ideal for your music library."
+            "title": "Wideo na Audio",
+            "description": "Extract high-quality audio from videos with the Video to Audio tool. Convert soundtracks from videos into standalone audio files. Preserve the essence of your favorite videos' sound in a format ideal for your music library."
         },
         "Volume Changer": {
-            "title": "Volume Changer",
-            "description": "Take control of your music's dynamics with the Volume Changer tool. Adjust volume levels for individual tracks to create the perfect balance. Fine-tune your audio experience to suit any listening environment."
+            "title": "Zmiana Głośności",
+            "description": "Use this tool to change the volume of your song as you like."
         },
         "Recorder": {
-            "title": "Recorder",
-            "description": "Capture the moment with the Recorder tool. Record high-quality audio effortlessly and save your musical ideas on the fly. Whether it's a melody, voice memo, or ambient sound, the Recorder is your versatile audio companion."
+            "title": "Nagrywanie",
+            "description": "The Recorder tool will help you record your vocals over any song."
         },
         "LayerMix": {
-            "title": "LayerMix",
-            "description": "Immerse yourself in creative audio mixing with the LayerMix tool. Combine and layer different audio elements to craft unique soundscapes. Experiment with textures, tones, and rhythms to express your musical vision."
+            "title": "Mięszanie warstw",
+            "description": "Overlay songs without limitations. Easily blend vocals and background from two different songs to create your own compositions."
         },
         "BPM Finder": {
-            "title": "BPM Finder",
-            "description": "Discover the beats per minute (BPM) of your songs with the BPM Finder tool. Analyze and understand the tempo of your music for precise mixing and syncing. Unlock the rhythmic secrets of your favorite tracks."
+            "title": "Znajdowanie BPM",
+            "description": "Check the beats per minute (BPM) of your tracks with the BPM Finder tool."
         },
         "Diagnosis": {
-            "title": "Diagnosis",
-            "description": "Diagnose and enhance your audio with the Diagnosis tool. Identify and address audio issues with detailed analysis and diagnostic tools. Elevate the quality of your music by resolving imperfections and optimizing sound."
+            "title": "Diagnostyka",
+            "description": "Use the diagnosis tool to understand the condition of your audio file. Benefit from detailed reports on errors occurring in your files."
         }
     },
     "help": [

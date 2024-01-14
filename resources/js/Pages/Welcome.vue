@@ -29,10 +29,9 @@ const highContrast = inject('highContrast')
         <div
             :class="{'text-yellow-300':highContrast}"
             class="px-20 text-center">
-            <p class="text-5xl">Welcome to Soundex!</p>
-            <p class="text-4xl mt-2">Thanks to our tools, you can quickly and easily edit your audio
-                files.</p>
-            <p class="text-2xl mt-4">You can also save your files on the cloud to have access to them everywhere.</p>
+            <p class="text-5xl">{{ $t('welcome.welcome')}}</p>
+            <p class="text-4xl mt-2">{{ $t('welcome.thanks')}}</p>
+            <p class="text-2xl mt-4">{{ $t('welcome.info')}}</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mt-5 px-5 lg:px-0 w-4/5 mb-10">

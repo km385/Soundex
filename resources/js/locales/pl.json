@@ -147,6 +147,9 @@
         "error": "wystąpił błąd"
     },
     "welcome": {
+        "welcome": "Witaj w Soundex!",
+        "thanks": "Dziękujemy za używanie naszych narzędzi, dzięki nim możesz w szybki i łatwy sposób edytować swoje pliki dźwiękowe.",
+        "info": "Możesz również zapisywać swoje pliki w chmurze aby mieć do nich dostęp z każdego urządzenia.",
         "Cutter": {
             "title": "Przycinanie",
             "description": "Twórz własne, spersonalizowane wersje ulubionych utworów, dzięki naszemu narzędziu do edycji dźwięku, które pozwala usuwać zbędne fragmenty i zachowywać jedynie najbardziej pożądane elementy, dostosowując muzykę do Twojego gustu"
@@ -157,7 +160,7 @@
         },
         "SpeedUp": {
             "title": "Zmiana tempa",
-            "description": "Przyspiesz swoją muzykę za z pomocą narzędzia Przyspieszanie. Zwiększ tempo swoich ulubionych utworów, aby uzyskać szybsze i bardziej energetyczne wrażenia. Przekształć swoją bibliotekę muzyczną za pomocą kilku kliknięć."
+            "description": "Przyspiesz swoją muzykę za z pomocą tego narzędzia. Zwiększ tempo swoich ulubionych utworów, aby uzyskać szybsze i bardziej energetyczne wrażenia. Przekształć swoją bibliotekę muzyczną za pomocą kilku kliknięć."
         },
         "Merge": {
             "title": "Łączenie",
@@ -177,7 +180,7 @@
         },
         "Recorder": {
             "title": "Nagrywanie",
-            "description": "Narzędzie Nagrywarka posłuży ci do nagrania swojego głosu pod dowolną piosenkę. "
+            "description": "Narzędzie Nagrywarka posłuży ci do nagrania swojego wokalu pod dowolną piosenkę."
         },
         "LayerMix": {
             "title": "Mięszanie warstw",
