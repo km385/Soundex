@@ -56,7 +56,7 @@ const highContrast = inject('highContrast')
                             </Link>
 
                         </div>
-                        <div id="desc" class="overflow-y-auto max-h-[200px] no-scrollbar text-justify">
+                        <div id="desc" class="overflow-y-auto max-h-[200px] no-scrollbar">
                             <p>
                                 {{ $t(`welcome.${tool.name}.description`) }}
 

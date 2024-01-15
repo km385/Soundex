@@ -216,7 +216,6 @@ const highContrast = inject('highContrast')
             </button>
 
             <div
-
                 class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-5 text-black">
                 <div v-for="(value, key, index) in fileInfo" :key="key"
                      :class="{

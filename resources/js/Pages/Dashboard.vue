@@ -34,12 +34,12 @@ const highContrast = inject('highContrast')
             class="max-w-3xl mx-auto rounded-lg bg-gray-800 w-[90%] flex justify-center shadow-xl mt-10">
             <div
                 :class="{'high-contrast-text':highContrast}"
-                class="flex rounded-lg px-4 w-full py-4 text-white ">
+                class="flex rounded-lg px-4 w-full py-4 text-white">
                 <div class="mx-2">
-                    <SvgComp name="user" :class="{'high-contrast-border':highContrast}" class="w-40 border-2 border-white"/>
+                    <SvgComp name="user" :class="{'high-contrast-border':highContrast}" class="w-20 lg:w-40 border-2 border-white"/>
                 </div>
-                <div class=" flex flex-col pl-1 grow ">
-                    <div class="text-6xl font-bold ">
+                <div class=" flex flex-col pl-1 grow truncate">
+                    <div class="text-6xl font-bold">
                         {{ page.props.auth.user.nickname }}
                     </div>
                     <div class="">
@@ -61,7 +61,7 @@ const highContrast = inject('highContrast')
             <div>
                 <DoughnutChart class="pb-5 "/>
                 <p :class="{'high-contrast-text':highContrast}" class="text-white text-center">
-                    {{ (page.props.auth.user.files_stored / 1024).toFixed(3) }} MB / 200MB {{ $t('dashboard.space') }}</p>
+                    {{ (page.props.auth.user.storage_used / 1024).toFixed(3) }} MB / 200MB {{ $t('dashboard.space') }}</p>
             </div>
             <div class='lg:ml-5 mt-5 lg:mt-0'>
                 <NumberOfFilesChart class=" pb-5"/>

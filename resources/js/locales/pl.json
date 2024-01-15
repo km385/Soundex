@@ -70,7 +70,7 @@
         "publisher": "Wydawca",
         "trackNumber": "Numer utworu",
         "lyrics": "Tekst piosenki",
-        "cover": "Okładka",
+        "cover": "Prześlij Okładkę",
         "error1": "wypełnij przynajmniej 1 pole",
         "error2": "nie poprawne zdjęcie",
         "error3": "Numer utworu musi mieć wartość pomiędzy 0 and 65535"

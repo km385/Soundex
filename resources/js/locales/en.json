@@ -70,7 +70,7 @@
         "publisher": "Publisher",
         "trackNumber": "TrackNumber",
         "lyrics": "Lyrics",
-        "cover": "Cover",
+        "cover": "Upload Cover",
         "error1": "fill at least 1 field",
         "error2": "not a valid image",
         "error3": "TrackNumber must have values between 0 and 65535"

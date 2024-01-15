@@ -49,7 +49,7 @@ function setLang(lang) {
 function setCookie(key, value, expiresInSeconds) {
     let now = new Date();
     let time = now.getTime();
-    let expireTime = time + 1000 * expiresInSeconds; // to milliseconds
+    let expireTime = time + 1000 * expiresInSeconds;
     now.setTime(expireTime);
     document.cookie = `${key}=${value};expires=${now.toUTCString()}`
 
@@ -147,7 +147,8 @@ function getCookieValue(cookieName) {
                                             'rounded-t-lg': index === 0,
                                             'rounded-b-lg': index === tools.length-1,
                                             'high-contrast-button':highContrast,
-                                            'high-contrast-button-selected':page.component === tool.component && highContrast
+                                            'high-contrast-button-selected':page.component === tool.component
+                                            && highContrast
                                         }"
                                 >
                                     {{ $t(`sidebar.${tool.name}`) }}
