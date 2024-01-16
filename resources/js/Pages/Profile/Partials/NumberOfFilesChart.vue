@@ -20,16 +20,6 @@ function initChart() {
     const percentage = (page.props.auth.user.files_stored / 50) * 100
     const remainingPercentage = 50 - percentage;
 
-    const data = {
-        labels: ['Filled', 'Remaining'],
-        datasets: [{
-            data: [percentage, remainingPercentage],
-            backgroundColor: [highContrast.value ? 'yellow' : '#FECEAB', '#DDDDDD'],
-            borderWidth: 0,
-            hoverOffset: 4,
-        }]
-    };
-
     const doughnutLabel = {
         id: 'doughnutLabel',
         beforeDatasetsDraw(chart, args, options) {
@@ -47,6 +37,16 @@ function initChart() {
             ctx.fillText(`${page.props.auth.user.files_stored} / 50`, xCor, yCor)
         }
     }
+
+    const data = {
+        labels: ['Filled', 'Remaining'],
+        datasets: [{
+            data: [percentage, remainingPercentage],
+            backgroundColor: [highContrast.value ? 'yellow' : '#FECEAB', '#DDDDDD'],
+            borderWidth: 0,
+            hoverOffset: 4,
+        }]
+    };
 
     const options = {
         responsive: true,

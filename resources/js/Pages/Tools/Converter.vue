@@ -40,7 +40,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -52,9 +52,6 @@ onUnmounted(() => {
 
 function handleSubToPublic(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -68,9 +65,6 @@ function handleSubToPublic(event) {
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -81,7 +75,6 @@ function handleSubToPrivate(event) {
 }
 
 async function getFile(file) {
-    console.log('get file')
     uploadedFile.value = file;
     isFileUploaded.value = true
 }
@@ -96,16 +89,16 @@ async function onSubmit() {
     try {
         isLoading.value = true
         const res = await axios.post('/tools/converter', formData)
-        console.log(res.data.message)
+
     } catch (e) {
-        console.log(e)
+
     }
 
 }
 
 function getExtension(data) {
     extension.value = data
-    console.log(data)
+
 }
 
 const bitrates = ref([64, 128, 192, 256, 320]);
@@ -113,7 +106,7 @@ const selectedBitrate = ref(192);
 
 const selectBitrate = (bitrate) => {
     selectedBitrate.value = bitrate;
-    console.log(selectedBitrate.value)
+
 };
 
 const highContrast = inject('highContrast')

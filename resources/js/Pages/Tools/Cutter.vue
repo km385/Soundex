@@ -47,7 +47,7 @@ const secondaryRegionData = reactive({
 
 const regionCheckboxValue = ref(false)
 watch(regionCheckboxValue, (value) => {
-    console.log(`check ${value}`)
+
 })
 
 onMounted(() => {
@@ -60,7 +60,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -73,9 +73,6 @@ onUnmounted(() => {
 function handleSubToPublic(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if (event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -87,8 +84,6 @@ function handleSubToPublic(event) {
 
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if (event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -102,10 +97,8 @@ function handleSubToPrivate(event) {
 async function onCutClicked() {
     const start = mainRegionData.start
     const end = mainRegionData.end
-    console.log(start)
-    console.log(end)
+
     axios.interceptors.request.use(req => {
-        console.log(req)
         return req
     })
 
@@ -122,15 +115,13 @@ async function onCutClicked() {
     try {
         isLoading.value = true
         const res = await axios.post('/tools/cutFile', formData)
-        console.log(res.data.message)
+
     } catch (e) {
-        console.log(e)
+
     }
 }
 
 async function getFile(file) {
-    console.log('get file')
-
     uploadedFile.value = file;
     isFileUploaded.value = true
 }
@@ -149,7 +140,7 @@ function getRegionData(data) {
 }
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)

@@ -24,16 +24,16 @@ async function getDataForChart() {
                 const dataArr = val.map(item => item ? item.count : null);
                 return {labelsArr, dataArr}
             } else {
-                console.error("empty array")
+
                 return []
             }
         } else {
-            console.error('unexpected response structure')
+
             return []
         }
 
     } catch (error) {
-        console.error('an error occurred')
+
         return []
     }
 
@@ -78,12 +78,12 @@ function initChart(dataset) {
         scales: {
             x: {
                 ticks: {
-                    color: highContrast.value ? 'yellow' : 'white', // Change the color of x-axis text
+                    color: highContrast.value ? 'yellow' : 'white',
                 },
             },
             y: {
                 ticks: {
-                    color: highContrast.value ? 'yellow' : 'white', // Change the color of y-axis text
+                    color: highContrast.value ? 'yellow' : 'white',
                 },
             },
         },

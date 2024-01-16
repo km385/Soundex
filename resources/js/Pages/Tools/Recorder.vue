@@ -35,7 +35,7 @@ const error = ref("")
 const isMounted = ref(true)
 onMounted(() => {
     isMounted.value = true
-    console.log(guestId)
+
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -44,7 +44,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -56,9 +56,6 @@ onUnmounted(() => {
 
 function handleSubToPublic(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -134,7 +131,6 @@ async function startRecording(){
 }
 
 async function stopRecording(recorder){
-    // use exposed method to control wavesurfer component
     wave.value.onStopClicked()
 
     const audio = await recorder.stop()

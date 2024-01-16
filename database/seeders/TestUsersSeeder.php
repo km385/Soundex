@@ -19,13 +19,11 @@ class TestUsersSeeder extends Seeder
         // Loop creating 25 random users.
         // Mass renaming in Windows automatically names files in this format.
         // By default, first user will have login credentials test@test test, and should be used for testing.
-        $statusOptions = ['active', 'inactive', 'banned'];
 
         DB::table('users')->insert([
             'nickname' => 'The Tester',
             'password' => Hash::make('test'),
             'email' => 'test@test',
-            'status' => 'active',
             'is_admin' => true,
             'created_at' => now(),
             'updated_at' => now(),
@@ -36,7 +34,6 @@ class TestUsersSeeder extends Seeder
                 'nickname' => Str::random(10),
                 'password' => Hash::make('password'),
                 'email' => Str::random(10) . '@example.com',
-                'status' => $statusOptions[array_rand($statusOptions)],
                 //'is_admin' => (bool) rand(0, 1),
                 'created_at' => now(),
                 'updated_at' => now(),

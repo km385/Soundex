@@ -33,7 +33,7 @@ const error = ref("")
 const isMounted = ref(true)
 onMounted(() => {
     isMounted.value = true
-    console.log(guestId)
+
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -42,7 +42,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -55,9 +55,6 @@ onUnmounted(() => {
 function handleSubToPublic(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -68,9 +65,6 @@ function handleSubToPublic(event) {
 }
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -110,9 +104,9 @@ async function onMergeClicked(){
     try {
         isLoading.value = true
         const res = await axios.post('/tools/layermixer', formData)
-        console.log(res.data.message)
+
     } catch (err) {
-        console.log(err)
+
     }
 
 }

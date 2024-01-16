@@ -3,10 +3,6 @@ import {inject, onMounted, onUnmounted, ref} from "vue";
 import {v4 as uuidv4 } from 'uuid';
 import {usePage} from "@inertiajs/vue3";
 import {disconnectFromPrivate, disconnectFromPublic, subToChannel, subToPrivate} from "@/Subscriptions/subs.js";
-import Wavesurfer from "./Partials/Wavesurfer.vue";
-import UploadFile from "./Partials/UploadFile.vue";
-import DownloadTempFile from "./Partials/DownloadTempFileButton.vue";
-import SaveToLibraryButton from "./Partials/SaveToLibraryButton.vue";
 import SidebarLayout from "@/Layouts/SidebarLayout.vue";
 import LoadingScreen from "./Partials/LoadingScreen.vue";
 import FileInfo from "@/Pages/Tools/Partials/FileInfo.vue";
@@ -37,7 +33,7 @@ const error = ref("")
 const isMounted = ref(true)
 onMounted(() => {
     isMounted.value = true
-    console.log(guestId)
+
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -46,7 +42,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -59,9 +55,6 @@ onUnmounted(() => {
 function handleSubToPublic(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -73,9 +66,6 @@ function handleSubToPublic(event) {
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -86,7 +76,6 @@ function handleSubToPrivate(event) {
 }
 
 function getFile(file) {
-    console.log('file received')
     uploadedFile.value = file
     isUploaded.value = true
 }
@@ -108,9 +97,9 @@ async function onUploadButtonClick() {
     try {
         isLoading.value = true
         const res = await axios.post('/tools/speedup', formData)
-        console.log(res.data.message)
+
     } catch (e) {
-        console.log(e)
+
     }
 
 }
@@ -144,7 +133,6 @@ function changeHandleStyles(region){
 
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
-<!--            <Wavesurfer v-if="isUploaded" :file="uploadedFile" :show-region="false" :show-controls="true"/>-->
             <div class="flex flex-col items-start">
                 <div class="w-auto mb-3 mt-3">
                     <label for="pitch" class="block font-medium text-sm mb-1" >{{ $t("speedUp.pitch") }}</label>

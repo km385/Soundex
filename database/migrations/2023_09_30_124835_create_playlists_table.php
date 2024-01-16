@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->enum('sorting_type', ['asc', 'desc','views'])->default('asc');
             $table->unsignedBigInteger('user_id');
-            $table->enum('playlist_status', ['public', 'private', 'banned'])->default('public');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -43,7 +43,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -55,9 +55,6 @@ onUnmounted(() => {
 
 function handleSubToPublic(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -71,9 +68,6 @@ function handleSubToPublic(event) {
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -86,7 +80,6 @@ function handleSubToPrivate(event) {
 async function onSubmit(){
 
     axios.interceptors.request.use(req => {
-        console.log(req)
         return req
     })
 
@@ -99,22 +92,20 @@ async function onSubmit(){
     try {
         isLoading.value = true
         const res = await axios.post('/tools/volumechanger', formData)
-        console.log(res.data.message)
+
     }catch (e) {
-        console.log(e)
+
     }
 }
 
 async function getFile(file) {
-    console.log('get file')
+
     uploadedFile.value = file;
     isFileUploaded.value = true
 }
 
 const waveformRef = ref(null)
 
-
-// control volume of child waveform by reference
 const startVolumeValue = 0.33333
 const volumeValue = ref(startVolumeValue)
 watch(volumeValue, (value) => {
@@ -140,8 +131,7 @@ const highContrast = inject('highContrast')
         <div v-if="isFileUploaded && !fileToDownloadLink"
              :class="{'high-contrast-input':highContrast}"
              class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
-            <!-- File Information Section -->
-            <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
+
             <button type="button" @click="isFileUploaded = false;isError = false"
                     :class="{'high-contrast-button':highContrast}"
                     class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t("tools.changeFile") }}</button>
@@ -158,15 +148,12 @@ const highContrast = inject('highContrast')
                    id="myRange" v-model="volumeValue">
             {{(percentageVolumeChange<0?"":"+")}}{{ percentageVolumeChange }}%
 
-
-
             <div class="mt-6">
                 <button type="button" @click="onSubmit"
                         :class="{'high-contrast-button':highContrast}"
                         class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t("tools.submit") }}</button>
             </div>
 
-            <!--            </div>-->
         </div>
 
         <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"

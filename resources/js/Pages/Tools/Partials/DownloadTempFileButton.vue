@@ -38,7 +38,6 @@ const props = defineProps({
     }});
 
 function downloadFile() {
-    console.log(props.token);
     axios
         .get(`/files/${props.token}`, {
             responseType: 'blob',

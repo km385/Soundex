@@ -23,8 +23,6 @@ const closePopup = () => {
 const emits = defineEmits(['fileChosen'])
 
 async function chooseSong(song) {
-    console.log(song.id)
-
     const res = await axios.get(`/songs/${song.id}`, {
         responseType: "blob"
     })

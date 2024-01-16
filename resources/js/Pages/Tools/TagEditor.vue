@@ -40,7 +40,7 @@ const highContrast = inject('highContrast')
 const isMounted = ref(true)
 onMounted(() => {
     isMounted.value = true
-    console.log(guestId)
+
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -49,7 +49,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -60,9 +60,6 @@ onUnmounted(() => {
 })
 function handleSubToPublic(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -75,9 +72,6 @@ function handleSubToPublic(event) {
 
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -112,7 +106,7 @@ async function onSubmit() {
     if(isAllFieldsEmpty && isCoverUploaded.value === false) {
         error.value = v18n.t('tagEditor.error1')
         isError.value = true
-        console.log(form.value.coverRef)
+
         return
     }
 
@@ -120,7 +114,6 @@ async function onSubmit() {
     Object.keys(form.value).forEach(key => {
         const value = form.value[key]
         formData.append(key, value)
-        console.log(key, value)
     })
 
     formData.append('guestId', guestId)
@@ -128,19 +121,19 @@ async function onSubmit() {
     try {
         isLoading.value = true
         const res = await axios.post('/tools/tageditor', formData)
-        console.log(res.data.message)
+
     } catch (err) {
         if(err.response.data.error){
-            console.log('no file')
+
         } else {
-            console.log(err)
+
         }
     }
 
 }
 
 function getFile(file) {
-    console.log('file received')
+
     fileUploaded.value = file
     form.value.fileRef = file
     isFileUploaded.value = true

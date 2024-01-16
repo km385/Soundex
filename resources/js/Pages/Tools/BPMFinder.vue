@@ -33,7 +33,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -45,9 +45,6 @@ onUnmounted(() => {
 
 function handleSubToPublic(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if (event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -73,7 +70,7 @@ function handleSubToPrivate(event) {
 }
 
 async function getFile(file) {
-    console.log('get file')
+
     uploadedFile.value = file;
     isFileUploaded.value = true
 }
@@ -86,9 +83,9 @@ async function onSubmit() {
     try {
         isLoading.value = true
         const res = await axios.post('/tools/bpmFinder', formData)
-        console.log(res.data.message)
+
     } catch (e) {
-        console.log(e)
+
     }
 
 }
@@ -108,7 +105,6 @@ const highContrast = inject('highContrast')
             @file="getFile" />
 
 
-        <!-- after submit -->
         <div v-if="isFileUploaded && !fileToDownloadLink" :class="{ 'high-contrast-input': highContrast }"
             class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
 
@@ -124,7 +120,6 @@ const highContrast = inject('highContrast')
                     class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t('tools.submit') }}</button>
             </div>
         </div>
-        <!--after tool-->
 
         <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"
             :file-to-download-link="fileToDownloadLink"

@@ -56,7 +56,7 @@ watch(volumeValue, (value) => {
 
 
 watch(highContrast, (newValue) => {
-    console.log(newValue)
+
     ws.wsInstance.setOptions({
         waveColor: newValue ? '#FFFF00FF' : '#FECEAB',
     })

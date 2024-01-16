@@ -35,7 +35,7 @@ const error = ref("")
 const isMounted = ref(true)
 onMounted(() => {
     isMounted.value = true
-    console.log(guestId)
+
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -44,7 +44,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -57,9 +57,6 @@ onUnmounted(() => {
 function handleSubToPublic(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -71,9 +68,6 @@ function handleSubToPublic(event) {
 
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -113,17 +107,12 @@ async function onMergeClicked(){
     })
     formData.append('guestId', guestId)
 
-    console.log('files to be send')
-    for (const value of formData.values()) {
-        console.log(value);
-    }
-
     try {
         isLoading.value = true
         const res = await axios.post('/tools/merge', formData)
-        console.log(res.data.message)
+
     } catch (e) {
-        console.log(e)
+
     }
 
 }
@@ -176,7 +165,7 @@ function downloadFile() {
             link.click();
         })
         .catch((error) => {
-            console.log(error);
+
         });
 }
 const highContrast = inject('highContrast')

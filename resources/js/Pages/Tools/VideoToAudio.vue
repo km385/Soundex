@@ -31,7 +31,7 @@ const error = ref("")
 const isMounted = ref(true)
 onMounted(() => {
     isMounted.value = true
-    console.log(guestId)
+
     if(page.props.auth.user){
         subToPrivate(guestId, handleSubToPrivate)
     } else {
@@ -40,7 +40,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
+
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -51,9 +51,6 @@ onUnmounted(() => {
 })
 function handleSubToPublic(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -66,9 +63,6 @@ function handleSubToPublic(event) {
 
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -87,19 +81,19 @@ async function onSubmit() {
     try {
         isLoading.value = true
         const res = await axios.post('/tools/videotoaudio', formData)
-        console.log(res.data.message)
+
     } catch (err) {
         if(err.response.data.error){
-            console.log('no file')
+
         } else {
-            console.log(err)
+
         }
     }
 
 }
 
 function getFile(file) {
-    console.log('file received')
+
     fileUploaded.value = file
     isFileUploaded.value = true
     onSubmit()
@@ -113,8 +107,6 @@ function getFile(file) {
     <MainToolsWindow v-if="!isLoading">
         <ToolsUploadScreen v-if="!isFileUploaded" :title="$t('videoToAudio.title')" :description="$t('videoToAudio.description')"
                            @file="getFile" :allow-video="true"/>
-
-        <!--    usunieto form.submit i dziala-->
 
         <div v-if="isFileUploaded && !downloadLink" class="mt-10 grid lg:grid-cols-2 gap-4 sm:grid-cols-1 sm:mx-10 lg:mx-0 p-6 bg-gray-800 rounded-lg shadow-lg" id="form">
 

@@ -19,7 +19,7 @@ const props = defineProps({
 const page = usePage()
 
 function onDrop(event) {
-    console.log('handle drag event')
+
     event.preventDefault()
     if (event.dataTransfer.items) {
         const item = event.dataTransfer.items[0]
@@ -42,14 +42,11 @@ function onDrop(event) {
 }
 
 function onDragOver(event) {
-    console.log('handle drag over')
-
     event.preventDefault()
     document.getElementById('dragZone').classList.add('brightness-125')
 
 }
 function onDragLeave(event) {
-    console.log('leave')
     document.getElementById('dragZone').classList.remove('brightness-125')
     event.preventDefault()
 }
@@ -60,7 +57,7 @@ function onClick(event) {
 }
 
 function handleFileChange(event) {
-    console.log('handle file input')
+
     if (event.target.files[0] !== undefined) {
         const file = event.target.files[0]
         if (checkIfAudioFile(file)) {
@@ -72,10 +69,7 @@ function handleFileChange(event) {
     }
 }
 
-// TODO: MIME type is determine based on extension, double check on the server (mime_content_type possibly)
 function checkIfAudioFile(file) {
-    console.log(file.type)
-    // Check the MIME type of the file
     if (props.allowVideo) {
         return file.type.startsWith("video/")
     }
