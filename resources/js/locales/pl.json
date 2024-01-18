@@ -19,7 +19,7 @@
         "data": {
             "name": "nazwa",
             "extension": "format",
-            "bitrate": "przepływność bitów",
+            "bitrate": "przepływność",
             "duration": "czas trwania",
             "sample_rate": "częstotliwość próbkowania",
             "title": "tytuł",
