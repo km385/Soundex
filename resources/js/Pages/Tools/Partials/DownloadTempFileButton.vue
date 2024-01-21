@@ -60,7 +60,6 @@ function downloadFile() {
             link.click();
         })
         .catch((error) => {
-            console.log(error);
         });
 }
 </script>

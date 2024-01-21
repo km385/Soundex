@@ -127,7 +127,6 @@ export default {
 
 
         watch(() => props.selectedSong, async (newSelectedSong, _) => {
-            console.log(`/database/songs/${newSelectedSong.id}`);
             if (newSelectedSong !== 'placeholder') {
                 try {
                     const response = await axios.post(`/database/songs/${newSelectedSong.id}`);
@@ -139,7 +138,6 @@ export default {
                     audioPlayer.value.play();
                     isPlaying.value = true;
                 } catch (error) {
-                    console.error('Error fetching song:', error);
                 }
             }
         });

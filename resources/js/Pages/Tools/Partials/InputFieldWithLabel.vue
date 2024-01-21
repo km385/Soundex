@@ -43,8 +43,8 @@ const highContrast = inject('highContrast')
 
 .high-contrast-label {
     color: yellow;
-    font-size: 1rem; /* 16px */
-    line-height: 1.5rem; /* 24px */
+    font-size: 1rem;
+    line-height: 1.5rem;
 }
 
 .high-contrast-input {

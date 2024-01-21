@@ -38,7 +38,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    console.log('unmounted')
     isMounted.value = false
     if(page.props.auth.user) {
         disconnectFromPrivate(guestId)
@@ -64,7 +63,6 @@ function formatDuration(value) {
         const formattedSeconds = String(seconds).padStart(2, '0');
         return `${formattedMinutes}:${formattedSeconds}`;
     } else {
-        console.error('Duration is not a valid number.');
         return '---'
     }
 }
@@ -111,8 +109,6 @@ function setFileInfo(data) {
 function handleSubToPublic(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
     if (event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -132,9 +128,6 @@ function handleSubToPublic(event) {
 
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
-
-    console.log("the event has been successfully captured")
-    console.log(event)
 
     if (event.fileName === "ERROR") {
         error.value = v18n.t('error')
@@ -161,15 +154,11 @@ async function onSubmitClicked() {
     try {
         isLoading.value = true
         const res = await axios.post('/tools/diagnosis', formData)
-        console.log(res.data.message)
     } catch (e) {
-        console.log(e)
     }
 }
 
 async function getFile(file) {
-    console.log('get file')
-
     uploadedFile.value = file;
     isFileUploaded.value = true
 
@@ -177,7 +166,6 @@ async function getFile(file) {
 }
 
 function downloadFile() {
-    console.log('pobieranie')
     axios
         .get(`/file/${linkToFile.value}`, {
             responseType: 'blob',
@@ -193,7 +181,6 @@ function downloadFile() {
             link.click();
         })
         .catch((error) => {
-            console.log(error);
         });
 }
 

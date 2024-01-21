@@ -37,7 +37,6 @@ class ChangeVolume implements ShouldQueue
         try {
             $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
-            // TODO: determine if cutter/speedup need to stop if error while extracting a cover
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }

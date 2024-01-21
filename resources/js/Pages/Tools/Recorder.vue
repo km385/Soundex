@@ -68,9 +68,6 @@ function handleSubToPublic(event) {
 function handleSubToPrivate(event) {
     if(!isMounted.value) return
 
-    console.log("the event has been successfully captured")
-    console.log(event)
-
     if(event.fileName === "ERROR") {
         error.value = v18n.t('error')
         isError.value = true
@@ -148,14 +145,11 @@ async function onSend(){
     try {
         isLoading.value = true
         const result = await axios.post('recorder', formData)
-        console.log(result)
     }catch (error){
-        console.log(`ERROR: ${error}`)
     }
 
 }
 function getFile(file) {
-    console.log('file received')
     backgroundFile.value = file
     isFileUploaded.value = true
 }

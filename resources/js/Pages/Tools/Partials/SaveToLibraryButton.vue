@@ -24,7 +24,6 @@ async function onClick() {
 
     try {
         const res = await axios.post('/savetolibrary', formData)
-        console.log(res)
         saved.value = v18n.t('savedToLibraryButton.saved')
     } catch (e) {
         if (e.response.data.message === "already saved") {

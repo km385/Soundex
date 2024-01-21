@@ -32,7 +32,6 @@ class BPMFinder implements ShouldQueue
         $outputFilePath = $name . 'temp.' . 'wav';
         $duration = 0;
 
-        //convert to wav
         try {
             FFMpeg::fromDisk('')
                 ->open($name . '.' . $ext)

@@ -72,7 +72,7 @@ class SongController extends Controller
         }
         $expiration = now()->addHour();
         $temporaryUrl = URL::temporarySignedRoute(
-            'musicplayer-song', // Create a named route for downloading the file
+            'musicplayer-song',
             $expiration,
             ['disk' => $song->disk == null ? "" : $song->disk, 'path' => $song->song_path]
         );

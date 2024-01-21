@@ -43,7 +43,6 @@ class DiagnoseFile implements ShouldQueue
                 ->addFilter(['-filter:a', 'volumedetect', '-f', 'null'])
                 ->getProcessOutput();
 
-//            $mess = print_r($output->all(), true);
 
             $pathToSavedFile = $this->saveErrorsToFile($output->all(), $name);
 

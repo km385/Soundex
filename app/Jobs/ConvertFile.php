@@ -35,14 +35,12 @@ class ConvertFile implements ShouldQueue
         try {
             $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
-            // TODO: determine if cutter/speedup need to stop if error while extracting a cover
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
 
         try {
             $this->fileInfo['path'] = FileService::convertFile($this->fileInfo['path'], $this->newExtension);
-            // change bitrate
             $filename = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
             $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
 

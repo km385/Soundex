@@ -53,7 +53,6 @@ class EditController extends Controller
         if(Storage::exists("/diagnose_files/".$path)) {
             return Storage::disk('')->download('diagnose_files'.DIRECTORY_SEPARATOR.$path);
         } else {
-            error("plik nie istnieje");
             return response()->json(['message' => 'no file']);
         }
 
@@ -66,7 +65,6 @@ class EditController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
         if($user->files_stored >= 50) {
-            error('no space left');
             return response()->json(['message' => 'number of files limit reached'], 403);
         }
         $link = Request::input('token');
@@ -89,22 +87,16 @@ class EditController extends Controller
         }
 
         if(234800 - $user->storage_used <= $file->size_kb) {
-            error('no storage left');
             return response()->json(['message' => 'no space left'], 403);
         }
 
         try {
             $song = new Song();
-            // TODO: path as file name or userId/path
             $song->song_path = $file->song_path;
-            // todo: check title saving
-            // $song->title = $file->originalName;
             $song->extension = $file->extension;
             $song->size_kb = $file->size_kb;
-            // todo: supports mp3 and flac
             $song->title = $file->title;
             $song->album = $file->album;
-            // todo: validate client side dateformat
             $song->year = $file->year;
             $song->artist = $file->artist;
             $song->genre = $file->genre;
@@ -114,7 +106,6 @@ class EditController extends Controller
             $user->files_stored = $user->files_stored + 1;
             $user->save();
         } catch (\Exception $e) {
-            error_log($e->getMessage());
         }
 
 
@@ -222,7 +213,6 @@ class EditController extends Controller
             $coverPath = null;
         }
         $metadata = [];
-        // mp3, flac support these and cover arts
         $fieldsToCheck = ['title', 'artist', 'year', 'genre', 'album',
             'composer', 'comment', 'copyrightMessage', 'publisher', 'trackNumber', 'lyrics'];
         foreach ($fieldsToCheck as $field) {
@@ -370,7 +360,6 @@ class EditController extends Controller
         }
 
         $fileKeys = array_keys(Request::all());
-        error_log(count($fileKeys));
         $guestId = Request::input('guestId');
         $paths = [];
         foreach ($fileKeys as $key){

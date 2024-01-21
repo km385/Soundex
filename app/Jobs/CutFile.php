@@ -34,11 +34,9 @@ class CutFile implements ShouldQueue
 
         $name = pathinfo($this->fileInfo['path'], PATHINFO_FILENAME);
         $ext = pathinfo($this->fileInfo['path'], PATHINFO_EXTENSION);
-        // TODO: either combine 2 try/catch block together or give them different messages
         try {
             $coverPath = FileService::extractCover($this->fileInfo['path']);
         } catch (\Exception $e) {
-            // TODO: determine if cutter/speedup need to stop if error while extracting a cover
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
@@ -76,8 +74,6 @@ class CutFile implements ShouldQueue
 
     private function get_configuration(): string
     {
-//        ffmpeg -i lol.mp3 -af "aselect='between(t,4,6.5)+between(t,17,26)+between(t,74,91)',asetpts=N/SR/TB" out.mp3
-
         $af = "";
         $start = $this->params['start'];
         $end = $this->params['end'];
@@ -86,8 +82,6 @@ class CutFile implements ShouldQueue
             $end2 = $this->params['end2'];
 
             if (($start >= $start2 && $start <= $end2) || ($start2 >= $start && $start2 <= $end)) {
-                error_log(min($start, $start2, $end, $end2));
-                error_log(max($start, $start2, $end, $end2));
                 $af = "aselect='between(t,".min($start, $start2, $end, $end2).",".max($start, $start2, $end, $end2).")',asetpts=N/SR/TB";
             } else {
                 if($start < $start2){

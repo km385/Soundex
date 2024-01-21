@@ -35,8 +35,6 @@ class DeleteTempFileJob implements ShouldQueue
             Storage::delete($tempFile->song_path);
             $tempFile->delete();
 
-        } else {
-            error("file not found");
         }
 
 

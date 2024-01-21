@@ -16,7 +16,6 @@ const title = computed(() => {
 function initChart() {
     const ctx = document.getElementById('freeStorage');
     const limit = 200
-    console.log((page.props.auth.user.storage_used / 1024).toFixed(2))
     const percentage = ((page.props.auth.user.storage_used / 1024) / limit).toFixed(2) * 100;
     const remainingPercentage = 100 - percentage;
 

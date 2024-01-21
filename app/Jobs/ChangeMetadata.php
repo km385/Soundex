@@ -50,13 +50,11 @@ class ChangeMetadata implements ShouldQueue
             FileService::errorNotify("ERROR", $this->isPrivate, $this->guestId);
             return;
         }
-        // vn dodane po m4a, nie testowane w innych, uzywa tylko sound stream
-        // wav works for tags but it is not shown is windows context menu. cover does not work
+
         try {
             FFMpeg::fromDisk('')
                 ->open($this->fileInfo['path'])
                 ->export()
-//            ->addFilter('-vn')
                 ->addFilter(function (AudioFilters $filters) use ($meta){
                     $filters->addMetadata($meta);
                 })

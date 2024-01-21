@@ -45,7 +45,6 @@ class FileService
             }
 
             if (!isset($tags['size'])) {
-                error('no size info');
                 throw new \Exception();
             }
         } catch (\Exception $e) {
@@ -76,16 +75,13 @@ class FileService
                 throw new \Exception();
             }
         } catch (\Exception $e) {
-            error($e);
             self::errorNotify('error', $isPrivate, $userId);
             return false;
         }
 
         $temporaryUrl = URL::temporarySignedRoute(
             'downloadFile',
-            // Route name
             now()->addHours(1),
-            // Expiration time
             ['fileName' => $tempFile->token],
             false
         );
@@ -114,9 +110,7 @@ class FileService
     {
         $temporaryUrl = URL::temporarySignedRoute(
             'downloadDiagnoseFile',
-            // Route name
             now()->addHours(1),
-            // Expiration time
             ['fileName' => $pathToSavedFile],
             false
         );
@@ -164,7 +158,6 @@ class FileService
                 ]);
             $arr = json_decode($FFProbe, 1);
 
-            // if mp3
             return $arr['format'];
         } catch (\Exception $e) {
             throw new \Exception();
@@ -184,7 +177,6 @@ class FileService
                 ->toDisk('')
                 ->save($filename.'temp.'.$newExtension);
         } catch (\Exception $e) {
-            error($e);
             throw $e;
         }
         Storage::delete($filePath);
@@ -224,7 +216,6 @@ class FileService
      */
     public static function extractCover($filePath): string
     {
-        // TODO: continuing after catch might cause bugs, check if cover available with FFProbe
         $hasCover = self::hasCover($filePath);
         if (!$hasCover) {
             return "";
@@ -250,14 +241,12 @@ class FileService
         if ($coverPath === "") {
             return;
         }
-        // adding cover to opus is not supported yet by ffmpeg
         $filename = pathinfo($filePath, PATHINFO_FILENAME);
         $ext = pathinfo($filePath, PATHINFO_EXTENSION);
         if ($ext == "ogg") {
             return;
         }
-        // TODO: check other extensions
-        // TODO: possibly convert any to jpg
+
         if (in_array(strtolower(File::extension($coverPath)), ['webp', 'png'])) {
             FFMpeg::fromDisk('')
                 ->open($coverPath)
@@ -267,8 +256,6 @@ class FileService
             $coverPath = pathinfo($coverPath, PATHINFO_FILENAME) . '.jpg';
 
         }
-        // it works for mp3 and jpg
-//        ffmpeg.exe -i '.\song (1).flac' -i .\cover.jpg  -map 0:a -map 1 -codec copy -metadata:s:v title="Album cover" -metadata:s:v comment="Cover (front)" -disposition:v attached_pic songcover.flac
 
         try {
             $ffmpeg = FFMpeg::fromDisk('')

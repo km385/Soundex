@@ -80,7 +80,6 @@ watch(() => props.file, (value) => {
 })
 
 watch(() => isPlaying.value, (value) => {
-    console.log(value)
     emit('isPlayingChanged', value);
 });
 const regionCheckboxValue = ref(false)
@@ -91,7 +90,6 @@ watch(regionCheckboxValue, (value) => {
     } else {
         regions.getRegions()[1].remove()
     }
-    console.log(regions.getRegions())
 })
 
 function addSecondRegion() {
@@ -133,10 +131,6 @@ function formatTime(time) {
 }
 
 onMounted(() => {
-    console.log('on mounted')
-    console.log(props.id)
-    console.log(props.file)
-
     ws.wsInstance = WaveSurfer.create({
         container: `#${props.id}`,
         waveColor: highContrast.value ? '#FFFF00FF' : '#FECEAB',
@@ -180,13 +174,11 @@ onMounted(() => {
             if (ws.currentTime >= region.end || ws.currentTime <= region.start) {
                 // +0.001 for firefox
                 ws.wsInstance.setTime(region.start + 0.001)
-                console.log(region.start)
             }
         }
     })
 
     ws.wsInstance.on("ready", (duration) => {
-        console.log('ready event')
         ws.durationTime = duration
 
         if (props.showRegion) {
@@ -214,14 +206,12 @@ onMounted(() => {
 
     if (props.showRegion) {
         regions.on('region-updated', (region) => {
-            console.log('on update-end')
             const regionIndex = regions.getRegions().indexOf(region)
             const regionData = {
                 id: regionIndex,
                 start: region.start,
                 end: region.end
             }
-            // console.log(regionData)
             emit('regionCoords', regionData)
         })
     }
@@ -237,7 +227,6 @@ onMounted(() => {
     </div>
     <div v-if="showControls">
         <div class="flex justify-between">
-            <!--            <input type="text" v-model="ws.currentTime" class="border-none w-auto">-->
             <p>{{ formatTime(ws.currentTime) }}</p>
             <p>{{ formatTime(ws.durationTime) }}</p>
         </div>

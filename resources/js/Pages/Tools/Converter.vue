@@ -124,14 +124,12 @@ const highContrast = inject('highContrast')
              :class="{'high-contrast-input':highContrast}"
              class="mt-20 lg:mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
             <!-- File Information Section -->
-            <!--            <div class="p-6 bg-gray-800 rounded-lg shadow-lg">-->
             <button type="button" @click="isFileUploaded = false;isError = false"
                     :class="{'high-contrast-button':highContrast}"
                     class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 mb-4">{{ $t('tools.changeFile') }}</button>
 
             <FileInfo :file-size="uploadedFile.size" :file-name="uploadedFile.name" />
 
-            <!--            nice info here :)-->
             <div id="app" class="flex flex-col lg:flex-row" v-if="extension !== 'flac' && extension !== 'wav'">
                 <button
                     v-for="bitrate in bitrates"
@@ -151,7 +149,6 @@ const highContrast = inject('highContrast')
                         class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500">{{ $t('tools.submit') }}</button>
             </div>
             <FormatSelection @extension="getExtension"/>
-            <!--            </div>-->
         </div>
 
         <ResultOptionsScreen v-if="fileToDownloadLink" @go-back="fileToDownloadLink = ''"

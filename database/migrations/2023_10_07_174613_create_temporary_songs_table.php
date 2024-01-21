@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
 
-            // no originalName
             $table->string('token');
-            $table->string('song_path'); // filePath earlier
+            $table->string('song_path');
             $table->string('extension');
             $table->unsignedInteger('size_kb');
 
@@ -27,10 +26,10 @@ return new class extends Migration
 
 
             // metadata fields
-            $table->string('title')->nullable(); //song name set in tags
+            $table->string('title')->nullable();
             $table->string('artist')->nullable();
             $table->string('album')->nullable();
-            $table->date('year')->nullable(); //song release date
+            $table->date('year')->nullable();
             $table->text('comment')->nullable();
             $table->string('composer')->nullable();
             $table->string('copyright_message')->nullable();

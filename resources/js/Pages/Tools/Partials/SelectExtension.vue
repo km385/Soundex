@@ -28,7 +28,6 @@ onMounted(() => {
 <style scoped>
 
 .high-contrast-select {
-    /* High-contrast styles go here */
     background-color: black;
     color: yellow;
     border: 2px solid yellow;

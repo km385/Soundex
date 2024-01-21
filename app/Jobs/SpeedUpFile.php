@@ -38,7 +38,6 @@ class SpeedUpFile implements ShouldQueue
             return;
         }
 
-//        ffprobe -i .\song.mp3 -show_entries stream=sample_rate -of default=noprint_wrappers=1:nokey=1 -hide_banner -loglevel quiet
         $sample_rate = null;
         try{
 

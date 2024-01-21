@@ -108,7 +108,6 @@ const highContrast = inject('highContrast')
             :class="{'high-contrast-border':highContrast}"
             class="flex items-center justify-center w-[300px] h-[300px] border-[5px] border-dashed border-blue-500 rounded-3xl ">
             <div class="flex flex-col items-center">
-                <!--                <img class="w-1/2 h-1/2 mb-3" src="../../../../images/file_icon.webp" alt="file image">-->
                 <SvgComp name="upload"
                          :class="{'high-contrast-text': highContrast}"
                          class="text-black w-[200px]"/>
