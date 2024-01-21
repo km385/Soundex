@@ -2,6 +2,7 @@
 ### Web application for diagnosing, managing, and manipulating audio files.
 ---
 ### Start up:
+This application requires ffmpeg, ffprobe and soundstretch installed in the ffmpeg directory
 - composer install
 - npm install 
 - set up config file (.env)
@@ -9,6 +10,7 @@
 - start database server
 - if needed drop database
 - php artisan migrate --seed
+- add path to the "ffmpeg" directory to the environmental variables
 - Start servers:<br>npm run dev<br>php artisan serve<br>php artisan queue:work
 ---
 ### Tech stack:
