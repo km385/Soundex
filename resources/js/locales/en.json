@@ -18,13 +18,13 @@
         "description": "Check if your file has any problems",
         "data": {
             "name": "name",
-            "extension":"format",
+            "extension": "format",
             "bitrate": "bitrate",
             "duration":"duration",
             "sample_rate": "sample rate",
             "title":"title",
             "artist": "artist",
-            "genre":"genre",
+            "genre": "genre",
             "album": "album",
             "numberOfErrors":"number of errors",
             "state": "state"
@@ -74,7 +74,6 @@
         "error1": "fill at least 1 field",
         "error2": "not a valid image",
         "error3": "TrackNumber must have values between 0 and 65535"
-
     },
     "videoToAudio": {
         "title": "Video To Audio",
@@ -106,7 +105,8 @@
         "profile": "Profile",
         "logout": "Log Out",
         "login": "Login",
-        "register": "Register"
+        "register": "Register",
+        "admin": "Admin Panel"
     },
     "upload": {
         "title": "Upload new file"
@@ -130,10 +130,10 @@
         "downloadFile": "Download File",
         "bpmFound": "Congratulations! Your song's average BPM has been successfully detected at <span class='font-black text-lg'> {0} </span> beats per minute (BPM).",
         "bpmDescription": "Click the 'Listen to Audio' button to hear a song with a clear rhythmic beat. Use the table available through the 'Show BPM Table' button to see the tempo identified in different parts of your song. You can adjust the metronome tempo by choosing the right values from the table.",
-        "tableShowButton":"Show BPM Table",
-        "tableHeaderBpm":"Detected Tempo (BPM)",
-        "tableHeaderCount":"Segments with Matching Tempo",
-        "tableAverage":"Average Found Tempo",
+        "tableShowButton": "Show BPM Table",
+        "tableHeaderBpm": "Detected Tempo (BPM)",
+        "tableHeaderCount": "Segments with Matching Tempo",
+        "tableAverage": "Average Found Tempo",
         "saveToLibrary": "Save to Library"
     },
     "downloadTempFileButton": {
@@ -300,6 +300,35 @@
         "confirmPass": "Confirm Password",
         "alreadyRegistered": "Already registered?",
         "register": "Register"
+    },
+    "adminPanel": {
+        "tables": {
+            "id": "Id",
+            "nickname": "Nickname",
+            "email": "E-mail",
+            "toolsUsage": "Tools Usage",
+            "storageUsed": "Storage Used",
+            "filesStored": "Files Stored",
+            "registrate": "registration Date",
+            "delete": "Delete Users",
+            "remove": "Remove Files",
+            "deleteButton": "Delete",
+            "removeButton": "Remove",
+            "toolsName": "Tools Name",
+            "totalUsage": "Total Usage Amount",
+            "avgProcess": "Average Processing Time (Seconds)",
+            "guestProc": "Percentage of Guest Users",
+            "process": "Processing Time (Seconds)",
+            "userId": "User Id",
+            "done": "Done On"
+        },
+        "adminPanel": "Admin Panel",
+        "userControl": "User Controls",
+        "serverRes": "Server Resources Overview",
+        "totalMemory": "Total Server Memory Usage is",
+        "totalFiles": "Total Amount of Files on the Server is",
+        "toolsStats": "Tools Statistics",
+        "toolsChart": "Most Used Tools Chart",
+        "toolsReq": "Latest Tools Usage"
     }
 }
-

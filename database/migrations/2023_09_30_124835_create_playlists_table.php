@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('playlists', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('sorting_type', ['asc', 'desc','views'])->default('asc');
+            $table->enum('sorting_type', ['A-Z', 'Z-A','Date'])->default('A-Z');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

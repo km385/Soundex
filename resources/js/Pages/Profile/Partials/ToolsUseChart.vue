@@ -4,17 +4,35 @@ import {computed, inject, onMounted, reactive, ref, watch} from "vue";
 import {Chart} from "chart.js/auto";
 import {useI18n} from "vue-i18n";
 
+
+
 const v18n = useI18n()
 const highContrast = inject('highContrast')
 let chart = reactive({})
 
-const title = computed(() => v18n.t('dashboard.toolsUsed'))
+const props = defineProps({
+  title: {
+    type: String,
+    default: () => ''
+  },
+
+  routePath: {
+    type: String,
+    default: '/jobs'
+  }
+});
+
+
+const title = computed(() => {
+  return props.title === '' ? v18n.t('dashboard.toolsUsed') : props.title;
+});
+
 
 const labelRef = ref(null)
 
 async function getDataForChart() {
     try {
-        const res = await axios.get('/jobs')
+        const res = await axios.get(props.routePath)
         if(res.data && res.data.data) {
             const val = res.data.data
             if(val && val.length > 0) {

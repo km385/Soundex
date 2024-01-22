@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedInteger('order')->default(0);
             $table->timestamps();
 
-            $table->foreign('playlist_id')->references('id')->on('playlists');
-            $table->foreign('song_id')->references('id')->on('songs');
+            $table->foreign('playlist_id')->references('id')->on('playlists')->onDelete('cascade');
+            $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
         
         });
     }

@@ -208,6 +208,14 @@ function getCookieValue(cookieName) {
                 <div class="relative flex justify-center" v-if="page.props.auth.user">
                     <div class="absolute w-[98%] bg-[#171515] translate-y-[-105%] rounded-lg border border-gray-500" v-if="isUserMenuOpen"
                          @click="isUserMenuOpen = !isUserMenuOpen">
+                        <Link v-if="$page.props.auth.user.is_admin"  
+                        href="/adminPanel" >
+                            <div
+                                :class="{'high-contrast-button': highContrast}"
+                                class="border-b py-2 hover:bg-gray-500 rounded-t-lg">
+                                <p class="pl-2">{{$t('sidebar.admin')}}</p>
+                            </div>
+                        </Link>
                         <Link href="/dashboard">
                             <div
                                 :class="{'high-contrast-button': highContrast}"

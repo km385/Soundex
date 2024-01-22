@@ -105,7 +105,8 @@
         "profile": "Profil",
         "logout": "Wyloguj się",
         "login": "Zaloguj się",
-        "register": "Zarejestruj się"
+        "register": "Zarejestruj się",
+        "admin": "Admin Panel"
     },
     "upload": {
         "title": "Prześlij nowy plik"
@@ -132,7 +133,7 @@
         "tableShowButton": "Pokaż Tabelę BPM",
         "tableHeaderBpm": "Wykryte Tempo (BPM)",
         "tableHeaderCount": "Segmenty z Pasującym Tempem",
-        "tableAverage":"Średnie Znalezione Tempo",
+        "tableAverage": "Średnie Znalezione Tempo",
         "saveToLibrary": "Zapisz do Biblioteki"
     },
     "downloadTempFileButton": {
@@ -286,7 +287,6 @@
             "Diagnose File": "Diagnostyka",
             "Video To Audio": "Wideo na Audio"
         }
-
     },
     "login": {
         "password": "Hasło",
@@ -300,7 +300,35 @@
         "confirmPass": "Potwierdź Hasło",
         "alreadyRegistered": "Masz już konto?",
         "register": "Zarejstruj się"
+    },
+    "adminPanel": {
+        "tables": {
+            "id": "Id",
+            "nickname": "Pseudonim",
+            "email": "E-mail",
+            "toolsUsage": "Ilość użyć",
+            "storageUsed": "Zajęte miejsce",
+            "filesStored": "Ilość Plików",
+            "registrate": "Data Rejestracji",
+            "delete": "Usuń Użytkownika",
+            "remove": "Skasuj Pliki",
+            "deleteButton": "Usuń",
+            "removeButton": "Skasuj",
+            "toolsName": "Nazwa Narzędzia",
+            "totalUsage": "Całkowite Użycie",
+            "avgProcess": "Średni Czas Przetwarzania (Sekundy)",
+            "guestProc": "Procent Gości",
+            "process": "Czas Przetwarzania (Sekundy)",
+            "userId": "Id Użytkownika",
+            "done": "Zakończone"
+        },
+        "adminPanel": "Panel Administratora",
+        "userControl": "Kontrola Użytkowników",
+        "serverRes": "Przegląd Zasobów Serwera",
+        "totalMemory": "Całkowite Wykorzystanie Pamięci Serwera wynosi",
+        "totalFiles": "Łączna Ilość Plików na Serwerze wynosi",
+        "toolsStats": "Statystyki Narzędzi",
+        "toolsChart": "Wykres Najczęściej Używanych Narzędzi",
+        "toolsReq": "Najnowsze Użycie Narzędzi"
     }
-
-
 }

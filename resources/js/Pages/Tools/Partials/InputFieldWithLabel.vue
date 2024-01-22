@@ -1,5 +1,5 @@
 <script setup>
-import {inject, ref} from "vue";
+import { inject, ref } from "vue";
 
 const props = defineProps({
     label: {
@@ -10,6 +10,10 @@ const props = defineProps({
         type: String,
         required: false,
         default: "text"
+    },
+    placeholder: {
+        type: String,
+        default: null
     }
 })
 const emit = defineEmits(['update:modelValue'])
@@ -21,26 +25,20 @@ const highContrast = inject('highContrast')
 
 <template>
     <div class="mb-6">
-        <label :for="label"
-               :class="{
-               'high-contrast-label': highContrast }"
-               class="block mb-2 uppercase font-bold  text-xs text-white ">
+        <label :for="label" :class="{
+            'high-contrast-label': highContrast
+        }" class="block mb-2 uppercase font-bold  text-xs text-white ">
             {{ label }}
         </label>
-        <input :id="label"
-               :class="{ 'high-contrast-input': highContrast }"
-               class="bg-gray-500 text-white border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500 w-full"
-               name="title"
-               :type="type"
-               ref="input"
-               @input="emit('update:modelValue', $event.target.value)"
-        >
+        <input :id="label" :class="{ 'high-contrast-input': highContrast }"
+            class="bg-gray-500 text-white border border-gray-500 rounded-lg focus:border-blue-500 focus:ring-blue-500 w-full"
+            name="title" :type="type" :placeholder="placeholder" ref="input"
+            @input="emit('update:modelValue', $event.target.value)">
 
     </div>
 </template>
 
 <style scoped>
-
 .high-contrast-label {
     color: yellow;
     font-size: 1rem;
@@ -59,5 +57,4 @@ const highContrast = inject('highContrast')
     border: 2px solid yellow;
 
 }
-
 </style>

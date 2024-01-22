@@ -1,30 +1,29 @@
 <template>
-    <div class="h-full overflow-x-hidden mt-5">
+    <div class="h-full overflow-x-hidden mt-5 w-full">
 
-        <div class="grid gap-4 grid-cols-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-7 overflow-x-hidden">
-            <div v-for="song in songs" :key="song.id" class="p-4 cursor-pointer relative">
-                <div @click="playSelectedSong(song)"
-                    class="bg-gray-300 hover:bg-gray-100 transition duration-300 shadow-md rounded-tr-3xl p-4">
-                    <button @click.stop="showContextMenu(song)"
+        <div
+            class="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-7 2xl:grid-cols-5 2xl:gap-24 w-full overflow-x-hidden">
+            <div v-for="(songs, album) in songsGrouped" :key="album" class="p-2 h-30  cursor-pointer relative min-h-30"  @click="emits('displayAlbum', songs)">
+                <div
+                    class=" hover:bg-gray-500 transition duration-300 shadow-md rounded-tr-3xl p-6 bg-gray-600 outline-gray-400 outline outline-offset-4 ">
+                    <button @click.stop="showContextMenu(songs)"
                         class="absolute top-8 right-8 bg-transparent border-none cursor-pointer text-gray-500 hover:text-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path
                                 d="M10 12a2 2 0 100-4 2 2 0 000 4zM2 12a2 2 0 100-4 2 2 0 000 4zm16 0a2 2 0 100-4 2 2 0 000 4z" />
                         </svg>
                     </button>
-                    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/artistic-album-cover-design-template-d12ef0296af80b58363dc0deef077ecc_screen.jpg?ts=1561488440"
-                        alt="Song Cover" class="w-16 h-16 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-semibold truncate">{{ song.title }}</h3>
-                    <p class="text-gray-600">{{ song.artist }}</p>
+                    <img src="https://img.freepik.com/premium-wektory/nuta-logo_535345-2135.jpg" alt="Song Cover"
+                        class="w-16 h-16 object-cover rounded-lg mb-4">
+                    <h3 class=" font-semibold truncate">{{ album }}</h3>
                 </div>
                 <!-- Context Menu -->
-                <div v-if="song.showContextMenu"
+                <div v-if="songs.showContextMenu"
                     class="absolute top-12 right-2 bg-white border border-gray-300 shadow-md p-2 z-10 rounded-md context-menu">
                     <button class="block text-gray-700 hover:text-gray-900 cursor-pointer">Info</button>
                     <button class="block text-gray-700 hover:text-gray-900 cursor-pointer">Edit</button>
-                    <button @click.stop="deleteContextMenu(song)"
+                    <button @click.stop="deleteContextMenu(album)"
                         class="block text-gray-700 hover:text-gray-900 cursor-pointer">Delete</button>
-
                 </div>
             </div>
         </div>
@@ -38,7 +37,22 @@ import { router } from '@inertiajs/vue3'
 const openContextMenu = ref(null);
 const { songs } = defineProps(['songs']);
 
-const emits = defineEmits(['playSong']);
+const songsGrouped = ref(groupSongsByAlbum(songs));
+
+function groupSongsByAlbum(songs) {
+    const groupedSongs = {};
+
+    songs.forEach(song => {
+        const album = song.album || 'unknown';
+        if (!groupedSongs[album]) {
+            groupedSongs[album] = { songs: [], showContextMenu: false };
+        }
+        groupedSongs[album].songs.push(song);
+    });
+   // console.log(groupedSongs)
+    return groupedSongs
+}
+const emits = defineEmits(['playSong','displayAlbum']);
 
 function playSelectedSong(song) {
     emits('playSong', song);

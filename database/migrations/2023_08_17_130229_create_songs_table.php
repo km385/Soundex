@@ -34,7 +34,7 @@ return new class extends Migration {
             $table->unsignedSmallInteger('track_number')->nullable();
 
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

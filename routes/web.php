@@ -8,16 +8,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DownloadController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -26,16 +17,19 @@ Route::get('/', function () {
     ]);
 });
 
+// Q&A
 Route::get('/help', function () {
     return Inertia::render('Help');
 });
 
+//Tools Files Managment
 Route::get('/files/{fileName}', [EditController::class, 'downloadFile'])->name('downloadFile');
 Route::get('/file/{fileName}', [EditController::class, 'downloadDiagnosticFile'])->name('downloadDiagnoseFile');
-
 Route::post('/savetolibrary', [EditController::class, 'saveToLibrary']);
-
-// Tools routes
+Route::get('/songs', [SongController::class, 'getSongs']);
+Route::get('/songs/{id}', [SongController::class, 'getSongById']);
+Route::get('/jobs', [SuccessfulJobsController::class, 'show']);
+// Tools
 Route::prefix('tools')->name('tools.')->group(function () {
 
     Route::get('/', function () {
@@ -101,30 +95,41 @@ Route::prefix('tools')->name('tools.')->group(function () {
         return Inertia::render('Tools/Index');
     })->name('index');
 });
-Route::get('/songs', [SongController::class, 'getSongs']);
-Route::get('/songs/{id}', [SongController::class, 'getSongById']);
 
-Route::get('/jobs', [SuccessfulJobsController::class, 'show']);
-
-
-//Database routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/database', [SongController::class, 'index'])->name('Database');
-    Route::delete('/database/songs/{song}', [SongController::class, 'destroy'])->name('Database.destroy');
-
-});
-//
-Route::post('/database/songs/{songId}', [SongController::class, 'post']);
-Route::get('/musicplayer-song', [DownloadController::class, 'download'])->name('musicplayer-song');
-
+//User Profile
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/edit', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/edit', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//Admin Panel
+Route::get('/users', [ProfileController::class, 'getAllUsers'])->name('getAllUsers');
+Route::delete('/users/{id}', [ProfileController::class, 'destroyUsers'])->name('deleteUser');
+Route::patch('/users/{id}', [ProfileController::class, 'updateUsers'])->name('updateUser');
+Route::get('/jobStatistics', [SuccessfulJobsController::class, 'statistics']);
+Route::get('/jobsIndex', [SuccessfulJobsController::class, 'index']);
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/adminPanel', function () {
+        return Inertia::render('AdminPanel');
+    })->name('adminPanel');;
+});
+
+//Database 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/database', [SongController::class, 'index'])->name('Database');
+    Route::delete('/database/songs/{song}', [SongController::class, 'destroy'])->name('song.destroy');
+    Route::post('/database/upload', [SongController::class, 'songUpload'])->name('song.upload');
+    Route::get('/database/get', [SongController::class, 'getSongs'])->name('song.upload');
+});
+//Route::get('/song-covers/{filename}', [SongController::class, 'getCover']);
+Route::get('/musicplayer-song', [SongController::class, 'download'])->name('musicplayer-song');
+Route::post('/database/songs/{songId}', [SongController::class, 'downloadSong'])->name('generateUrlForSong');
+Route::post('/database/songs/change/{songId}', [SongController::class, 'changeMetadata']);
+
 require __DIR__ . '/auth.php';
+
+

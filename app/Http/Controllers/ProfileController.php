@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-
+use App\Models\User;
+use App\Models\Song;
+use App\Models\TemporarySong;
+use App\Models\SuccessfulJobs;
 class ProfileController extends Controller
 {
     /**
@@ -59,5 +62,55 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function getAllUsers()
+    {
+        $users = User::select('id', 'nickname', 'email', 'storage_used', 'files_stored', 'created_at')->get();
+        $users->each(function ($user) {
+            $toolUsageCount = SuccessfulJobs::where('user_id', $user->id)->count();
+            $user->tool_usage = $toolUsageCount;
+        });
+        return response()->json(['users' => $users]);
+    }
+
+    public function updateUsers($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        Song::where('user_id', $user->id)->delete();
+        TemporarySong::Where('user_id', $user->id)->delete();
+        $user->storage_used = 0;
+        $user->files_stored = 0;
+
+        $user->save();
+
+        $users = User::select('id', 'nickname', 'email', 'storage_used', 'files_stored', 'created_at')->get();
+        $users->each(function ($user) {
+            $toolUsageCount = SuccessfulJobs::where('user_id', $user->id)->count();
+            $user->tool_usage = $toolUsageCount;
+        });
+        return response()->json(['users' => $users]);
+    }
+
+    public function destroyUsers($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        $user->delete();
+
+        $users = User::select('id', 'nickname', 'email', 'storage_used', 'files_stored', 'created_at')->get();
+        $users->each(function ($user) {
+            $toolUsageCount = SuccessfulJobs::where('user_id', $user->id)->count();
+            $user->tool_usage = $toolUsageCount;
+        });
+        return response()->json(['users' => $users]);
     }
 }

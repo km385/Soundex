@@ -30,6 +30,29 @@ class ProfileTest extends TestCase
             ->assertStatus(302)
             ->assertRedirect('/login');
     }
+    public function test_admin_panel_is_not_accessible_to_regular_user(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/adminPanel');
+
+        $response
+            ->assertStatus(403);
+    }
+
+    public function test_admin_panel_is_accessible_to_admins(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/adminPanel');
+
+        $response
+            ->assertStatus(200);
+    }
 
     public function test_dashboard_page_is_not_accessible_to_guest(): void
     {

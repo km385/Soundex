@@ -88,22 +88,21 @@ class TestSongsSeeder extends Seeder
             ],
         ];
 
-        $songStatus = ['banned', 'published', 'waiting'];
+
 
         for ($i = 1; $i <= 15; $i++) {
             $songName = 'test (' . $i . ')';
 
             DB::table('songs')->insert([
-                'name' => $songName,
                 'duration_sec' => rand(15, 500),
                 'user_id' => 1,
                 'disk' => '',
                 'song_path' => $songName . '.mp3',
                 'cover_path' => $songName . '.jpg',
-
+                'extension' => 'mp3',
                 'created_at' => now(),
                 'updated_at' => now(),
-
+                'size_kb' => 1024,
                 'title' => $songTitles[array_rand($songTitles)],
                 'artist' => $metadataSets[array_rand($metadataSets)]['artist'],
                 'album' => $metadataSets[array_rand($metadataSets)]['album'],
